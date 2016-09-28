@@ -2,16 +2,21 @@
 using System.Collections;
 
 public class CameraController : MonoBehaviour {
-
+    //Reference to the players transform    
     public Transform playerTransform;
-    public Vector3 direction = Vector3.forward;
-    public float offsetXZ, offsetY, offsetA;
+    //Position offset
+    public Vector3 offset;
+    //Angeled offset (LookAt position)
+    public float angelOffset;
 
+    //Reference to own transform
     private Transform myTransform;
-    private Vector3 newDir;
+    //The position to move the camera to
+    private Vector3 newPos;
 
     void Start()
     {
+        //Sets players transform reference
         if (playerTransform == null)
         {
             GameObject obj = GameObject.FindGameObjectWithTag("Player");
@@ -21,30 +26,64 @@ public class CameraController : MonoBehaviour {
             }
         }
 
+        //Sets self transform reference
         if (myTransform == null)
         {
             myTransform = gameObject.transform;
         }
 
+        //Error Checking
         if (myTransform == null || playerTransform == null)
         {
             Debug.Log("Missing Transforms");
             Destroy(this);
         }
 
-        newDir = direction;
+        //Sets the position
+        myTransform.position = playerTransform.position + offset;
+        //Sets the rotation
+        myTransform.LookAt(new Vector3(playerTransform.position.x, playerTransform.position.y + angelOffset, playerTransform.position.z));
+        //Sets the newPos to the current offset
+        newPos = offset;
     }
 
     void Update()
-    {
-        Vector3 pos = new Vector3(playerTransform.position.x, 0, playerTransform.position.z);
-        Vector3 offset = pos + (direction * offsetXZ) + (offsetY * Vector3.up);
-        myTransform.position = Vector3.Lerp(myTransform.position, offset, 5)/* Time.deltaTime*/;
-        myTransform.forward = Vector3.Lerp(direction, newDir, 5);
+    {   
+        //Sets the offset  
+        if (!TolComp(newPos, offset, 0.1f))
+        {
+            Vector3 newDif = Vector3.Lerp(offset, newPos, 5 * Time.deltaTime);
+            offset = newDif;
+        }           
+        else 
+        {
+            offset = newPos;
+        }                
+        
+        //Sets the position         
+        myTransform.position = playerTransform.position + offset;
+        //Sets the rotation
+        myTransform.LookAt(new Vector3(playerTransform.position.x, playerTransform.position.y + angelOffset, playerTransform.position.z));
     }
 
+    //Set the newPos function
     public void SetCameraDir(Vector3 newDirection)
     {
-        newDir = newDirection;
+        newPos = newDirection;        
+    }
+
+    //Compare using a Tolerence between two vectors
+    bool TolComp(Vector3 l, Vector3 r, float TOLERANCE = 0.00001f)
+    {
+        if (Mathf.Abs(l.x - r.x) > TOLERANCE ||
+            Mathf.Abs(l.y - r.y) > TOLERANCE ||
+            Mathf.Abs(l.z - r.z) > TOLERANCE)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
     }
 }
