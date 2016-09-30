@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class CameraController : MonoBehaviour {
     //Reference to the players transform    
@@ -35,7 +34,23 @@ public class CameraController : MonoBehaviour {
         //Error Checking
         if (myTransform == null || playerTransform == null)
         {
-            Debug.Log("Missing Transforms");
+            //Set Message
+            string messages = "";
+            if (playerTransform == null)
+            {
+                messages += "Player Transform not found";
+            }
+            if (myTransform == null)
+            {
+                if (messages != "")
+                {
+                    messages += " and ";
+                }
+                messages += "Transform not found";
+            }
+
+            //Send Error
+            GameManager.inst.ErrorSystem(messages, this, true, 0);
             Destroy(this);
         }
 

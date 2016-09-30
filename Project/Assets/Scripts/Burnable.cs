@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class Burnable : MonoBehaviour {
     //Time taken to "Burn" the object (in seconds)
@@ -18,9 +17,23 @@ public class Burnable : MonoBehaviour {
     private float timer = 0.0f;    
     //Material reference
     private Material mat;
+    //Fire Reference
+    private GameObject fire;
 
     void Start() 
     {
+        //Checks if the fire refernce is null
+        if (fire != null)
+        {
+            Destroy(fire);
+        }
+        //Checks if the emitter exists
+        if (fireEmitter == null)
+        {
+            GameManager.inst.ErrorSystem("Fire Emitter is null", this);
+            Destroy(this);
+        }
+        //Sets a reference to its material
         mat = GetComponent<MeshRenderer>().material; 
     }
     
@@ -31,8 +44,7 @@ public class Burnable : MonoBehaviour {
             //If not active it spawns the emitter
             if (!active) 
             {
-                Instantiate(fireEmitter, gameObject.transform, false);
-                
+                fire = Instantiate(fireEmitter, gameObject.transform, false) as GameObject;
                 active = true;
             }
             //Add to the timer
@@ -41,10 +53,15 @@ public class Burnable : MonoBehaviour {
             {        
                 //Fades the object
                 mat.color = new Color(mat.color.r, mat.color.g, mat.color.b, (mat.color.a - mat.color.a * Time.deltaTime));
-                //Destroys the object onced faded
+                //Resets the object and onced faded
                 if (mat.color.a < 0.1f)
                 {
-                    Destroy(gameObject);
+                    mat.color = new Color(mat.color.r, mat.color.g, mat.color.b, 1.0f);
+                    burning = false;
+                    active = false;
+                    timer = 0;
+                    Destroy(fire);        
+                    gameObject.SetActive(false);
                 }
             }
         }        

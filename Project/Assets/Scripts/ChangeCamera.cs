@@ -1,19 +1,25 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class ChangeCamera : MonoBehaviour {
     //New Position for the camera
-    public Vector3 newPosition;
+    public Vector3[] newOffsets;
     //Reference for the gameCamera
     public GameObject gameCamera;
+    //Index
+    private int index = 0;  
+
            
     //Sets the reference for the camera, destroying itself if nothing is found
     void Start()
     {
+        //Gets reference to the camera
         gameCamera = GameObject.FindGameObjectWithTag("MainCamera");
+        
+        //Error Checking
         if (gameCamera == null)
         {
-            Destroy(gameObject);
+            GameManager.inst.ErrorSystem("Main Camera not found", this);
+            Destroy(this);
         }
     }
 
@@ -22,7 +28,12 @@ public class ChangeCamera : MonoBehaviour {
     {
         if (col.tag == "Player")
         {
-            gameCamera.SendMessage("SetCameraDir", newPosition);
+            index++;
+            if (index >= newOffsets.Length)
+            {
+                index = 0;
+            }
+            gameCamera.SendMessage("SetCameraDir", newOffsets[index]);
         }
     }
 }
