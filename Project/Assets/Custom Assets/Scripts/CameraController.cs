@@ -1,104 +1,185 @@
 ﻿using UnityEngine;
-
+                    
 public class CameraController : MonoBehaviour {
-    //Reference to the players transform    
-    public Transform playerTransform;
-    //Position offset
-    public Vector3 offset;
-    //Angeled offset (LookAt position)
-    public float angelOffset;
-
-    //Reference to own transform
-    private Transform myTransform;
-    //The position to move the camera to
-    private Vector3 newPos;
-
-    void Start()
+    public enum Direction
     {
-        //Sets players transform reference
-        if (playerTransform == null)
+        Forward, Back, Left, Right
+    }
+    //Direction the Camera faces at start
+    public Direction direction = Direction.Forward;
+    //References to Transforms
+    public Transform pivotTranform;
+    public Transform cameraTranform;
+    public Transform playerTranfrom;
+    private Transform ownTranform;
+    //Angle offsets
+    public float maxOffsetAngle = 50.0f;
+    public float minOffsetAngle = 35.0f;
+    //Offsets
+    public float offsetXZ = 7.5f; //Distance from Player
+    public float offsetY = 2.0f; //Hight from ground
+    public float offsetA = 45.0f; //Angle the camera watches
+    //Speed
+    public float rotationSpeed = 2.0f;
+    //Position References
+    private Vector3 maxOffsetPos;
+    private Vector3 minOffsetPos;
+
+    public bool invertY = false;
+    public bool invertX = false;
+                
+    void Start() 
+    {
+        //Set References
+        ownTranform = transform;
+        
+        if (playerTranfrom == null)
         {
             GameObject obj = GameObject.FindGameObjectWithTag("Player");
-            if (obj != null)
-            {
-                playerTransform = obj.GetComponent<Transform>();
+            if (obj != null) {
+                playerTranfrom = obj.transform;
             }
         }
 
-        //Sets self transform reference
-        if (myTransform == null)
+        //Error Handeling/Checking
+        string message = "";
+        if (playerTranfrom == null)
         {
-            myTransform = gameObject.transform;
+            message += "Transform \'playerTransform\' missing";
         }
-
-        //Error Checking
-        if (myTransform == null || playerTransform == null)
+        if (pivotTranform == null)
         {
-            //Set Message
-            string messages = "";
-            if (playerTransform == null)
+            if (message != "")
             {
-                messages += "Player Transform not found";
+                message += ", ";
             }
-            if (myTransform == null)
+            message += "Transform \'pivotTranform\' missing";
+        }
+        if (cameraTranform == null)
+        {
+            if (message != "")
             {
-                if (messages != "")
-                {
-                    messages += " and ";
-                }
-                messages += "Transform not found";
+                message += ", ";
             }
-
-            //Send Error
-            GameManager.inst.ErrorSystem(messages, this, true, 0);
-            Destroy(this);
+            message += "Transform \'cameraTranform\' missing";
+        }
+        if (ownTranform == null)
+        {
+            if (message != "")
+            {
+                message += ", ";
+            }
+            message += "Transform \'ownTranform\' missing";
+        }  
+        if (message != "")
+        {
+            GameManager.inst.ErrorSystem(message, this, true, 0);
         }
 
-        //Sets the position
-        myTransform.position = playerTransform.position + offset;
-        //Sets the rotation
-        myTransform.LookAt(new Vector3(playerTransform.position.x, playerTransform.position.y + angelOffset, playerTransform.position.z));
-        //Sets the newPos to the current offset
-        newPos = offset;
+        float angle = 0.0f;
+        Vector3 dir = Vector3.forward;
+        switch(direction)
+        {
+            case Direction.Forward:
+                angle = Vector3.Angle(Vector3.back, -playerTranfrom.forward);
+                dir = -ownTranform.forward;
+                break;
+            case Direction.Back:
+                angle = Vector3.Angle(Vector3.forward, playerTranfrom.forward);
+                dir = ownTranform.forward;
+                break;
+            case Direction.Right:
+                angle = Vector3.Angle(Vector3.left, -playerTranfrom.right);
+                dir = -ownTranform.right;
+                break;
+            case Direction.Left:
+                angle = Vector3.Angle(Vector3.right, playerTranfrom.right);
+                dir = ownTranform.right;
+                break;
+        }
+        ownTranform.position = playerTranfrom.position;
+        ownTranform.Rotate(Vector3.up, angle);
+        pivotTranform.localPosition = new Vector3(0.0f, offsetY, 0.0f);
+        cameraTranform.localPosition = dir * offsetXZ;
+        maxOffsetPos = minOffsetPos = cameraTranform.position;
+        pivotTranform.Rotate(ownTranform.right, offsetA);
+        cameraTranform.LookAt(pivotTranform);
     }
 
     void Update()
-    {   
-        //Sets the offset  
-        if (!TolComp(newPos, offset, 0.1f))
+    {
+        //Input
+        float hori = -Input.GetAxis("Mouse X");
+        float vert = Input.GetAxis("Mouse Y");
+
+        //maxOffsetPos = Quaternion.AngleAxis(maxOffsetAngle, pivotTranform.right) * maxOffsetPos;
+        //minOffsetPos = Quaternion.AngleAxis(minOffsetAngle, pivotTranform.right) * minOffsetPos;
+
+        //Offset
+        ownTranform.position = playerTranfrom.position;
+
+        //Rotations
+        //if (Vector3.Angle(cameraTranform.position, maxOffsetPos) > 0.05f && Vector3.Angle(cameraTranform.position, minOffsetPos) > 0.05f)
+        //{
+            pivotTranform.Rotate(ownTranform.right, vert * rotationSpeed * Time.deltaTime);
+        //}
+        ownTranform.Rotate(Vector3.up, hori * rotationSpeed * Time.deltaTime);                                                      
+        cameraTranform.LookAt(pivotTranform);
+    }
+
+    /*  Draws stuff in the editor.
+     *  Yellow = Direction
+     *  Megenta = OffsetY
+     *  Cyan = OffsetA + OffsetXZ
+     *  Blue = max/min Offset Angle + OffsetXZ
+     */
+    void OnDrawGizmosSelected()
+    {
+        //Direction
+        Gizmos.color = Color.yellow;
+        Vector3 camDir = Vector3.zero;
+        Vector3 rightDir = Vector3.zero;
+        switch(direction)
         {
-            Vector3 newDif = Vector3.Lerp(offset, newPos, 5 * Time.deltaTime);
-            offset = newDif;
-        }           
-        else 
-        {
-            offset = newPos;
+            case Direction.Forward:
+                camDir = Vector3.forward;
+                rightDir = Vector3.right;
+                break;
+            case Direction.Back:
+                camDir = Vector3.back;
+                rightDir = Vector3.left;
+                break;
+            case Direction.Right:
+                camDir = Vector3.right;
+                rightDir = Vector3.back;
+                break;
+            case Direction.Left:
+                camDir = Vector3.left;
+                rightDir = Vector3.forward;
+                break;
         }                
-        
-        //Sets the position         
-        myTransform.position = playerTransform.position + offset;
-        //Sets the rotation
-        myTransform.LookAt(new Vector3(playerTransform.position.x, playerTransform.position.y + angelOffset, playerTransform.position.z));
-    }
+        Gizmos.DrawLine(transform.position, transform.position + camDir * offsetXZ);
 
-    //Set the newPos function
-    public void SetCameraDir(Vector3 newDirection)
-    {
-        newPos = newDirection;        
-    }
+        //OffsetY   
+        Vector3 offY = transform.position + Vector3.up * offsetY;     
+        Gizmos.color = Color.magenta;
+        Gizmos.DrawLine(transform.position, transform.position + offY);
 
-    //Compare using a Tolerence between two vectors
-    bool TolComp(Vector3 l, Vector3 r, float TOLERANCE = 0.00001f)
-    {
-        if (Mathf.Abs(l.x - r.x) > TOLERANCE ||
-            Mathf.Abs(l.y - r.y) > TOLERANCE ||
-            Mathf.Abs(l.z - r.z) > TOLERANCE)
-        {
-            return false;
-        }
-        else
-        {
-            return true;
-        }
-    }
+        //Base for Angles                    
+        Vector3 based = -camDir * offsetXZ;
+        Gizmos.color = Color.gray;
+        Gizmos.DrawWireSphere(offY, offsetXZ);
+
+        //OffsetA                                     
+        Vector3 offA = Quaternion.AngleAxis(offsetA, rightDir) * based;
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawLine(offY, offA + Vector3.up * offsetY);
+
+        //Max/Min Offset
+        Vector3 max = Quaternion.AngleAxis(maxOffsetAngle, rightDir) * based;
+        Vector3 min = Quaternion.AngleAxis(-minOffsetAngle, rightDir) * based;
+        Gizmos.color = Color.blue;
+        Gizmos.DrawLine(offY, max + Vector3.up * offsetY);
+        Gizmos.DrawLine(offY, min + Vector3.up * offsetY);
+    } 
 }
