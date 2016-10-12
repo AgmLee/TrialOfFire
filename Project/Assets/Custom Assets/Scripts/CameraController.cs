@@ -21,15 +21,19 @@ public class CameraController : MonoBehaviour {
     public float offsetA = 45.0f; //Angle the camera watches
     //Speed
     public float rotationSpeed = 2.0f;
-    //Position References
-    private Vector3 maxOffsetPos;
-    private Vector3 minOffsetPos;
-
+    //Rotations
+    private float Yrot = 0.0f;
+    private float Xrot = 0.0f;
+    //Settings
     public bool invertY = false;
     public bool invertX = false;
-                
-    void Start() 
+
+    void Start()
     {
+        //Set Cursor State
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
         //Set References
         ownTranform = transform;
         
@@ -76,6 +80,7 @@ public class CameraController : MonoBehaviour {
             GameManager.inst.ErrorSystem(message, this, true, 0);
         }
 
+        //Set Variables
         float angle = 0.0f;
         Vector3 dir = Vector3.forward;
         switch(direction)
@@ -101,29 +106,53 @@ public class CameraController : MonoBehaviour {
         ownTranform.Rotate(Vector3.up, angle);
         pivotTranform.localPosition = new Vector3(0.0f, offsetY, 0.0f);
         cameraTranform.localPosition = dir * offsetXZ;
-        maxOffsetPos = minOffsetPos = cameraTranform.position;
         pivotTranform.Rotate(ownTranform.right, offsetA);
+        Yrot = ownTranform.localEulerAngles.y;
+        Xrot = pivotTranform.localEulerAngles.x;
         cameraTranform.LookAt(pivotTranform);
     }
 
     void Update()
     {
         //Input
-        float hori = -Input.GetAxis("Mouse X");
-        float vert = Input.GetAxis("Mouse Y");
+        float hori = 0.0f;
+        float vert = 0.0f;
+        if (invertX)
+        {
+            hori = Input.GetAxis("Mouse X");
+        }
+        else
+        {
+            hori = -Input.GetAxis("Mouse X");
+        }
+        if (invertY)
+        {
+            vert = -Input.GetAxis("Mouse Y");
+        }
+        else
+        {
+            vert = Input.GetAxis("Mouse Y");
+        }
 
-        //maxOffsetPos = Quaternion.AngleAxis(maxOffsetAngle, pivotTranform.right) * maxOffsetPos;
-        //minOffsetPos = Quaternion.AngleAxis(minOffsetAngle, pivotTranform.right) * minOffsetPos;
-
-        //Offset
+        //Offsets
+        //Position
         ownTranform.position = playerTranfrom.position;
 
         //Rotations
-        //if (Vector3.Angle(cameraTranform.position, maxOffsetPos) > 0.05f && Vector3.Angle(cameraTranform.position, minOffsetPos) > 0.05f)
-        //{
-            pivotTranform.Rotate(ownTranform.right, vert * rotationSpeed * Time.deltaTime);
-        //}
-        ownTranform.Rotate(Vector3.up, hori * rotationSpeed * Time.deltaTime);                                                      
+        //Verticle
+        if (Xrot < maxOffsetAngle && vert > 0)
+        {
+            Xrot += vert * rotationSpeed;
+            pivotTranform.localEulerAngles = new Vector3(Xrot, 0, 0);
+        }
+        else if(Xrot > -minOffsetAngle && vert < 0)
+        {
+            Xrot += vert * rotationSpeed;
+            pivotTranform.localEulerAngles = new Vector3(Xrot, 0, 0);
+        }
+        //Horizontal
+        Yrot += hori * rotationSpeed;
+        ownTranform.localEulerAngles = new Vector3(0, Yrot, 0);                                                  
         cameraTranform.LookAt(pivotTranform);
     }
 
