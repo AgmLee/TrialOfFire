@@ -60,7 +60,7 @@ public class GameManager : MonoBehaviour {
     public void ErrorSystem(string message, object obj = null, bool STOP = false, int SEVERITY = 0) 
     {
         //Create Debug Message
-        string debugMessage = message + ": ";
+        string debugMessage = message;
         if (obj != null)
         {
             debugMessage += ": " + obj;
@@ -72,20 +72,20 @@ public class GameManager : MonoBehaviour {
         //Stop based on severity (e.g. Level) if wanted
         if (STOP)
         {
-            //RETURN TO CURRENT HUB
-            if (SEVERITY == 0)
+            switch(SEVERITY)
             {
-                SceneManager.LoadScene(currentHub);
-            }
-            //RETURN TO MENU
-            else if (SEVERITY == 1)
-            {
-                SceneManager.LoadScene(0);
-            }
-            //QUIT
-            else if (SEVERITY >= 2)
-            {
-                Application.Quit();
+                //RETURN TO CURRENT HUB
+                case 0:
+                    SceneManager.LoadScene(currentHub);
+                    break;
+                //RETURN TO MENU
+                case 1:
+                    SceneManager.LoadScene(0);
+                    break;
+                //QUIT
+                default:
+                    Application.Quit();
+                    break;
             }
         }
     }
