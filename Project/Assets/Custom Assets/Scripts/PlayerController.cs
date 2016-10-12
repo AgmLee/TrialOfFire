@@ -9,6 +9,8 @@ public class PlayerController : MonoBehaviour
 	public float jumpHeight = 6;
 	public float gravity = 20;
 	CharacterController controller = null;
+	public int maxSpriteCount;
+	int spriteCount;
 	Vector3 targetVel = Vector3.zero;
 
 	void Start ()
