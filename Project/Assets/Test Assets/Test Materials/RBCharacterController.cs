@@ -24,6 +24,18 @@ public class RBCharacterController : MonoBehaviour {
 
 	void Update ()
 	{
+		if (Input.GetAxis ("Horizontal") != 0 || Input.GetAxis ("Vertical") != 0) 
+		{
+			Vector3 dir = (cameraTransform.forward * Input.GetAxis ("Vertical")) + (cameraTransform.right * Input.GetAxis ("Horizontal"));
+			transform.TransformDirection (dir);
+			transform.rotation = Quaternion.LookRotation (dir);
+			rb.velocity = dir * movementSpeed;
+		}
+	}
+
+	/*
+	void Update ()
+	{
 		horizontalInput = Input.GetAxis ("Horizontal") != 0 ? true : false;
 		verticalInput = Input.GetAxis ("Vertical") != 0 ? true : false;
 
@@ -48,4 +60,5 @@ public class RBCharacterController : MonoBehaviour {
 			rb.velocity = Vector3.zero;
 		}
 	}
+	*/
 }
