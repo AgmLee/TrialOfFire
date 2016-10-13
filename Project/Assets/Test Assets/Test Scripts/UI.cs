@@ -2,14 +2,14 @@
 using UnityEngine.UI;
 
 public class UI : MonoBehaviour {
-    public PlayerController controller;
+	public RBCharacterController controller;
     public Text text;
 
     void Start()
     {
         if (controller == null)
         {
-            controller = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+			controller = GameObject.FindGameObjectWithTag("Player").GetComponent<RBCharacterController>();
         }
     }
 

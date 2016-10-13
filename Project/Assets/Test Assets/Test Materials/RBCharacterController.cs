@@ -14,6 +14,9 @@ public class RBCharacterController : MonoBehaviour {
 
 	Vector3 forward;
 
+	public int spriteCount;
+	public int maxSpriteCount;
+
 	void Start ()
 	{
 		rb = GetComponent<Rigidbody> ();
@@ -35,10 +38,14 @@ public class RBCharacterController : MonoBehaviour {
 		if (horizontalInput) 
 		{
 			Vector3 rot = transform.localEulerAngles;
-			rot.y = forward.y + (90 * Input.GetAxis ("Horizontal"));
+			rot.y = Input.GetAxis ("Horizontal") > 0 ? 90 : -90;// forward.y + (90 * Input.GetAxis ("Horizontal"));
 			transform.localEulerAngles = rot;
 		}
 
-		rb.velocity = transform.forward * (movementSpeed * Input.GetAxis ("Vertical"));
+		if (horizontalInput || verticalInput) {
+			rb.velocity = transform.forward * movementSpeed;
+		} else {
+			rb.velocity = Vector3.zero;
+		}
 	}
 }

@@ -10,7 +10,7 @@ public class Activation : MonoBehaviour {
     public bool useAmountOfObjects = false;
     //References 
     private bool allowInput = false;
-    private PlayerController playercontroller = null;
+	private RBCharacterController playercontroller = null;
 
     void Start()
     {
@@ -53,7 +53,7 @@ public class Activation : MonoBehaviour {
             allowInput = true;
             if (playercontroller == null)
             {
-                playercontroller = col.gameObject.GetComponent<PlayerController>();
+				playercontroller = col.gameObject.GetComponent<RBCharacterController>();
             }
         }
     }

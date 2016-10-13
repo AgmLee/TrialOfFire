@@ -6,7 +6,7 @@ public class SpriteCollection : MonoBehaviour {
     {
         if (col.gameObject.tag == "Player")
         {
-            PlayerController pc = col.gameObject.GetComponent<PlayerController>();
+			RBCharacterController pc = col.gameObject.GetComponent<RBCharacterController>();
             pc.spriteCount = pc.maxSpriteCount;
         }
     }
