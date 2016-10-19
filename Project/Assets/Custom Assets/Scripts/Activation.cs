@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(BoxCollider))]
 public class Activation : MonoBehaviour {
@@ -9,6 +10,7 @@ public class Activation : MonoBehaviour {
     //Sets the amountNeeded to the number of objects in objects
     public bool useAmountOfObjects = false;
     //References 
+    public Image checkMark;
     private bool allowInput = false;
 	private RBCharacterController playercontroller = null;
 
@@ -50,6 +52,7 @@ public class Activation : MonoBehaviour {
     {
         if (col.gameObject.tag == "Player")
         {
+            checkMark.enabled = true;
             allowInput = true;
             if (playercontroller == null)
             {
@@ -62,6 +65,7 @@ public class Activation : MonoBehaviour {
     {
         if (col.gameObject.tag == "Player")
         {
+            checkMark.enabled = false;
             allowInput = false;
         }
     }
