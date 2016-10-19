@@ -28,6 +28,7 @@ public class RBCharacterController : MonoBehaviour {
 	void Start ()
 	{
 		rb = GetComponent<Rigidbody> ();
+		rb.freezeRotation = true;
 	}
 
 	void Update ()
