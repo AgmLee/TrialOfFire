@@ -52,7 +52,8 @@ public class RBCharacterController : MonoBehaviour {
 		{
 			dir = ((cameraTransform.forward * (pVerticalInput ? 1 : (nVerticalInput ? -1 : 0))) + (cameraTransform.right * (pHorizontalInput ? 1 : (nHorizontalInput ? -1 : 0))));
 			transform.TransformDirection (dir);
-			transform.rotation = XYDir.magnitude == 0 ? transform.rotation : Quaternion.LookRotation (dir);
+			if (dir.magnitude > 0)
+				transform.rotation = Quaternion.LookRotation (dir);
 			dir.Normalize ();
 			if (Input.GetAxis ("Jump") > 0) 
 			{
