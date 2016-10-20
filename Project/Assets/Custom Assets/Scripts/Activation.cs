@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 
 [RequireComponent(typeof(BoxCollider))]
 public class Activation : MonoBehaviour {
@@ -10,9 +9,8 @@ public class Activation : MonoBehaviour {
     //Sets the amountNeeded to the number of objects in objects
     public bool useAmountOfObjects = false;
     //References 
-    public Image checkMark;
+	public InventoryManager inventory;
     private bool allowInput = false;
-	private RBCharacterController playercontroller = null;
 
     void Start()
     {
@@ -22,6 +20,7 @@ public class Activation : MonoBehaviour {
             GameManager.inst.ErrorSystem("Collider \'col\' missing", this, true, 0);
         }
         col.isTrigger = true;
+        inventory = GameObject.FindGameObjectWithTag("Player").GetComponent<InventoryManager>();
         if (objects == null)
         {
             GameManager.inst.ErrorSystem("GameObject[] \'objects\' empty", this, true, 0);
@@ -36,9 +35,9 @@ public class Activation : MonoBehaviour {
     {
         if (allowInput)
         {
-            if (Input.GetButtonDown("Primary") && playercontroller.spriteCount >= amountNeeded)
+            if (Input.GetButtonDown("Primary") && inventory.spriteCount >= amountNeeded)
             {
-                playercontroller.spriteCount -= amountNeeded;
+                inventory.spriteCount -= amountNeeded;
                 foreach (GameObject obj in objects)
                 {
                     obj.SendMessage("Activation");
@@ -52,12 +51,7 @@ public class Activation : MonoBehaviour {
     {
         if (col.gameObject.tag == "Player")
         {
-            checkMark.enabled = true;
             allowInput = true;
-            if (playercontroller == null)
-            {
-				playercontroller = col.gameObject.GetComponent<RBCharacterController>();
-            }
         }
     }
 
@@ -65,7 +59,6 @@ public class Activation : MonoBehaviour {
     {
         if (col.gameObject.tag == "Player")
         {
-            checkMark.enabled = false;
             allowInput = false;
         }
     }

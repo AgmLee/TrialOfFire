@@ -15,7 +15,6 @@ public class UI : MonoBehaviour {
 
     void Update()
     {
-        text.text = "Sprites: " + controller.spriteCount;
     }
 }
 

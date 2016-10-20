@@ -6,8 +6,8 @@ public class TorchActivation : MonoBehaviour
     //Refernces
     public Transform emitterParent;
     public GameObject fireEmitter;
+    public InventoryManager inventory;
     private GameObject fire = null;
-    private RBCharacterController player = null;
     //Activations
     public GameObject[] objects;
     //Active State
@@ -17,6 +17,7 @@ public class TorchActivation : MonoBehaviour
     //Settings
     public bool useAmountInObjects = false;
     public bool invert = false;
+    public bool useOnce = false;
         
     void Start()
     {
@@ -24,6 +25,7 @@ public class TorchActivation : MonoBehaviour
         {
             spritesNeeded = objects.Length;
         }
+        inventory = GameObject.FindGameObjectWithTag("Player").GetComponent<InventoryManager>();
         if (invert)
         {
             isActive = true;
@@ -35,11 +37,24 @@ public class TorchActivation : MonoBehaviour
     {
         if (acceptInput)
         {
-            if (Input.GetButtonDown("Primary") && player.spriteCount >= spritesNeeded)
+            if (Input.GetButtonDown("Primary") && inventory.spriteCount >= spritesNeeded)
             {
                 if (!isActive)
                 {
+                    inventory.spriteCount -= spritesNeeded;
                     isActive = true;
+                    Activate();
+                }
+            }
+            else if (Input.GetButtonDown("Secondary") && !useOnce)
+            {
+                if (isActive)
+                {
+                    isActive = false;
+                    if (inventory.spriteCount != inventory.maxSpriteCount)
+                    {
+                        inventory.spriteCount += spritesNeeded;
+                    }
                     Activate();
                 }
             }
@@ -68,11 +83,6 @@ public class TorchActivation : MonoBehaviour
         if (col.gameObject.tag == "Player")
         {
             acceptInput = true;
-
-            if (player == null)
-            {
-                player = col.gameObject.GetComponent<RBCharacterController>();
-            }
         }
     }
 
