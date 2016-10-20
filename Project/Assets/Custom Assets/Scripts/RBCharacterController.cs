@@ -11,9 +11,6 @@ public class RBCharacterController : MonoBehaviour {
 
 	public bool grounded;
 
-	public int spriteCount;
-	public int maxSpriteCount;
-
 	private Rigidbody rb = null;
 	private KeyCode positiveVerticalInput = KeyCode.W;
 	private KeyCode negativeVerticalInput = KeyCode.S;
@@ -63,9 +60,15 @@ public class RBCharacterController : MonoBehaviour {
 		if (dir.magnitude > 0)
 			transform.rotation = Quaternion.LookRotation (dir);
 		dir.Normalize ();
-		rb.AddForce (dir, ForceMode.Impulse);
+		if (!TouchingSides())
+			rb.AddForce (dir, ForceMode.Impulse);
 		rb.AddForce (-Vector3.up * gravity, ForceMode.Impulse);
 		grounded = false;
+	}
+
+	bool TouchingSides ()
+	{
+		//return (Physics.Raycast(transform.position, dir, transform.GetComponent<Collider>().bounds.extents.z + 0.1f));
 	}
 
 	bool IsGrounded ()
