@@ -68,7 +68,7 @@ public class RBCharacterController : MonoBehaviour {
 
 	bool TouchingSides ()
 	{
-		//return (Physics.Raycast(transform.position, dir, transform.GetComponent<Collider>().bounds.extents.z + 0.1f));
+		return (Physics.Raycast(transform.position, dir, transform.GetComponent<Collider>().bounds.extents.z + 0.1f));
 	}
 
 	bool IsGrounded ()
