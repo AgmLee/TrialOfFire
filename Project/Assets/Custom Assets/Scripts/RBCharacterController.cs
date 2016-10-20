@@ -6,8 +6,10 @@ public class RBCharacterController : MonoBehaviour {
 
 	public Transform cameraTransform = null;
 	public float movementSpeed = 10;
-	public float rotateSpeed = 2;
-	public float jumpForce = 2;
+	public float jumpForce = 30;
+	public float gravity = 1;
+
+	public bool grounded;
 
 	public int spriteCount;
 	public int maxSpriteCount;
@@ -31,7 +33,7 @@ public class RBCharacterController : MonoBehaviour {
 		rb.freezeRotation = true;
 	}
 
-	void Update ()
+	void FixedUpdate ()
 	{
 		pVerticalInput = Input.GetKey (positiveVerticalInput);
 		nVerticalInput = Input.GetKey (negativeVerticalInput);
@@ -48,25 +50,26 @@ public class RBCharacterController : MonoBehaviour {
 			rb.velocity = XYDir;
 		}
 
-		if (IsGrounded ()) 
+		if (IsGrounded()) 
 		{
-			dir = ((cameraTransform.forward * (pVerticalInput ? 1 : (nVerticalInput ? -1 : 0))) + (cameraTransform.right * (pHorizontalInput ? 1 : (nHorizontalInput ? -1 : 0))));
-			transform.TransformDirection (dir);
-			if (dir.magnitude > 0)
-				transform.rotation = Quaternion.LookRotation (dir);
-			dir.Normalize ();
 			if (Input.GetAxis ("Jump") > 0) 
 			{
 				rb.AddForce (Vector3.up * jumpForce, ForceMode.Impulse);
 			}
-			rb.AddForce (dir, ForceMode.VelocityChange);
-		}
+		} 
 
+		dir = ((cameraTransform.forward * (pVerticalInput ? 1 : (nVerticalInput ? -1 : 0))) + (cameraTransform.right * (pHorizontalInput ? 1 : (nHorizontalInput ? -1 : 0))));
+		transform.TransformDirection (dir);
+		if (dir.magnitude > 0)
+			transform.rotation = Quaternion.LookRotation (dir);
+		dir.Normalize ();
+		rb.AddForce (dir, ForceMode.Impulse);
+		rb.AddForce (-Vector3.up * gravity, ForceMode.Impulse);
+		grounded = false;
 	}
 
 	bool IsGrounded ()
 	{
-		return (Physics.Raycast (transform.position, -Vector3.up, 1.5f)); 
+		return (Physics.Raycast (transform.position, -Vector3.up, transform.GetComponent<Collider>().bounds.extents.y + 0.1f)); 
 	}
-
 }
