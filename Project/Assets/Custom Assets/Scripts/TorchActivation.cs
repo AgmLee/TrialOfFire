@@ -1,7 +1,8 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 [RequireComponent(typeof(BoxCollider))]
-public class TorchActivation : MonoBehaviour
+public class TorchActivation : MonoBehaviour, IAction
 {
     //Refernces
     public Transform emitterParent;
@@ -18,7 +19,11 @@ public class TorchActivation : MonoBehaviour
     public bool useAmountInObjects = false;
     public bool invert = false;
     public bool useOnce = false;
-        
+    public bool IsActivated
+    {
+        get { return isActive; }
+    }
+
     void Start()
     {
         if (useAmountInObjects)
@@ -61,6 +66,12 @@ public class TorchActivation : MonoBehaviour
         }
     }
 
+    public void Activation()
+    {
+        isActive = !isActive;
+        Activate();
+    }
+
     //Activates all objects in objects
     void Activate()
     {
@@ -78,11 +89,12 @@ public class TorchActivation : MonoBehaviour
         }
     }
 
-    void OnTriggerEnter(Collider col)
+    void OnTriggerStay(Collider col)
     {
         if (col.gameObject.tag == "Player")
         {
-            acceptInput = true;
+            col.gameObject.GetComponent<InventoryManager>().InputSet(!isActive, spritesNeeded, new GameObject[1] { gameObject });
+            col.gameObject.GetComponent<InventoryManager>().SetBack(isActive, spritesNeeded, gameObject);
         }
     }
 
@@ -90,7 +102,8 @@ public class TorchActivation : MonoBehaviour
     {
         if (col.gameObject.tag == "Player")
         {
-            acceptInput = false;
+            col.gameObject.GetComponent<InventoryManager>().InputSet(false, 0);
+            col.gameObject.GetComponent<InventoryManager>().SetBack(false, 0);
         }
     }
 }

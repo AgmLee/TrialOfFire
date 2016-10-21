@@ -8,7 +8,8 @@ public class InventoryManager : MonoBehaviour {
     public Transform player;
     public Transform[] spritePoints;
     //References
-    public GameObject sprite;
+    public GameObject standingSprite;
+    public GameObject movingSprite;
     //Settings
     public float rotationSpeed = 5.0f;
     public float xAngle = 15.0f;
@@ -18,7 +19,13 @@ public class InventoryManager : MonoBehaviour {
     //Private Variables
     private GameObject[] sprites;
     private int index = 0;
-    
+    private bool input = false;
+    private bool takeBack = false;
+    private bool remove = false;
+    private GameObject[] dirs;
+    private int amntBck = 0;
+    private GameObject takeBck;
+
     void Start()
     {
         if (flip)
@@ -32,8 +39,37 @@ public class InventoryManager : MonoBehaviour {
 
     void Update()
     {
+        //Rotate the rotation transform
         rotationTransform.position = transform.position + Vector3.up * 0.5f;
         rotationTransform.Rotate(Vector3.up, rotationSpeed);
+        
+        //Input
+        if (Input.GetButtonDown("Primary") && input && spriteCount >= amntBck)
+        {
+            foreach(GameObject d in dirs)
+            {
+                GameObject o = Instantiate(movingSprite, transform.position, Quaternion.LookRotation(d.transform.position - transform.position)) as GameObject;
+                o.GetComponent<SpriteMovement>().refe = d;
+            }
+            spriteCount -= amntBck;
+            if (takeBck != null && remove)
+            {
+                takeBck.GetComponent<Activation>().isActive = true;
+                InputSet(false, 0);
+                SetBack(false, 0);
+            }
+        }
+        if (Input.GetButtonDown("Secondary") && takeBack)
+        {
+            for(int i = 0; i < amntBck; i++)
+            {
+                GameObject o = Instantiate(movingSprite, takeBck.transform.position, Quaternion.LookRotation(takeBck.transform.position - transform.position)) as GameObject;
+                o.GetComponent<SpriteMovement>().refe = gameObject;
+            }
+            takeBck.SendMessage("Activation");
+        }
+        
+        //Spawn/Delete sprties
         if (spriteCount > maxSpriteCount)
         {
             spriteCount = maxSpriteCount;
@@ -44,7 +80,7 @@ public class InventoryManager : MonoBehaviour {
             {
                 while (index != spriteCount && index < 6)
                 {
-                    sprites[index] = Instantiate(sprite, spritePoints[index], false) as GameObject;
+                    sprites[index] = Instantiate(standingSprite, spritePoints[index], false) as GameObject;
                     index++;
                 }
             }
@@ -64,5 +100,25 @@ public class InventoryManager : MonoBehaviour {
             t.localPosition = new Vector3(t.localPosition.x, bob.Evaluate(Time.time), t.localPosition.z);
             pass++;
         }
+    }
+
+    public void Activation()
+    {
+        spriteCount++;
+    }
+
+    public void SetBack(bool set, int amountBack, GameObject refe = null, bool remve = false)
+    {
+        remove = remve;
+        takeBack = set;
+        amntBck = amountBack;
+        takeBck = refe;
+    }
+
+    public void InputSet(bool set, int amountLost, GameObject[] destinations = null)
+    {
+        input = set;
+        dirs = destinations;
+        amntBck = amountLost;
     }
 }

@@ -10,21 +10,11 @@ public class Activation : MonoBehaviour {
     public bool useAmountOfObjects = false;
     //References 
 	public InventoryManager inventory;
-    private bool allowInput = false;
+    public bool isActive = false;
 
     void Start()
     {
-        BoxCollider col = GetComponent<BoxCollider>();
-        if (col == null)
-        {
-            GameManager.inst.ErrorSystem("Collider \'col\' missing", this, true, 0);
-        }
-        col.isTrigger = true;
         inventory = GameObject.FindGameObjectWithTag("Player").GetComponent<InventoryManager>();
-        if (objects == null)
-        {
-            GameManager.inst.ErrorSystem("GameObject[] \'objects\' empty", this, true, 0);
-        }
         if (useAmountOfObjects)
         {
             amountNeeded = objects.Length;
@@ -33,25 +23,18 @@ public class Activation : MonoBehaviour {
 
     void Update()
     {
-        if (allowInput)
+        if (isActive)
         {
-            if (Input.GetButtonDown("Primary") && inventory.spriteCount >= amountNeeded)
-            {
-                inventory.spriteCount -= amountNeeded;
-                foreach (GameObject obj in objects)
-                {
-                    obj.SendMessage("Activation");
-                }
-                gameObject.SetActive(false);
-            }
+            gameObject.SetActive(false);
         }
     }
 
-    void OnTriggerEnter(Collider col)
+    void OnTriggerStay(Collider col)
     {
         if (col.gameObject.tag == "Player")
         {
-            allowInput = true;
+            inventory.InputSet(!isActive, amountNeeded, objects);
+            inventory.SetBack(false, amountNeeded, gameObject, true);
         }
     }
 
@@ -59,7 +42,8 @@ public class Activation : MonoBehaviour {
     {
         if (col.gameObject.tag == "Player")
         {
-            allowInput = false;
+            inventory.InputSet(false, 0);
+            inventory.SetBack(false, 0);
         }
     }
 }
