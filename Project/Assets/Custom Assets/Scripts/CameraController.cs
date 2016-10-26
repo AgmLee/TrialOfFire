@@ -119,11 +119,11 @@ public class CameraController : MonoBehaviour {
         float vert = 0.0f;
         if (invertX)
         {
-            hori = Input.GetAxis("Mouse X");
+            hori = -Input.GetAxis("Mouse X");
         }
         else
         {
-            hori = -Input.GetAxis("Mouse X");
+            hori = Input.GetAxis("Mouse X");
         }
         if (invertY)
         {

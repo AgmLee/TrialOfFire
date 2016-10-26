@@ -1,21 +1,28 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
+using UnityEngine.UI;
+
 public class InventoryManager : MonoBehaviour {
     //Sprites
     public int maxSpriteCount = 3;
     public int spriteCount = 0;
     //Transforms
-    public Transform rotationTransform;
-    public Transform player;
+    public Transform rotationTransform;    
     public Transform[] spritePoints;
     //References
     public GameObject standingSprite;
     public GameObject movingSprite;
+    public Text UIText;
+    public Image UISprite;
+    public Image UIBack;
+    public RectTransform UITransform;
     //Settings
     public float rotationSpeed = 5.0f;
     public float xAngle = 15.0f;
     public float zAngle = 15.0f;
     public bool flip = false;
-    public AnimationCurve bob;
+    public float fadeSpeed = 5.0f;
+    public float scaleSpeed = 5.0f;
     //Private Variables
     private GameObject[] sprites;
     private int index = 0;
@@ -25,6 +32,11 @@ public class InventoryManager : MonoBehaviour {
     private GameObject[] dirs;
     private int amntBck = 0;
     private GameObject takeBck;
+    private float startSize = 0;
+    private float startAlpha = 0;   
+    private bool showUI = false;
+    public bool activateUI = false;
+    private float onTime = 0;
 
     void Start()
     {
@@ -35,14 +47,89 @@ public class InventoryManager : MonoBehaviour {
         rotationTransform.localEulerAngles = new Vector3(xAngle, 0.0f, zAngle);
         index = spriteCount;
         sprites = new GameObject[spritePoints.Length];
+        if (UITransform)
+        {
+            startSize = UITransform.localScale.x;
+            UITransform.localScale = new Vector3(0, UITransform.localScale.y, UITransform.localScale.z);
+        }
+        if (UISprite && UIText && UIBack)
+        {
+            startAlpha = UISprite.color.a;
+            UISprite.color = new Color(UISprite.color.r, UISprite.color.g, UISprite.color.b, 0);
+            UIText.color = new Color(UIText.color.r, UIText.color.g, UIText.color.b, 0);
+            UIBack.color = new Color(UIBack.color.r, UIBack.color.g, UIBack.color.b, 0);
+        }
     }
 
     void Update()
-    {
+    {   
         //Rotate the rotation transform
         rotationTransform.position = transform.position + Vector3.up * 0.5f;
         rotationTransform.Rotate(Vector3.up, rotationSpeed);
-        
+
+        if (input || takeBack || activateUI)
+        {
+            activateUI = false;
+            showUI = true;
+            onTime = 1;
+        }
+
+        if (onTime > 0)
+        {
+            onTime -= Time.deltaTime;
+        }
+        if (onTime <= 0)
+        {
+            showUI = false;
+        }
+
+        //Show UI
+        if (showUI && (UISprite && UIText && UIBack))
+        {               
+            if (UISprite.color.a < startAlpha)
+            {
+                UISprite.color = new Color(UISprite.color.r, UISprite.color.g, UISprite.color.b, UISprite.color.a + fadeSpeed * Time.deltaTime);
+                UIText.color = new Color(UIText.color.r, UIText.color.g, UIText.color.b, UIText.color.a + fadeSpeed * Time.deltaTime);
+                UIBack.color = new Color(UIBack.color.r, UIBack.color.g, UIBack.color.b, UIBack.color.a + fadeSpeed * Time.deltaTime);
+            } 
+        }
+        else if (!showUI && (UISprite && UIText && UIBack))
+        {
+            if (UISprite.color.a > 0)
+            {
+                UISprite.color = new Color(UISprite.color.r, UISprite.color.g, UISprite.color.b, UISprite.color.a - fadeSpeed * Time.deltaTime);
+                UIText.color = new Color(UIText.color.r, UIText.color.g, UIText.color.b, UIText.color.a - fadeSpeed * Time.deltaTime);
+                UIBack.color = new Color(UIBack.color.r, UIBack.color.g, UIBack.color.b, UIBack.color.a - fadeSpeed * Time.deltaTime);
+            }
+            if (UISprite.color.a <= 0)
+            {
+                showUI = false;
+            }
+        }
+
+        if (showUI && UITransform)
+        {              
+            if (UITransform.localScale.x < startSize)
+            {
+                UITransform.localScale = new Vector3(UITransform.localScale.x + scaleSpeed * Time.deltaTime, UITransform.localScale.y, UITransform.localScale.z);
+            }
+            if (UITransform.localScale.x > startSize)
+            {
+                UITransform.localScale = new Vector3(startSize, UITransform.localScale.y, UITransform.localScale.z);
+            }
+        }
+        else if (!showUI && UITransform)
+        {
+            if (UITransform.localScale.x > 0)
+            {
+                UITransform.localScale = new Vector3(UITransform.localScale.x - scaleSpeed * Time.deltaTime, UITransform.localScale.y, UITransform.localScale.z);
+            }
+            if (UITransform.localScale.x <= 0)
+            {
+                UITransform.localScale = new Vector3(0, UITransform.localScale.y, UITransform.localScale.z);
+                showUI = false;
+            } 
+        }
         //Input
         if (Input.GetButtonDown("Primary") && input && spriteCount >= amntBck)
         {
@@ -97,20 +184,28 @@ public class InventoryManager : MonoBehaviour {
         foreach(Transform t in spritePoints)
         {
             t.rotation = Quaternion.LookRotation(-transform.forward);
-            t.localPosition = new Vector3(t.localPosition.x, bob.Evaluate(Time.time), t.localPosition.z);
             pass++;
         }
-    }
+        UIText.text = "x" + spriteCount;
+    }               
 
     public void Activation()
     {
         spriteCount++;
+        activateUI = true;                     
+    }           
+
+    public void IncreaseMax()
+    {
+        maxSpriteCount++;
+        spriteCount++;
+        activateUI = true;
     }
 
     public void SetBack(bool set, int amountBack, GameObject refe = null, bool remve = false)
     {
         remove = remve;
-        takeBack = set;
+        takeBack = set; 
         amntBck = amountBack;
         takeBck = refe;
     }

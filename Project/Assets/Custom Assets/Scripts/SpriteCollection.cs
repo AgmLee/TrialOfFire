@@ -13,7 +13,16 @@ public class SpriteCollection : MonoBehaviour {
     {
         if (col.gameObject.tag == "Player")
         {
-            inventory.spriteCount = inventory.maxSpriteCount;
+            AudioSource aus = GetComponent<AudioSource>();
+            if (aus && inventory.spriteCount != inventory.maxSpriteCount)
+            {
+                aus.Play();
+            }
+            if (inventory.spriteCount < inventory.maxSpriteCount)
+            {
+                inventory.spriteCount = inventory.maxSpriteCount;
+                inventory.activateUI = true;
+            }
         }
     }
 }
