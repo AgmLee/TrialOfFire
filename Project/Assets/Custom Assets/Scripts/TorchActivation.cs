@@ -9,6 +9,7 @@ public class TorchActivation : MonoBehaviour, IAction
     public GameObject fireEmitter;
     public InventoryManager inventory;
     private GameObject fire = null;
+    public AudioSource aus;
     //Activations
     public GameObject[] objects;
     //Active State
@@ -36,6 +37,7 @@ public class TorchActivation : MonoBehaviour, IAction
             isActive = true;
             Activate();
         }
+        aus = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -75,6 +77,10 @@ public class TorchActivation : MonoBehaviour, IAction
     //Activates all objects in objects
     void Activate()
     {
+        if (aus)
+        {
+            aus.Play();
+        }
         if (fire == null)
         {
             fire = Instantiate(fireEmitter, emitterParent, false) as GameObject;

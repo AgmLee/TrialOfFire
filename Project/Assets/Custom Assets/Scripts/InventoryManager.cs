@@ -24,6 +24,7 @@ public class InventoryManager : MonoBehaviour {
     public float fadeSpeed = 5.0f;
     public float scaleSpeed = 5.0f;
     //Private Variables
+    private float[] transperancyAmount;
     private GameObject[] sprites;
     private int index = 0;
     private bool input = false;
@@ -33,13 +34,14 @@ public class InventoryManager : MonoBehaviour {
     private int amntBck = 0;
     private GameObject takeBck;
     private float startSize = 0;
-    private float startAlpha = 0;   
     private bool showUI = false;
     public bool activateUI = false;
     private float onTime = 0;
+    private AudioSource aus;
 
     void Start()
     {
+        aus = GetComponent<AudioSource>();
         if (flip)
         {
             rotationSpeed = -rotationSpeed;
@@ -54,7 +56,10 @@ public class InventoryManager : MonoBehaviour {
         }
         if (UISprite && UIText && UIBack)
         {
-            startAlpha = UISprite.color.a;
+            transperancyAmount = new float[3];
+            transperancyAmount[0] = UIBack.color.a;
+            transperancyAmount[1] = UISprite.color.a;
+            transperancyAmount[2] = UIText.color.a;
             UISprite.color = new Color(UISprite.color.r, UISprite.color.g, UISprite.color.b, 0);
             UIText.color = new Color(UIText.color.r, UIText.color.g, UIText.color.b, 0);
             UIBack.color = new Color(UIBack.color.r, UIBack.color.g, UIBack.color.b, 0);
@@ -85,13 +90,19 @@ public class InventoryManager : MonoBehaviour {
 
         //Show UI
         if (showUI && (UISprite && UIText && UIBack))
-        {               
-            if (UISprite.color.a < startAlpha)
+        {
+            if (UIBack.color.a < transperancyAmount[0])
+            {
+                UIBack.color = new Color(UIBack.color.r, UIBack.color.g, UIBack.color.b, UIBack.color.a + fadeSpeed * Time.deltaTime);
+            }
+            if (UISprite.color.a < transperancyAmount[1])
             {
                 UISprite.color = new Color(UISprite.color.r, UISprite.color.g, UISprite.color.b, UISprite.color.a + fadeSpeed * Time.deltaTime);
+            }
+            if (UIText.color.a < transperancyAmount[2])
+            {
                 UIText.color = new Color(UIText.color.r, UIText.color.g, UIText.color.b, UIText.color.a + fadeSpeed * Time.deltaTime);
-                UIBack.color = new Color(UIBack.color.r, UIBack.color.g, UIBack.color.b, UIBack.color.a + fadeSpeed * Time.deltaTime);
-            } 
+            }
         }
         else if (!showUI && (UISprite && UIText && UIBack))
         {
@@ -136,6 +147,7 @@ public class InventoryManager : MonoBehaviour {
             foreach(GameObject d in dirs)
             {
                 GameObject o = Instantiate(movingSprite, transform.position, Quaternion.LookRotation(d.transform.position - transform.position)) as GameObject;
+                aus.Play();
                 o.GetComponent<SpriteMovement>().refe = d;
             }
             spriteCount -= amntBck;
