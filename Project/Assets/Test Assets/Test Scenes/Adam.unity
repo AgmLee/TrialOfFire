@@ -233,6 +233,12 @@ Prefab:
       propertyPath: m_Name
       value: Loose Sprite (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 82000014284315694, guid: 4703dc0ce67c29c428a949250e976e7a,
+        type: 2}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: 243000013450391218, guid: 23ebe87fc9462af4fa44c33bbd2346ae,
+        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 4703dc0ce67c29c428a949250e976e7a, type: 2}
   m_IsPrefabParent: 0
@@ -411,6 +417,12 @@ Prefab:
       propertyPath: m_RootOrder
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 82000014284315694, guid: 4703dc0ce67c29c428a949250e976e7a,
+        type: 2}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: 243000013450391218, guid: 23ebe87fc9462af4fa44c33bbd2346ae,
+        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 4703dc0ce67c29c428a949250e976e7a, type: 2}
   m_IsPrefabParent: 0
@@ -469,9 +481,10 @@ Prefab:
       propertyPath: m_RootOrder
       value: 7
       objectReference: {fileID: 0}
-    - target: {fileID: 4000013213823676, guid: eeb0a7152940c8b4493007032caa320d, type: 2}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 90
+    - target: {fileID: 114000012202057538, guid: eeb0a7152940c8b4493007032caa320d,
+        type: 2}
+      propertyPath: openSpeed
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: eeb0a7152940c8b4493007032caa320d, type: 2}
