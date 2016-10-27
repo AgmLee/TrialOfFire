@@ -172,7 +172,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   refe: {fileID: 0}
-  speed: 5
+  speed: 15
 --- !u!198 &198000010321909222
 ParticleSystem:
   m_ObjectHideFlags: 1

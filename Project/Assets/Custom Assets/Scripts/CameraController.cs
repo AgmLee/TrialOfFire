@@ -21,9 +21,11 @@ public class CameraController : MonoBehaviour {
     public float offsetA = 45.0f; //Angle the camera watches
     //Speed
     public float rotationSpeed = 2.0f;
+    public float offsetSpeed = 50.0f;
     //Rotations
     private float Yrot = 0.0f;
     private float Xrot = 0.0f;
+    private Vector3 target;
     //Settings
     public bool invertY = false;
     public bool invertX = false;
@@ -112,6 +114,7 @@ public class CameraController : MonoBehaviour {
         cameraTranform.LookAt(pivotTranform);
     }
 
+    RaycastHit hit;
     void Update()
     {
         //Input
@@ -154,6 +157,19 @@ public class CameraController : MonoBehaviour {
         Yrot += hori * rotationSpeed;
         ownTranform.localEulerAngles = new Vector3(0, Yrot, 0);                                                  
         cameraTranform.LookAt(pivotTranform);
+        //Camera
+        if (Physics.Raycast(new Ray(pivotTranform.position, -pivotTranform.forward), out hit, offsetXZ))
+        {
+            target = new Vector3(0, 0, -hit.distance + 0.75f);
+        }
+        else
+        {
+            target = new Vector3(0, 0, -offsetXZ);
+        }
+        if (Vector3.Distance(cameraTranform.localPosition, target) > offsetSpeed * 0.05f)
+        {
+            cameraTranform.localPosition += (target - cameraTranform.localPosition).normalized * offsetSpeed * Time.deltaTime;
+        }
     }
 
     /*  Draws stuff in the editor.
