@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour
 
     public Transform cameraPivotTransform = null;
 
-    public float groundedRayDistance = -1.5f;
+    private float groundedRayDistance = -1.49f;
     public float movementSpeed = 10;
     public float jumpHeight = 5;
     public float gravity = 1;
@@ -33,7 +33,7 @@ public class PlayerController : MonoBehaviour
         rb.freezeRotation = !useRigidbodyRotation;
         rb = GetComponent<Rigidbody>();
 
-        groundedRayDistance = this.transform.GetComponent<Collider>().bounds.extents.y * -0.49f;
+        groundedRayDistance = this.transform.GetComponent<Collider>().bounds.extents.y * -1.49f;
         groundedRayDistance *= groundedRayDistance;
 
         if (cameraPivotTransform == null)
@@ -44,24 +44,12 @@ public class PlayerController : MonoBehaviour
 
     void Update ()
     {
+        Debug.Log("grounded");
         pVerticalInput = Input.GetKey (PlayerInput.positiveVerticalInput);
         nVerticalInput = Input.GetKey (PlayerInput.negativeVerticalInput);
         pHorizontalInput = Input.GetKey (PlayerInput.positiveHorizontalInput);
         nHorizontalInput = Input.GetKey (PlayerInput.negativeHorizontalInput);
         jumpInput = Input.GetKey(PlayerInput.jumpInput);
-
-        if (isGrounded())
-        {
-            if (jumpInput)
-            {
-                isJumping = true;
-                rb.velocity = new Vector3(rb.velocity.x, jumpHeight, rb.velocity.z);
-            }
-            else
-            {
-                isJumping = false;
-            }
-        }
     }
 
     void FixedUpdate ()
@@ -85,10 +73,23 @@ public class PlayerController : MonoBehaviour
             rb.AddForce(velocityDiff, ForceMode.VelocityChange);
         }
 
+        if (IsGrounded ())
+        {
+            if (jumpInput && !isJumping)
+            {
+                isJumping = true;
+                rb.velocity = new Vector3(rb.velocity.x, jumpHeight, rb.velocity.z);
+            }
+            else
+            {
+                isJumping = false;
+            }
+        }
+
         rb.AddForce(-Vector3.up * gravity, ForceMode.Impulse);
     }
 
-    bool isGrounded ()
+    bool IsGrounded ()
     {
         if (Physics.Raycast(transform.position, -Vector3.up, out raycastHit))
         {
