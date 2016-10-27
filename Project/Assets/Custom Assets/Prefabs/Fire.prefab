@@ -3411,7 +3411,7 @@ ParticleSystemRenderer:
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
   m_Materials:
-  - {fileID: 2100000, guid: a523f66499ce3b34fa2ef6144ce04242, type: 2}
+  - {fileID: 2100000, guid: 251d61da79ea46e4b87f3c5e11860980, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}
@@ -3455,7 +3455,7 @@ ParticleSystemRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 173ba60a38c4b7e4086aaed843e3a5b1, type: 2}
+  - {fileID: 2100000, guid: 785f841b7244612488bd38e61d24f9cb, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}

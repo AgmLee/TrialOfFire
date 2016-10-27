@@ -20,7 +20,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 4000011655612538}
   - 65: {fileID: 65000012945612440}
-  - 114: {fileID: 114000013857573238}
+  - 114: {fileID: 114000012416877388}
   - 82: {fileID: 82000011474516182}
   m_Layer: 2
   m_Name: Bonfire
@@ -103,7 +103,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000010454808104}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 4}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -150,7 +150,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: b202086d1faa5704b8531172cd1945ed, type: 2}
+  - {fileID: 2100000, guid: f032a3a6945cfae40ab8c2f413f3c90f, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}
@@ -194,7 +194,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 904c29f99e9a47346860be9258e604b4, type: 3}
+  m_audioClip: {fileID: 8300000, guid: b94043e6b7dbd604b88b054fbbe796f7, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.5
   m_Pitch: 1
@@ -293,7 +293,7 @@ Light:
   m_BounceIntensity: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
---- !u!114 &114000013857573238
+--- !u!114 &114000012416877388
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -301,7 +301,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1000010454808104}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 79b6bb98e89cc4b48adc0b1cbcb644fa, type: 3}
+  m_Script: {fileID: 11500000, guid: 7f1ddbfac454374498646dbb1cc533eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   inventory: {fileID: 0}
@@ -3622,7 +3622,7 @@ ParticleSystemRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 173ba60a38c4b7e4086aaed843e3a5b1, type: 2}
+  - {fileID: 2100000, guid: 785f841b7244612488bd38e61d24f9cb, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}
@@ -3666,7 +3666,7 @@ ParticleSystemRenderer:
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
   m_Materials:
-  - {fileID: 2100000, guid: a523f66499ce3b34fa2ef6144ce04242, type: 2}
+  - {fileID: 2100000, guid: 251d61da79ea46e4b87f3c5e11860980, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}

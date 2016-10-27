@@ -299,7 +299,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 4b812db2bc90e1d4c98d455ce05d9d1d, type: 2}
+  - {fileID: 2100000, guid: f032a3a6945cfae40ab8c2f413f3c90f, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}
@@ -328,7 +328,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 4b812db2bc90e1d4c98d455ce05d9d1d, type: 2}
+  - {fileID: 2100000, guid: f032a3a6945cfae40ab8c2f413f3c90f, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}
@@ -357,7 +357,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 4b812db2bc90e1d4c98d455ce05d9d1d, type: 2}
+  - {fileID: 2100000, guid: f032a3a6945cfae40ab8c2f413f3c90f, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}
@@ -386,7 +386,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: d8c8717db7ac25e41ac84fc2dbfea175, type: 2}
+  - {fileID: 2100000, guid: 23ac5a75dfce39049835f88d73eba6cb, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}
@@ -415,7 +415,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 4b812db2bc90e1d4c98d455ce05d9d1d, type: 2}
+  - {fileID: 2100000, guid: f032a3a6945cfae40ab8c2f413f3c90f, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}
@@ -444,7 +444,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: d8c8717db7ac25e41ac84fc2dbfea175, type: 2}
+  - {fileID: 2100000, guid: 23ac5a75dfce39049835f88d73eba6cb, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}
@@ -522,15 +522,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 1000011465088560}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 929759185a023cb42ad48f1b2aa61182, type: 3}
+  m_Script: {fileID: 11500000, guid: 716b666772c8b334eb3a88ad2266758c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   emitterParent: {fileID: 4000014039821454}
-  fireEmitter: {fileID: 1000012598890304, guid: 2e09260a973c69440b09d5038d9d7930,
+  fireEmitter: {fileID: 1000012598890304, guid: b1b2311a7e0d18b478b05a0afd94624d,
     type: 2}
   inventory: {fileID: 0}
-  objects:
-  - {fileID: 0}
+  aus: {fileID: 0}
+  objects: []
   spritesNeeded: 1
   useAmountInObjects: 0
   invert: 0

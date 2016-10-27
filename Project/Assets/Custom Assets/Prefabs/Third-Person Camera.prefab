@@ -261,7 +261,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1000013157947612}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 17aba6e745eeea3449722006359950e7, type: 3}
+  m_Script: {fileID: 11500000, guid: 8ee038a31b08f894fb5119d265e786d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   direction: 0
@@ -269,10 +269,10 @@ MonoBehaviour:
   cameraTranform: {fileID: 4000011156433948}
   playerTranfrom: {fileID: 0}
   maxOffsetAngle: 50
-  minOffsetAngle: 15
+  minOffsetAngle: 35
   offsetXZ: 7.5
   offsetY: 2
-  offsetA: 15
+  offsetA: 45
   rotationSpeed: 2
   invertY: 0
   invertX: 0

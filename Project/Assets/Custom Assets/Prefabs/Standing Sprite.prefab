@@ -41,7 +41,7 @@ GameObject:
   - 198: {fileID: 198000010321909222}
   - 199: {fileID: 199000013254736978}
   m_Layer: 0
-  m_Name: Fire Short Alt
+  m_Name: Fire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -87,7 +87,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 2bd16c63f4ec4c541913d771ab0da79d, type: 2}
+  - {fileID: 2100000, guid: 737947152e158d443a8898ec185d9a6d, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}
@@ -109,7 +109,7 @@ MeshFilter:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000012463707608}
-  m_Mesh: {fileID: 4300000, guid: 5adf77e2f710b884eb7806d967ad76de, type: 3}
+  m_Mesh: {fileID: 4300000, guid: c42e1e470516c1c4abaabb7944c0648f, type: 3}
 --- !u!108 &108000012027974478
 Light:
   m_ObjectHideFlags: 1
@@ -152,11 +152,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1000012463707608}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7d93f4fe57e21a547b7198f9b7cf1e3a, type: 3}
+  m_Script: {fileID: 11500000, guid: 81abe5353ba7fb0499b6da2aa4355c83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   resetTime: 1
   bob:
+    serializedVersion: 2
     m_Curve:
     - time: 0
       value: 0
@@ -1863,7 +1864,7 @@ ParticleSystemRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 173ba60a38c4b7e4086aaed843e3a5b1, type: 2}
+  - {fileID: 2100000, guid: 785f841b7244612488bd38e61d24f9cb, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}

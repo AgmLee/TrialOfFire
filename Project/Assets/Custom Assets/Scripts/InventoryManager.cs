@@ -147,8 +147,11 @@ public class InventoryManager : MonoBehaviour {
             foreach(GameObject d in dirs)
             {
                 GameObject o = Instantiate(movingSprite, transform.position, Quaternion.LookRotation(d.transform.position - transform.position)) as GameObject;
-                aus.Play();
                 o.GetComponent<SpriteMovement>().refe = d;
+                if (aus)
+                {
+                    aus.Play();
+                }
             }
             spriteCount -= amntBck;
             if (takeBck != null && remove)
