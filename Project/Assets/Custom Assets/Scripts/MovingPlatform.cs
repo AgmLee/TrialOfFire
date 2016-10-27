@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 
-
+[RequireComponent(typeof(Rigidbody))]
 public class MovingPlatform : MonoBehaviour, IAction {
     public Transform[] path;
-    public float speed = 1.0f;
+    public float speed = 5.0f;
     private Transform ownTransform;
     private int current = 1;
     public bool pingPong = false;
@@ -19,10 +19,28 @@ public class MovingPlatform : MonoBehaviour, IAction {
     void Start()
     {
         ownTransform = transform;
-        direction = path[current].position - ownTransform.position;
-        if (requiresActivation)
+        if (path.Length == 0)
         {
-            isActive = false;
+            Debug.Log("Path is Empty", this);
+            Destroy(this);
+        }
+        else if (!path[0])
+        {
+            Debug.Log("Path is Empty", this);
+            Destroy(this);
+        }
+        else
+        {
+            direction = path[current].position - ownTransform.position;
+            direction.Normalize();
+            if (requiresActivation)
+            {
+                isActive = false;
+            }
+            if (!GetComponent<Rigidbody>().isKinematic)
+            {
+                GetComponent<Rigidbody>().isKinematic = true;
+            }
         }
     }
 
@@ -65,6 +83,7 @@ public class MovingPlatform : MonoBehaviour, IAction {
                     }
                 }
                 direction = path[current].position - ownTransform.position;
+                direction.Normalize();
             }
         }
         else
@@ -82,6 +101,7 @@ public class MovingPlatform : MonoBehaviour, IAction {
         if (!isActive)
         {
             direction = path[0].position - ownTransform.position;
+            direction.Normalize();
         }
     }
 }
