@@ -49,7 +49,6 @@ public class PlayerController : MonoBehaviour
         pHorizontalInput = Input.GetKey (PlayerInput.positiveHorizontalInput);
         nHorizontalInput = Input.GetKey (PlayerInput.negativeHorizontalInput);
         jumpInput = Input.GetKey(PlayerInput.jumpInput);
-        Debug.Log(isJumping);
         if (isGrounded())
         {
             if (jumpInput)

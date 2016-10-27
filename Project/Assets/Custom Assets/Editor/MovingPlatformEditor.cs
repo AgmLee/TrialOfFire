@@ -47,7 +47,7 @@ public class MovingPlatformEditor : Editor {
 
         EditorGUILayout.Space();
         list.DoLayoutList();
-
+        
         serializedObject.ApplyModifiedProperties();
     }
 }

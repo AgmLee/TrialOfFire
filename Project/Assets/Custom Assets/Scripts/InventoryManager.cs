@@ -148,10 +148,6 @@ public class InventoryManager : MonoBehaviour {
             {
                 GameObject o = Instantiate(movingSprite, transform.position, Quaternion.LookRotation(d.transform.position - transform.position)) as GameObject;
                 o.GetComponent<SpriteMovement>().refe = d;
-                if (aus)
-                {
-                    aus.Play();
-                }
             }
             spriteCount -= amntBck;
             if (takeBck != null && remove)
@@ -214,6 +210,19 @@ public class InventoryManager : MonoBehaviour {
     {
         maxSpriteCount++;
         spriteCount++;
+        activateUI = true;
+    }
+
+    public void Hurt()
+    {
+        if (aus)
+        {
+            aus.Play();
+        }
+        if (spriteCount > 0)
+        {
+            spriteCount--;
+        }
         activateUI = true;
     }
 
