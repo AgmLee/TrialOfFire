@@ -28,6 +28,5 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
-Project/Library/CurrentLayout.dwlt
-Project/Library/CurrentLayout.dwlt
-Project/Library/LastSceneManagerSetup.txt
+*/CurrentLayout.dwlt
+*/LastSceneManagerSetup.txt
