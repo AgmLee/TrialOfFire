@@ -33,7 +33,7 @@ public class PlayerController : MonoBehaviour
         rb.freezeRotation = !useRigidbodyRotation;
         rb = GetComponent<Rigidbody>();
 
-        groundedRayDistance = -this.transform.GetComponent<Collider>().bounds.extents.y - 1.6f;
+        groundedRayDistance = this.transform.GetComponent<Collider>().bounds.extents.y * -0.49f;
         groundedRayDistance *= groundedRayDistance;
 
         if (cameraPivotTransform == null)
@@ -49,14 +49,13 @@ public class PlayerController : MonoBehaviour
         pHorizontalInput = Input.GetKey (PlayerInput.positiveHorizontalInput);
         nHorizontalInput = Input.GetKey (PlayerInput.negativeHorizontalInput);
         jumpInput = Input.GetKey(PlayerInput.jumpInput);
+
         if (isGrounded())
         {
             if (jumpInput)
             {
-                if (!isJumping)
-                {
-                    isJumping = true;
-                }
+                isJumping = true;
+                rb.velocity = new Vector3(rb.velocity.x, jumpHeight, rb.velocity.z);
             }
             else
             {
@@ -84,22 +83,6 @@ public class PlayerController : MonoBehaviour
             velocityDiff = Quaternion.AngleAxis(walkAngle, relativeRight) * velocityDiff;
 
             rb.AddForce(velocityDiff, ForceMode.VelocityChange);
-        }
-
-        if (isGrounded())
-        {
-            if (Input.GetAxis ("Jump") > 0)
-            {
-                if (!isJumping)
-                {
-                    isJumping = true;
-                    rb.velocity = new Vector3(curVel.x, jumpHeight, curVel.z);
-                }
-            }
-            else
-            {
-                isJumping = false;
-            }
         }
 
         rb.AddForce(-Vector3.up * gravity, ForceMode.Impulse);
