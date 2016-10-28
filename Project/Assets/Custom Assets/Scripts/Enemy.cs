@@ -86,7 +86,7 @@ public class Enemy : MonoBehaviour {
     {
         if (col.gameObject.tag == "Player")
         {
-            col.gameObject.SendMessage("Hurt");
+            col.gameObject.SendMessage("Hurt", transform.position);
         }
     }
 }

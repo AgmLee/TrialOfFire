@@ -213,7 +213,7 @@ public class InventoryManager : MonoBehaviour {
         activateUI = true;
     }
 
-    public void Hurt()
+    public void Hurt(Vector3 pos)
     {
         if (aus)
         {

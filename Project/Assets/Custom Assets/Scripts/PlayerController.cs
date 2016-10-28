@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour
     private RaycastHit raycastHit;
     private Vector3 targetVel;
 	private Collider collider;
+    private Vector3 enemyHurtPos = Vector3.zero;
 
     private bool pHorizontalInput;
     private bool pVerticalInput;
@@ -53,6 +54,19 @@ public class PlayerController : MonoBehaviour
         nHorizontalInput = Input.GetKey (PlayerInput.negativeHorizontalInput);
         jumpInput = Input.GetKey(PlayerInput.jumpInput);
 
+        if (IsGrounded ())
+        {
+            if (jumpInput && !isJumping)
+            {
+                isJumping = true;
+                rb.velocity = new Vector3(rb.velocity.x, jumpHeight, rb.velocity.z);
+            }
+            else
+            {
+                isJumping = false;
+            }
+        }
+
     }
 
     void FixedUpdate ()
@@ -68,41 +82,52 @@ public class PlayerController : MonoBehaviour
         velocityDiff.y = 0;
 
         float walkAngle = Vector3.Angle(velocityDiff, raycastHit.normal) - 90;
-		if (walkAngle < maxClimbAngle && !collidingInAir)
+        if (walkAngle < maxClimbAngle && !collidingInAir && (enemyHurtPos == Vector3.zero)   )
         {
             Vector3 relativeRight = Vector3.Cross(velocityDiff, Vector3.up);
             velocityDiff = Quaternion.AngleAxis(walkAngle, relativeRight) * velocityDiff;
-
             rb.AddForce(velocityDiff, ForceMode.VelocityChange);
         }
-
-        if (IsGrounded ())
+        else if (enemyHurtPos != Vector3.zero)
         {
-            if (jumpInput && !isJumping)
-            {
-                isJumping = true;
-                rb.velocity = new Vector3(rb.velocity.x, jumpHeight, rb.velocity.z);
-            }
-            else
-            {
-                isJumping = false;
-            }
+            rb.AddForce((Vector3.up * 15) + (-transform.forward * 120), ForceMode.Impulse);
         }
 
         rb.AddForce(-Vector3.up * gravity, ForceMode.Impulse);		
 
 		collidingInAir = false;
+        enemyHurtPos = Vector3.zero;
+    }
+
+    void Hurt (Vector3 pos)
+    {
+        enemyHurtPos = pos;
     }
 
     bool IsGrounded ()
     {
-		if (Physics.Raycast(transform.position + (transform.forward * 0.5f), -Vector3.up, out raycastHit))
+        if (Physics.Raycast(transform.position, -Vector3.up, out raycastHit))
         {
             if ((raycastHit.point - transform.position).sqrMagnitude < groundedRayDistance)
             {
                 return true;
             }
         }
+		//else if (Physics.Raycast(transform.position + (transform.forward * 0.5f), -Vector3.up, out raycastHit))
+        //{
+        //    if ((raycastHit.point - transform.position).sqrMagnitude < groundedRayDistance)
+        //    {
+        //        return true;
+        //    }
+        //}
+        //else if (Physics.Raycast(transform.position - (transform.forward * 0.5f), -Vector3.up, out raycastHit))
+        //{
+        //    if ((raycastHit.point - transform.position).sqrMagnitude < groundedRayDistance)
+        //    {
+        //        return true;
+        //    }
+        //}
+
         return false;
     }
 
@@ -110,11 +135,6 @@ public class PlayerController : MonoBehaviour
 	{
 		if (!IsGrounded())
 			collidingInAir = true;
-	}
-
-	bool CollidingInAir ()
-	{
-		return false;
 	}
 
     void RotatePlayer (Vector3 lookVector)
