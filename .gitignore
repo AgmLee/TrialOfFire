@@ -30,3 +30,4 @@ sysinfo.txt
 *.unitypackage
 Project/Library/LastSceneManagerSetup.txt
 Project/Library/CurrentLayout.dwlt
+Project/Library/metadata/*
