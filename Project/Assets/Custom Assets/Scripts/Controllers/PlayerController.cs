@@ -9,16 +9,17 @@ public class PlayerController : MonoBehaviour
 
     public Transform cameraPivotTransform = null;
 
-    private float groundedRayDistance = -1.49f;
+    private float groundedRayDistance = 0;
+    public float groundedRayOffsetDist = -1.49f;
     public float movementSpeed = 10;
-    public float jumpHeight = 5;
+    public float jumpHeight = 20;
     public float gravity = 1;
     public float maxClimbAngle = 70;
 
     private Rigidbody rb;
     private RaycastHit raycastHit;
     private Vector3 targetVel;
-	private Collider collider;
+    private Collider collider;
 
     private bool pHorizontalInput;
     private bool pVerticalInput;
@@ -26,7 +27,7 @@ public class PlayerController : MonoBehaviour
     private bool nVerticalInput;
     private bool jumpInput;
     private bool isJumping = false;
-	private bool collidingInAir = false;
+    private bool collidingInAir = false;
 
     void Start ()
     {
@@ -35,8 +36,8 @@ public class PlayerController : MonoBehaviour
         rb.freezeRotation = !useRigidbodyRotation;
         rb = GetComponent<Rigidbody>();
 
-		collider = this.transform.GetComponent<Collider> ();
-        groundedRayDistance = collider.bounds.extents.y * -1.49f;
+        collider = this.transform.GetComponent<Collider> ();
+        groundedRayDistance = collider.bounds.extents.y * groundedRayOffsetDist;
         groundedRayDistance *= groundedRayDistance;
 
         if (cameraPivotTransform == null)
@@ -53,6 +54,20 @@ public class PlayerController : MonoBehaviour
         nHorizontalInput = Input.GetKey (PlayerInput.negativeHorizontalInput);
         jumpInput = Input.GetKey(PlayerInput.jumpInput);
 
+        if (IsGrounded ())
+        {
+            if (jumpInput && !isJumping)
+            {
+                isJumping = true;
+                rb.velocity = new Vector3(rb.velocity.x, jumpHeight, rb.velocity.z);
+            }
+            else if (isJumping && !jumpInput)
+            {
+                isJumping = false;
+            }
+        }
+        groundedRayDistance = collider.bounds.extents.y * groundedRayOffsetDist;
+        groundedRayDistance *= groundedRayDistance;
     }
 
     void FixedUpdate ()
@@ -68,54 +83,58 @@ public class PlayerController : MonoBehaviour
         velocityDiff.y = 0;
 
         float walkAngle = Vector3.Angle(velocityDiff, raycastHit.normal) - 90;
-		if (walkAngle < maxClimbAngle && !collidingInAir)
+        if (walkAngle < maxClimbAngle && !collidingInAir)
         {
             Vector3 relativeRight = Vector3.Cross(velocityDiff, Vector3.up);
             velocityDiff = Quaternion.AngleAxis(walkAngle, relativeRight) * velocityDiff;
-
             rb.AddForce(velocityDiff, ForceMode.VelocityChange);
         }
 
-        if (IsGrounded ())
-        {
-            if (jumpInput && !isJumping)
-            {
-                isJumping = true;
-                rb.velocity = new Vector3(rb.velocity.x, jumpHeight, rb.velocity.z);
-            }
-            else
-            {
-                isJumping = false;
-            }
-        }
+        rb.AddForce(-Vector3.up * gravity, ForceMode.Impulse);      
 
-        rb.AddForce(-Vector3.up * gravity, ForceMode.Impulse);		
-
-		collidingInAir = false;
+        collidingInAir = false;
     }
 
     bool IsGrounded ()
     {
-		if (Physics.Raycast(transform.position + (transform.forward * 0.5f), -Vector3.up, out raycastHit))
+        if (Physics.Raycast(transform.position, -Vector3.up, out raycastHit))
         {
             if ((raycastHit.point - transform.position).sqrMagnitude < groundedRayDistance)
             {
                 return true;
             }
         }
+        //else if (Physics.Raycast(transform.position + (transform.forward * 0.5f), -Vector3.up, out raycastHit))
+        //{
+        //    if ((raycastHit.point - transform.position).sqrMagnitude < groundedRayDistance)
+        //    {
+        //        return true;
+        //    }
+        //}
+        //else if (Physics.Raycast(transform.position - (transform.forward * 0.5f), -Vector3.up, out raycastHit))
+        //{
+        //    if ((raycastHit.point - transform.position).sqrMagnitude < groundedRayDistance)
+        //    {
+        //        return true;
+        //    }
+        //}
+
         return false;
     }
 
-	void OnCollisionStay ()
-	{
-		if (!IsGrounded())
-			collidingInAir = true;
-	}
-
-	bool CollidingInAir ()
-	{
-		return false;
-	}
+    void OnCollisionStay (Collision info)
+    {
+        if (!IsGrounded())
+            collidingInAir = true;
+        if (info.transform.tag == "Platform")
+        {
+            this.transform.parent = info.transform;
+        }
+        else
+        {
+            this.transform.parent = null;
+        }
+    }
 
     void RotatePlayer (Vector3 lookVector)
     {
@@ -151,9 +170,9 @@ public class PlayerController : MonoBehaviour
         transform.TransformDirection (dir);
         return dir;
 
-//        Vector3 dir = ((cameraPivotTransform.forward * (pVerticalInput ? 1 : (nVerticalInput ? -1 : 0))) + (cameraPivotTransform.right * (pHorizontalInput ? 1 : (nHorizontalInput ? -1 : 0))));
-//        transform.TransformDirection (dir);
-//        return dir;
+        //        Vector3 dir = ((cameraPivotTransform.forward * (pVerticalInput ? 1 : (nVerticalInput ? -1 : 0))) + (cameraPivotTransform.right * (pHorizontalInput ? 1 : (nHorizontalInput ? -1 : 0))));
+        //        transform.TransformDirection (dir);
+        //        return dir;
     }
 }
 
