@@ -18,6 +18,7 @@ public class PlayerController : MonoBehaviour
     private Rigidbody rb;
     private RaycastHit raycastHit;
     private Vector3 targetVel;
+	private Collider collider;
 
     private bool pHorizontalInput;
     private bool pVerticalInput;
@@ -25,6 +26,7 @@ public class PlayerController : MonoBehaviour
     private bool nVerticalInput;
     private bool jumpInput;
     private bool isJumping = false;
+	private bool collidingInAir = false;
 
     void Start ()
     {
@@ -33,7 +35,8 @@ public class PlayerController : MonoBehaviour
         rb.freezeRotation = !useRigidbodyRotation;
         rb = GetComponent<Rigidbody>();
 
-        groundedRayDistance = this.transform.GetComponent<Collider>().bounds.extents.y * -1.49f;
+		collider = this.transform.GetComponent<Collider> ();
+        groundedRayDistance = collider.bounds.extents.y * -1.49f;
         groundedRayDistance *= groundedRayDistance;
 
         if (cameraPivotTransform == null)
@@ -44,12 +47,12 @@ public class PlayerController : MonoBehaviour
 
     void Update ()
     {
-        Debug.Log("grounded");
         pVerticalInput = Input.GetKey (PlayerInput.positiveVerticalInput);
         nVerticalInput = Input.GetKey (PlayerInput.negativeVerticalInput);
         pHorizontalInput = Input.GetKey (PlayerInput.positiveHorizontalInput);
         nHorizontalInput = Input.GetKey (PlayerInput.negativeHorizontalInput);
         jumpInput = Input.GetKey(PlayerInput.jumpInput);
+
     }
 
     void FixedUpdate ()
@@ -65,7 +68,7 @@ public class PlayerController : MonoBehaviour
         velocityDiff.y = 0;
 
         float walkAngle = Vector3.Angle(velocityDiff, raycastHit.normal) - 90;
-        if (walkAngle < maxClimbAngle)
+		if (walkAngle < maxClimbAngle && !collidingInAir)
         {
             Vector3 relativeRight = Vector3.Cross(velocityDiff, Vector3.up);
             velocityDiff = Quaternion.AngleAxis(walkAngle, relativeRight) * velocityDiff;
@@ -86,12 +89,14 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        rb.AddForce(-Vector3.up * gravity, ForceMode.Impulse);
+        rb.AddForce(-Vector3.up * gravity, ForceMode.Impulse);		
+
+		collidingInAir = false;
     }
 
     bool IsGrounded ()
     {
-        if (Physics.Raycast(transform.position, -Vector3.up, out raycastHit))
+		if (Physics.Raycast(transform.position + (transform.forward * 0.5f), -Vector3.up, out raycastHit))
         {
             if ((raycastHit.point - transform.position).sqrMagnitude < groundedRayDistance)
             {
@@ -100,6 +105,17 @@ public class PlayerController : MonoBehaviour
         }
         return false;
     }
+
+	void OnCollisionStay ()
+	{
+		if (!IsGrounded())
+			collidingInAir = true;
+	}
+
+	bool CollidingInAir ()
+	{
+		return false;
+	}
 
     void RotatePlayer (Vector3 lookVector)
     {
