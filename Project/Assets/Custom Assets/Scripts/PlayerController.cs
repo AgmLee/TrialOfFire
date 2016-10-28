@@ -82,7 +82,8 @@ public class PlayerController : MonoBehaviour
         velocityDiff.y = 0;
 
         float walkAngle = Vector3.Angle(velocityDiff, raycastHit.normal) - 90;
-        if (walkAngle < maxClimbAngle && !collidingInAir && (enemyHurtPos == Vector3.zero)   )
+        if (walkAngle < maxClimbAngle && !collidingInAir && (enemyHurtPos == Vector3.zero) && 
+            (pVerticalInput || nVerticalInput || pHorizontalInput || nHorizontalInput))
         {
             Vector3 relativeRight = Vector3.Cross(velocityDiff, Vector3.up);
             velocityDiff = Quaternion.AngleAxis(walkAngle, relativeRight) * velocityDiff;
