@@ -6,24 +6,18 @@ using UnityEditorInternal;
 [CustomEditor(typeof(Enemy))]
 public class EnemyEditor : Editor
 {
-    //Type
-    SerializedProperty typeProp;
-    //Multiple
+    SerializedProperty pathProp;
     SerializedProperty speedProp;
-    //Angry
-    SerializedProperty dropProp;
-    SerializedProperty heightProp;
-    //Snoober
     SerializedProperty pingPongProp;
+    SerializedProperty movesProp;
     ReorderableList list;
 
     void OnEnable()
     {
+        pathProp = serializedObject.FindProperty("path");
         speedProp = serializedObject.FindProperty("speed");
         pingPongProp = serializedObject.FindProperty("pingPong");
-        typeProp = serializedObject.FindProperty("type");
-        dropProp = serializedObject.FindProperty("dropTime");
-        heightProp = serializedObject.FindProperty("dropHeight");
+        movesProp = serializedObject.FindProperty("moves");
         list = new ReorderableList(serializedObject, serializedObject.FindProperty("path"), true, true, true, true);
 
         list.drawHeaderCallback = (Rect rect) =>
@@ -47,28 +41,17 @@ public class EnemyEditor : Editor
         serializedObject.Update();
 
         EditorGUILayout.Space();
-        EditorGUILayout.PropertyField(typeProp, new GUIContent("Type", "The type of enemy."));
 
-        EditorGUILayout.Separator();
-        switch(typeProp.enumValueIndex)
+        EditorGUILayout.PropertyField(movesProp, new GUIContent("Moves", "Shows moving options and allows it to moves."));
+        if (movesProp.boolValue)
         {
-            default:
-            case 0:
-                break;
-            case 1:
-                EditorGUILayout.PropertyField(speedProp, new GUIContent("Speed", "How fast the Snoober Noodle moves."));
-                EditorGUILayout.PropertyField(pingPongProp, new GUIContent("Ping-Pong", "Causes the platform to reverse order\nonce it reaches the end of the path."));
+            EditorGUILayout.Separator();
+            EditorGUILayout.PropertyField(speedProp, new GUIContent("Speed", "How fast the platform moves."));
+            EditorGUILayout.PropertyField(pingPongProp, new GUIContent("Ping-Pong", "Causes the platform to reverse order\nonce it reaches the end of the path."));
 
-                EditorGUILayout.Space();
-                list.DoLayoutList();
-                break;
-            case 2:
-                EditorGUILayout.PropertyField(speedProp, new GUIContent("Speed", "How fast the Angry Turtle sinks."));
-                EditorGUILayout.PropertyField(dropProp, new GUIContent("Sink Time", "How long before it sinks and how long it stays sunk for."));
-                EditorGUILayout.PropertyField(heightProp, new GUIContent("Sink Height", "How far the Angry Turtle sinks."));
-                break;
+            EditorGUILayout.Space();
+            list.DoLayoutList();
         }
-
 
         serializedObject.ApplyModifiedProperties();
     }
