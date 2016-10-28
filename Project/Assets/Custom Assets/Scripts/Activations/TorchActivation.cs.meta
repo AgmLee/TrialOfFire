@@ -1,10 +1,15 @@
 fileFormatVersion: 2
 guid: fc4d3214d82c72f4f986591015689d9a
-timeCreated: 1476935695
+timeCreated: 1477629911
 licenseType: Pro
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - emitterParent: {instanceID: 0}
+  - fireEmitter: {fileID: 1000012598890304, guid: e0b5bb8cac7cadb4aa4d68ea8efd9602,
+      type: 2}
+  - inventory: {instanceID: 0}
+  - aus: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

@@ -1291,8 +1291,9 @@ MonoBehaviour:
   useDefaultGravity: 0
   useRigidbodyRotation: 0
   cameraPivotTransform: {fileID: 4000013327959554}
+  groundedRayOffsetDist: -1.49
   movementSpeed: 10
-  jumpHeight: 5
+  jumpHeight: 15
   gravity: 1
   maxClimbAngle: 70
 --- !u!114 &114000013134600552
