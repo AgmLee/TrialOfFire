@@ -21,21 +21,12 @@ public class MainMenuController : MonoBehaviour {
     {
         if (previousIndex == -1)
         {
-            if (currentIndex != previousIndex)
+            if (previousIndex != currentIndex)
             {
                 previousIndex = currentIndex;
             }
         }
-        else if (!exit)
-        {
-            if (!animators[previousIndex].GetCurrentAnimatorStateInfo(0).IsName("Hide") && show)
-            {                                                                                     
-                animators[currentIndex].Play("Show");
-                previousIndex = currentIndex;
-                show = false;
-            }
-        }
-        else
+        else if (exit)
         {
             if (!animators[previousIndex].GetCurrentAnimatorStateInfo(0).IsName("Hide"))
             {
@@ -49,11 +40,31 @@ public class MainMenuController : MonoBehaviour {
                 #endif
             }
         }
+        else
+        {
+            if (!animators[previousIndex].GetCurrentAnimatorStateInfo(0).IsName("Hide") && show)
+            {
+                animators[currentIndex].Play("Show");
+                previousIndex = currentIndex;
+                show = false;
+            }
+        }
     }           
 
     public void SwitchMenu(int newIndex)
     {
-        if (newIndex != previousIndex)
+        if (newIndex == -1)
+        {
+            if (previousIndex != -1)
+            {
+                animators[previousIndex].Play("Hide");
+            }
+            previousIndex = -1;
+            currentIndex = -1;
+            exit = false;
+            show = false;
+        }
+        else if (newIndex != previousIndex)
         {   
             currentIndex = newIndex;
             if (previousIndex != currentIndex && previousIndex != -1)

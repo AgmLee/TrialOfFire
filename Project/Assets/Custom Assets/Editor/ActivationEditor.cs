@@ -33,6 +33,7 @@ public class ActivationEditor : Editor {
 
     public override void OnInspectorGUI()
     {
+        EditorGUILayout.BeginVertical();
         serializedObject.Update();
 
         EditorGUILayout.Space();
@@ -47,5 +48,6 @@ public class ActivationEditor : Editor {
         }
 
         serializedObject.ApplyModifiedProperties();
+        EditorGUILayout.EndVertical();
     }
 }

@@ -42,6 +42,7 @@ public class TorchActivationEditor : Editor
 
     public override void OnInspectorGUI()
     {
+        EditorGUILayout.BeginVertical();
         serializedObject.Update();
 
         EditorGUILayout.Space();
@@ -62,5 +63,6 @@ public class TorchActivationEditor : Editor
         EditorGUILayout.PropertyField(emitProp, new GUIContent("Fire Transform", "Refernce to the Transform the fire is placed."));
         
         serializedObject.ApplyModifiedProperties();
+        EditorGUILayout.EndVertical();
     }
 }

@@ -44,6 +44,7 @@ public class EnemyEditor : Editor
 
     public override void OnInspectorGUI()
     {
+        EditorGUILayout.BeginVertical();
         serializedObject.Update();
 
         EditorGUILayout.Space();
@@ -69,7 +70,7 @@ public class EnemyEditor : Editor
                 break;
         }
 
-
         serializedObject.ApplyModifiedProperties();
+        EditorGUILayout.EndVertical();
     }
 }

@@ -10,14 +10,14 @@ public class StandingSprite : MonoBehaviour
     //References
     private Transform ownTrans;
     private Transform refer = null;
-    private SphereCollider collider;
+    private SphereCollider ownCol;
     public AudioSource audioS;      
 
     // Use this for initialization
     void Start () {
         ownTrans = transform;
         offsetY = ownTrans.localPosition.y;                 
-        collider = gameObject.GetComponent<SphereCollider>();           
+        ownCol = gameObject.GetComponent<SphereCollider>();           
 	}
 
 
@@ -25,7 +25,7 @@ public class StandingSprite : MonoBehaviour
     void Update ()
     {
         transform.localPosition = new Vector3(ownTrans.localPosition.x, offsetY + bob.Evaluate(Time.time), ownTrans.localPosition.z);
-        if (collider)
+        if (ownCol)
         {
             if (refer != null)
             {

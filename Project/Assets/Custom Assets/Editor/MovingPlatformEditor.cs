@@ -37,6 +37,7 @@ public class MovingPlatformEditor : Editor {
 
     public override void OnInspectorGUI()
     {
+        EditorGUILayout.BeginVertical();
         serializedObject.Update();
 
         EditorGUILayout.Space();
@@ -49,5 +50,6 @@ public class MovingPlatformEditor : Editor {
         list.DoLayoutList();
         
         serializedObject.ApplyModifiedProperties();
+        EditorGUILayout.EndVertical();
     }
 }

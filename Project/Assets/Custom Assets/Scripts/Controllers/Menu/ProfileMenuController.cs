@@ -8,6 +8,7 @@ public class ProfileMenuController : MonoBehaviour {
     public Sprite[] textures;
     public Button play;
     public Button delete;
+    public Animator delMenu;
     private Profile[] profiles;
     private bool active = false;
     private Image lastSelected;
@@ -20,7 +21,9 @@ public class ProfileMenuController : MonoBehaviour {
             new Profile("New Profile"),
             new Profile("New Profile")
         };
-        //Load Profiles  
+        //Load Profiles 
+        profiles[0].currentID = 0;
+        profiles[0].name = "TEST"; 
         for(int i = 0; i < profiles.Length; i++)
         {
             ui[i].name.text = profiles[i].name;
@@ -32,7 +35,8 @@ public class ProfileMenuController : MonoBehaviour {
             {
                 ui[i].thumbnail.sprite = textures[0];
             }
-        }      
+        }
+        play.GetComponentInChildren<Text>().text = "Play Game";
     }
 
     void Update()
@@ -43,12 +47,20 @@ public class ProfileMenuController : MonoBehaviour {
             lastSelected = null;
             play.interactable = false;
             delete.interactable = false;
+            play.GetComponentInChildren<Text>().text = "Play Game";
             id = -1;
         }
-        else if (active && (!play.interactable || delete.interactable))
+        else if (active)
         {
-            play.interactable = true;
-            delete.interactable = true;
+            if (profiles[id].currentID != -1)
+            {
+                delete.interactable = true;
+                play.GetComponentInChildren<Text>().text = "Play Game";
+            }
+            else
+            {
+                play.GetComponentInChildren<Text>().text = "Create Profile";
+            }
         }
     }
 
@@ -62,6 +74,8 @@ public class ProfileMenuController : MonoBehaviour {
                 lastSelected.enabled = false;                                        
             }
             lastSelected = img;
+            delete.interactable = false;
+            play.interactable = true;
             active = true;
         }
     }
@@ -69,12 +83,29 @@ public class ProfileMenuController : MonoBehaviour {
     {
         id = value;
     }
-
     public void SetActive(bool value)
     {
         active = value;
     }
-    
+    public void PlayAnimation(bool hide)
+    {
+        if (hide && delMenu.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
+        {
+            delMenu.Play("Hide");
+        }
+        else if (delMenu.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
+        {
+            delMenu.Play("Show");
+        }
+    }
+    public void DeleteProfile()
+    {
+        if (delMenu.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
+        {
+            profiles[id] = new Profile("New Profile");
+            delMenu.Play("Hide");
+        }
+    }
 }
                            
 [Serializable]
