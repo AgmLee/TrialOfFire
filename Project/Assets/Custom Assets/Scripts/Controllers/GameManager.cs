@@ -17,28 +17,10 @@ public class GameManager : MonoBehaviour {
     //Level Amount = the amount of locked Levels
     private List<bool> levels;
     private int amountOfLevels = 1;
-
-    //Activates at application stop
-    void OnApplicationQuit()
-    {
-        SaveGame();
-    }
-
+          
     //Activates at the start of the application (After Awake)
     void Start() 
-    {
-        levels = new List<bool>(amountOfLevels);
-        for (int i = 0; i < amountOfLevels; i++)
-        {
-            if (i > 0)
-            {
-                levels[i] = false;
-            }
-            else
-            {
-                levels[i] = true;
-            }
-        }
+    {   
     }
 
     //Activates at the start of the application
@@ -125,12 +107,13 @@ public class GameManager : MonoBehaviour {
     public void SaveGame()
     {
         //
-    }
+    }       
 }   
 
 //Class for saving/loading
 class DATA
 {
-    public List<bool> levels;
-    public int currentHub;          
+    public List<bool> levelCompleted;
+    public int currentLevelID;
+    public string name;          
 }
