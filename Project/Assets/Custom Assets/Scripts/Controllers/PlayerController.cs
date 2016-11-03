@@ -115,7 +115,7 @@ public class PlayerController : MonoBehaviour
     {
         if (Physics.Raycast(transform.position, -Vector3.up, out raycastHit))
         {
-            if ((raycastHit.point - transform.position).sqrMagnitude < 0.5f)
+            if ((raycastHit.point - transform.position).sqrMagnitude < 0.25f)
             {
                 return true;
             }

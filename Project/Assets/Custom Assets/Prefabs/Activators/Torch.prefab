@@ -71,7 +71,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 4000011645266696}
   - 136: {fileID: 136000011680254824}
-  m_Layer: 2
+  m_Layer: 0
   m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
