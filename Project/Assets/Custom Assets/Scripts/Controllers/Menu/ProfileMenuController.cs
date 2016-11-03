@@ -7,23 +7,29 @@ public class ProfileMenuController : MonoBehaviour {
     public UIProfile[] ui;
     public Sprite[] textures;
     public Button play;
+    public Button createMain;
+    public Button createSub;
     public Button delete;
-    public Animator delMenu;
+    public InputField input;
     private Profile[] profiles;
     private bool active = false;
+    private bool inSub = false;
     private Image lastSelected;
     private int id = -1;
 
     void Start()
     {
+        //Create Empty Profiles
         profiles = new Profile[3] {
             new Profile("New Profile"),
             new Profile("New Profile"),
             new Profile("New Profile")
         };
+        
         //Load Profiles 
-        profiles[0].currentID = 0;
-        profiles[0].name = "TEST"; 
+            //Code to Load...
+        
+        //Load UI Elemets
         for(int i = 0; i < profiles.Length; i++)
         {
             ui[i].name.text = profiles[i].name;
@@ -36,7 +42,8 @@ public class ProfileMenuController : MonoBehaviour {
                 ui[i].thumbnail.sprite = textures[0];
             }
         }
-        play.GetComponentInChildren<Text>().text = "Play Game";
+        play.gameObject.SetActive(false);
+        createMain.gameObject.SetActive(true);
     }
 
     void Update()
@@ -45,21 +52,38 @@ public class ProfileMenuController : MonoBehaviour {
         {
             lastSelected.enabled = false;                                     
             lastSelected = null;
-            play.interactable = false;
+            play.gameObject.SetActive(false);
+            createMain.gameObject.SetActive(true);
+            createMain.interactable = false;
             delete.interactable = false;
-            play.GetComponentInChildren<Text>().text = "Play Game";
+            inSub = false;
             id = -1;
+            input.text = "";
         }
         else if (active)
         {
             if (profiles[id].currentID != -1)
             {
                 delete.interactable = true;
-                play.GetComponentInChildren<Text>().text = "Play Game";
+                play.gameObject.SetActive(true);
+                createMain.gameObject.SetActive(false);
             }
             else
             {
-                play.GetComponentInChildren<Text>().text = "Create Profile";
+                play.gameObject.SetActive(false);
+                createMain.gameObject.SetActive(true);
+            }
+            if (!inSub)
+            {
+                input.text = "";
+            }
+            if (input.text != "")
+            {
+                createSub.interactable = true;
+            }
+            else
+            {
+                createSub.interactable = false;
             }
         }
     }
@@ -75,7 +99,7 @@ public class ProfileMenuController : MonoBehaviour {
             }
             lastSelected = img;
             delete.interactable = false;
-            play.interactable = true;
+            createMain.interactable = true;
             active = true;
         }
     }
@@ -87,24 +111,33 @@ public class ProfileMenuController : MonoBehaviour {
     {
         active = value;
     }
-    public void PlayAnimation(bool hide)
-    {
-        if (hide && delMenu.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
-        {
-            delMenu.Play("Hide");
-        }
-        else if (delMenu.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
-        {
-            delMenu.Play("Show");
-        }
-    }
     public void DeleteProfile()
     {
-        if (delMenu.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
-        {
-            profiles[id] = new Profile("New Profile");
-            delMenu.Play("Hide");
-        }
+        profiles[id] = new Profile("New Game");
+        ui[id].thumbnail.sprite = textures[0];
+        ui[id].name.text = profiles[id].name;
+        delete.interactable = false;
+    }
+    public void StartGame()
+    {
+        //Load Data into Manager
+        //Load Scene
+        #if DEBUG
+        Debug.Log("Loaded Scene");
+        #endif
+    }
+    public void CreateProfile()
+    {
+        profiles[id].name = input.text;
+        profiles[id].currentID = 0;
+
+        ui[id].name.text = profiles[id].name;
+        ui[id].thumbnail.sprite = textures[1];
+        input.text = "";
+    }
+    public void SetSub(bool value)
+    {
+        inSub = value;
     }
 }
                            

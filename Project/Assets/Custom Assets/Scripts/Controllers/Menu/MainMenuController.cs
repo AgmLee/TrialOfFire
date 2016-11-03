@@ -1,4 +1,5 @@
-﻿using UnityEngine;         
+﻿using UnityEngine;
+using UnityEngine.UI;    
 
 public class MainMenuController : MonoBehaviour {
     /*  Important Keys
@@ -15,16 +16,25 @@ public class MainMenuController : MonoBehaviour {
     public Animator[] animators;
     private int currentIndex = -1;
     private int previousIndex = -1;
+    private AudioSource aus;
+    private Text txt;
+    public Image img;
 
     private bool show = false;
     void FixedUpdate()
     {
+        if (aus)
+        {
+            aus.volume -= Time.deltaTime;
+            img.color = new Color(img.color.r, img.color.g, img.color.b, img.color.a + Time.deltaTime);
+            txt.color = new Color(txt.color.r, txt.color.g, txt.color.b, txt.color.a + Time.deltaTime);
+        }
         if (previousIndex == -1)
         {
             if (previousIndex != currentIndex)
             {
                 previousIndex = currentIndex;
-            }
+            } 
         }
         else if (exit)
         {
@@ -73,6 +83,13 @@ public class MainMenuController : MonoBehaviour {
             }                 
             show = true;
         }
+    }
+
+    public void Fade()
+    {
+        aus = GetComponent<AudioSource>();
+        img.gameObject.SetActive(true);
+        txt = img.GetComponentInChildren<Text>();
     }
 
     private bool exit = false;
