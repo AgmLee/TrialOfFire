@@ -1,6 +1,17 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+
+public static class PlayerInput 
+{
+    public static KeyCode positiveVerticalInput = KeyCode.W;
+    public static KeyCode negativeVerticalInput = KeyCode.S;
+    public static KeyCode positiveHorizontalInput = KeyCode.D;
+    public static KeyCode negativeHorizontalInput = KeyCode.A;
+    public static KeyCode jumpInput = KeyCode.Space;
+}
+
+
 [RequireComponent (typeof(Rigidbody))]
 public class PlayerController : MonoBehaviour 
 {
@@ -15,7 +26,11 @@ public class PlayerController : MonoBehaviour
     public float jumpHeight = 20;
     public float gravity = 1;
     public float maxClimbAngle = 70;
+
     private int platformNo = -1;
+    private float lastFps = 0;
+    private float fps = 0;
+    private float avgFps = 0;
 
     private Rigidbody rb;
     private RaycastHit raycastHit;
@@ -37,10 +52,6 @@ public class PlayerController : MonoBehaviour
         rb.freezeRotation = !useRigidbodyRotation;
         rb = GetComponent<Rigidbody>();
 
-        //collider = this.transform.GetComponent<Collider> ();
-        //groundedRayDistance = collider.bounds.extents.y * groundedRayOffsetDist; 
-        //groundedRayDistance *= groundedRayDistance;
-
         GameObject[] plats = GameObject.FindGameObjectsWithTag("Platform");
         platforms = new MovingPlatform[plats.GetLength(0)];
 
@@ -50,8 +61,17 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    void OnApplicationQuit ()
+    {
+        Debug.Log("Average FPS: " +avgFps);
+    }
+
     void Update ()
     {
+        fps = Time.frameCount / Time.time;
+        avgFps = (fps + lastFps) / 2;
+        lastFps = fps;
+
         pVerticalInput = Input.GetKey (PlayerInput.positiveVerticalInput);
         nVerticalInput = Input.GetKey (PlayerInput.negativeVerticalInput);
         pHorizontalInput = Input.GetKey (PlayerInput.positiveHorizontalInput);
@@ -71,14 +91,8 @@ public class PlayerController : MonoBehaviour
             }
 
             collidingInAir = false;
+            collisionPoint = Vector3.zero;
         }
-
-        //if (platform != null)
-        //{
-        //    transform.position += (platform.GetVelocity () * Time.deltaTime);
-        //}
-
-        //transform.position += extraVel * Time.deltaTime;
     }
 
     void FixedUpdate ()
@@ -107,6 +121,16 @@ public class PlayerController : MonoBehaviour
             velocityDiff = Quaternion.AngleAxis(walkAngle, relativeRight) * velocityDiff;
             rb.AddForce(velocityDiff, ForceMode.VelocityChange);
         }
+        else if (walkAngle < maxClimbAngle && collidingInAir)
+        {
+            Vector3 relativeRight = Vector3.Cross(velocityDiff, Vector3.up);
+            velocityDiff = Quaternion.AngleAxis(walkAngle, relativeRight) * velocityDiff;
+            float dot = Vector3.Dot((new Vector3(collisionPoint.x, transform.position.y, collisionPoint.z) - transform.position).normalized, velocityDiff.normalized);
+            if (dot < 0.0f)
+            {
+                rb.AddForce(velocityDiff, ForceMode.VelocityChange);
+            }
+        }
             
         rb.AddForce(-Vector3.up * gravity, ForceMode.Impulse);      
     }
@@ -119,25 +143,21 @@ public class PlayerController : MonoBehaviour
             {
                 return true;
             }
-            //if (Vector3.Distance(transform.position, raycastHit.point) < 0.5f)
-            //{
-            //    return true;
-            //}
         }
-       //else if (Physics.Raycast(transform.position + (transform.forward * 0.5f), -Vector3.up, out raycastHit))
-       //{
-       //    if ((raycastHit.point - transform.position).sqrMagnitude < groundedRayDistance)
-       //    {
-       //        return true;
-       //    }
-       //}
-       //else if (Physics.Raycast(transform.position - (transform.forward * 0.5f), -Vector3.up, out raycastHit))
-       //{
-       //    if ((raycastHit.point - transform.position).sqrMagnitude < groundedRayDistance)
-       //    {
-       //        return true;
-       //    }
-       //}
+       else if (Physics.Raycast(transform.position + (transform.forward * 0.5f), -Vector3.up, out raycastHit))
+       {
+           if ((raycastHit.point - transform.position).sqrMagnitude < 0.25f)
+           {
+               return true;
+           }
+       }
+       else if (Physics.Raycast(transform.position - (transform.forward * 0.5f), -Vector3.up, out raycastHit))
+       {
+           if ((raycastHit.point - transform.position).sqrMagnitude < 0.25f)
+           {
+               return true;
+           }
+       }
 
         return false;
     }
@@ -169,29 +189,15 @@ public class PlayerController : MonoBehaviour
         return -1;
     }
 
+    Vector3 collisionPoint = Vector3.zero;
     void OnCollisionEnter(Collision info)
     {
         if (!IsGrounded())
+        {
             collidingInAir = true;
-        
-        //if (info.transform.tag == "Platform")
-        //{
-        //    platform = info.transform.GetComponent<MovingPlatform>();
-        //}
+            collisionPoint = info.contacts[0].point;
+        }
     }
-    //
-    //void OnCollisionExit (Collision info)
-    //{
-    //    if (info.transform.tag == "Platform")
-    //    {
-    //        platform = null;
-    //    }
-    //}
-
-    //public void SetExtra(Vector3 value)
-    //{
-    //    extraVel = value;
-    //}
 
     void RotatePlayer (Vector3 lookVector)
     {
@@ -226,18 +232,5 @@ public class PlayerController : MonoBehaviour
         dir.Normalize();
         transform.TransformDirection (dir);
         return dir;
-
-        //        Vector3 dir = ((cameraPivotTransform.forward * (pVerticalInput ? 1 : (nVerticalInput ? -1 : 0))) + (cameraPivotTransform.right * (pHorizontalInput ? 1 : (nHorizontalInput ? -1 : 0))));
-        //        transform.TransformDirection (dir);
-        //        return dir;
     }
-}
-
-public static class PlayerInput 
-{
-    public static KeyCode positiveVerticalInput = KeyCode.W;
-    public static KeyCode negativeVerticalInput = KeyCode.S;
-    public static KeyCode positiveHorizontalInput = KeyCode.D;
-    public static KeyCode negativeHorizontalInput = KeyCode.A;
-    public static KeyCode jumpInput = KeyCode.Space;
 }
