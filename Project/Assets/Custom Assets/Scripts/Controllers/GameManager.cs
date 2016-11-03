@@ -1,27 +1,32 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.IO;
+using System;
 
 public class GameManager : MonoBehaviour {
     //Instence of the Game Manager accessable via GameManager.inst
     public static GameManager inst;
 
     //Current HubIndex
+    private int currentHub = 0;
     public int CurrentHubWorldIndex
     {
         get { return currentHub; }
-    }                 
-    private int currentHub = 0;
-    
-    //List of levels, false = locked, true = unlocked
-    //Level Amount = the amount of locked Levels
-    private List<bool> levels;
-    private int amountOfLevels = 1;
-          
-    //Activates at the start of the application (After Awake)
-    void Start() 
-    {   
+    }    
+    //Pause State             
+    private bool pause = false;
+    public bool IsPaused
+    {
+        get { return pause; }
     }
+
+    //Game Data
+    private int profileNo = 0;
+    private string name;
+    private List<bool> completedLevels;
+    private int collectedAmount;
 
     //Activates at the start of the application
     void Awake()
@@ -36,6 +41,12 @@ public class GameManager : MonoBehaviour {
         {
             Destroy(gameObject);
         }
+    }
+
+    //Activate at the start of the application (After Awake)
+    void Start()
+    {
+        loadScreen = GetComponentInChildren<Animator>();
     }
 
     //Sends a message to the Debug log and will stop the application if needed
@@ -75,6 +86,8 @@ public class GameManager : MonoBehaviour {
     //Loads a scene via the scene name, the ISHUB bool sets the current hub to it
     public void LoadScene(string scene, bool ISHUB = false)
     {
+        //Show loading Screen;
+        LoadingState(true);
         //If it is a hub, set the current hub to it
         if (ISHUB)
         {
@@ -97,23 +110,65 @@ public class GameManager : MonoBehaviour {
         SceneManager.LoadScene(index);
     }
 
-    //Loads data into the game
-    public void LoadGame()
-    {
-        //
-    }
-
     //Saves data from the game
     public void SaveGame()
     {
-        //
-    }       
+        BinaryFormatter bf = new BinaryFormatter();
+        FileStream file = File.Create(Application.persistentDataPath + "/ProfileData/profile" + profileNo + ".dat");
+
+        DATA d = new DATA();
+        d.name = name;
+        d.currentID = currentHub;
+        d.collectedAmount = collectedAmount;
+
+        bf.Serialize(file, d);
+        file.Close();
+    }
+    
+    //Pauses the game
+    public void PauseGame()
+    {
+        pause = !pause;
+        if (pause)
+        {
+            Time.timeScale = 0;
+        }
+        else
+        {
+            Time.timeScale = 1;
+        }
+    }
+
+    //Displays Loading screen (True = show, false = hide)
+    private Animator loadScreen;
+    public void LoadingState(bool state)
+    {   
+        if (state)
+        {
+            loadScreen.Play("Start", 0);
+            loadScreen.Play("Start", 1);
+        }
+        else
+        {
+            loadScreen.Play("Stop", 1);
+        }
+    }
+
+    //Loads data from a Profile
+    public void LoadGame(Profile prof, int profNo)
+    {
+        currentHub = prof.currentID;
+        name = prof.name;
+        collectedAmount = prof.collectedAmount;
+        profileNo = profNo;
+    }
 }   
 
 //Class for saving/loading
+[Serializable]
 class DATA
 {
-    public List<bool> levelCompleted;
-    public int currentLevelID;
-    public string name;          
+    public string name;
+    public int collectedAmount;
+    public int currentID;
 }
