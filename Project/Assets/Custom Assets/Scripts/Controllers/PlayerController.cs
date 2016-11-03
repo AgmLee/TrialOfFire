@@ -9,8 +9,8 @@ public class PlayerController : MonoBehaviour
 
     public Transform cameraPivotTransform = null;
 
-    private float groundedRayDistance = 0;
-    public float groundedRayOffsetDist = -1.49f;
+    //private float groundedRayDistance = 0;
+    //public float groundedRayOffsetDist = -1.49f;
     public float movementSpeed = 10;
     public float jumpHeight = 20;
     public float gravity = 1;
@@ -19,7 +19,7 @@ public class PlayerController : MonoBehaviour
     private Rigidbody rb;
     private RaycastHit raycastHit;
     private Vector3 targetVel;
-    private Collider collider;
+    private MovingPlatform platform;
 
     private Vector3 extraVel;
 
@@ -38,14 +38,16 @@ public class PlayerController : MonoBehaviour
         rb.freezeRotation = !useRigidbodyRotation;
         rb = GetComponent<Rigidbody>();
 
-        collider = this.transform.GetComponent<Collider> ();
-        groundedRayDistance = collider.bounds.extents.y * groundedRayOffsetDist;
-        groundedRayDistance *= groundedRayDistance;
+        //collider = this.transform.GetComponent<Collider> ();
+        //groundedRayDistance = collider.bounds.extents.y * groundedRayOffsetDist; 
+        //groundedRayDistance *= groundedRayDistance;
 
         if (cameraPivotTransform == null)
         {
             Debug.Log("No camera transform has been assigned to character script!");
         }
+
+        platform = GameObject.FindGameObjectWithTag("Platform").GetComponent<MovingPlatform>();
     }
 
     void Update ()
@@ -71,11 +73,24 @@ public class PlayerController : MonoBehaviour
             collidingInAir = false;
         }
 
-        transform.position += extraVel * Time.deltaTime;
+        //if (platform != null)
+        //{
+        //    transform.position += (platform.GetVelocity () * Time.deltaTime);
+        //}
+
+        //transform.position += extraVel * Time.deltaTime;
+
+
+        Debug.Log (OnPlatform ());
     }
 
     void FixedUpdate ()
     {
+
+        if (OnPlatform())
+        {
+            transform.position += (platform.GetVelocity() * Time.fixedDeltaTime);
+        }
         targetVel = GetHeading();
         RotatePlayer(targetVel);
 
@@ -94,16 +109,15 @@ public class PlayerController : MonoBehaviour
             velocityDiff = Quaternion.AngleAxis(walkAngle, relativeRight) * velocityDiff;
             rb.AddForce(velocityDiff, ForceMode.VelocityChange);
         }
-
+            
         rb.AddForce(-Vector3.up * gravity, ForceMode.Impulse);      
-
     }
 
     bool IsGrounded ()
     {
         if (Physics.Raycast(transform.position, -Vector3.up, out raycastHit))
         {
-            //Debug.DrawLine(transform.position, raycastHit.point, Color.green);
+            Debug.DrawLine(transform.position, raycastHit.point, Color.green);
             if ((raycastHit.point - transform.position).sqrMagnitude < 0.25f)
             {
                 return true;
@@ -131,16 +145,53 @@ public class PlayerController : MonoBehaviour
         return false;
     }
 
+    bool OnPlatform ()
+    {
+        float platformMaxX = platform.transform.position.x + (platform.transform.localScale.x/2);
+        float platformMinX = platform.transform.position.x - (platform.transform.localScale.x/2);
+
+        float platformMaxZ = platform.transform.position.z + (platform.transform.localScale.z/2);
+        float platformMinZ = platform.transform.position.z - (platform.transform.localScale.z/2);
+
+        float platformMaxY = platform.transform.position.y + (transform.localScale.y);
+        float platformMinY = platform.transform.position.y + (platform.transform.localScale.y/2);
+
+        if (IsGrounded())
+        {
+            if (transform.position.x >= platformMinX && transform.position.x <= platformMaxX &&
+                transform.position.z >= platformMinZ && transform.position.z <= platformMaxZ &&
+                transform.position.y >= platformMinY && transform.position.y <= platformMaxY)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     void OnCollisionEnter(Collision info)
     {
         if (!IsGrounded())
             collidingInAir = true;
+        
+        //if (info.transform.tag == "Platform")
+        //{
+        //    platform = info.transform.GetComponent<MovingPlatform>();
+        //}
     }
+    //
+    //void OnCollisionExit (Collision info)
+    //{
+    //    if (info.transform.tag == "Platform")
+    //    {
+    //        platform = null;
+    //    }
+    //}
 
-    public void SetExtra(Vector3 value)
-    {
-        extraVel = value;
-    }
+    //public void SetExtra(Vector3 value)
+    //{
+    //    extraVel = value;
+    //}
 
     void RotatePlayer (Vector3 lookVector)
     {

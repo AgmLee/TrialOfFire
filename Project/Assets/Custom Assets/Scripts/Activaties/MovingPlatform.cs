@@ -43,12 +43,20 @@ public class MovingPlatform : MonoBehaviour, IAction {
             }
         }
     }
+
+    void FixedUpdate ()
+    {
+        if (isActive)
+        {
+            ownTransform.position += direction * speed * Time.fixedDeltaTime;
+        }
+    }
     
     void Update()
     {
         if (isActive)
         {
-            ownTransform.position += direction * speed * Time.deltaTime;
+            //ownTransform.position += direction * speed * Time.deltaTime;
             if (Vector3.Distance(ownTransform.position, path[current].position) < 0.5f)
             {
                 if (pingPong)
@@ -105,19 +113,24 @@ public class MovingPlatform : MonoBehaviour, IAction {
         }
     }
 
-    void OnTriggerStay(Collider col)
+    public Vector3 GetVelocity ()
     {
-        if (col.gameObject.tag == "Player")
-        {
-            col.gameObject.GetComponent<PlayerController>().SetExtra(direction * speed);
-        }
+        return direction * speed;
     }
 
-    void OnTriggerExit(Collider col)
-    {
-        if (col.gameObject.tag == "Player")
-        {
-            col.gameObject.GetComponent<PlayerController>().SetExtra(Vector3.zero);
-        }
-    }
+    //void OnTriggerStay(Collider col)
+    //{
+    //    if (col.gameObject.tag == "Player")
+    //    {
+    //        col.gameObject.GetComponent<PlayerController>().SetExtra(direction * speed);
+    //    }
+    //}
+    //
+    //void OnTriggerExit(Collider col)
+    //{
+    //    if (col.gameObject.tag == "Player")
+    //    {
+    //        col.gameObject.GetComponent<PlayerController>().SetExtra(Vector3.zero);
+    //    }
+    //}
 }
