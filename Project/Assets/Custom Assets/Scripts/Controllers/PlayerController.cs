@@ -21,8 +21,7 @@ public class PlayerController : MonoBehaviour
     private Vector3 targetVel;
     private Collider collider;
 
-    private MovingPlatform platform;
-
+    private Vector3 extraVel;
 
     private bool pHorizontalInput;
     private bool pVerticalInput;
@@ -72,10 +71,7 @@ public class PlayerController : MonoBehaviour
             collidingInAir = false;
         }
 
-        //if (platform != null)
-        //{
-        //    transform.position += platform.GetVelocity() * Time.deltaTime;
-        //}
+        transform.position += extraVel * Time.deltaTime;
     }
 
     void FixedUpdate ()
@@ -108,29 +104,29 @@ public class PlayerController : MonoBehaviour
         if (Physics.Raycast(transform.position, -Vector3.up, out raycastHit))
         {
             //Debug.DrawLine(transform.position, raycastHit.point, Color.green);
-            //if ((raycastHit.point - transform.position).sqrMagnitude < groundedRayDistance)
-            //{
-            //    return true;
-            //}
-            if (Vector3.Distance(transform.position, raycastHit.point) < 0.5f)
+            if ((raycastHit.point - transform.position).sqrMagnitude < 0.25f)
             {
                 return true;
             }
+            //if (Vector3.Distance(transform.position, raycastHit.point) < 0.5f)
+            //{
+            //    return true;
+            //}
         }
-        //else if (Physics.Raycast(transform.position + (transform.forward * 0.5f), -Vector3.up, out raycastHit))
-        //{
-        //    if ((raycastHit.point - transform.position).sqrMagnitude < groundedRayDistance)
-        //    {
-        //        return true;
-        //    }
-        //}
-        //else if (Physics.Raycast(transform.position - (transform.forward * 0.5f), -Vector3.up, out raycastHit))
-        //{
-        //    if ((raycastHit.point - transform.position).sqrMagnitude < groundedRayDistance)
-        //    {
-        //        return true;
-        //    }
-        //}
+       //else if (Physics.Raycast(transform.position + (transform.forward * 0.5f), -Vector3.up, out raycastHit))
+       //{
+       //    if ((raycastHit.point - transform.position).sqrMagnitude < groundedRayDistance)
+       //    {
+       //        return true;
+       //    }
+       //}
+       //else if (Physics.Raycast(transform.position - (transform.forward * 0.5f), -Vector3.up, out raycastHit))
+       //{
+       //    if ((raycastHit.point - transform.position).sqrMagnitude < groundedRayDistance)
+       //    {
+       //        return true;
+       //    }
+       //}
 
         return false;
     }
@@ -139,18 +135,11 @@ public class PlayerController : MonoBehaviour
     {
         if (!IsGrounded())
             collidingInAir = true;
-        if (info.transform.tag == "Platform")
-        {
-            platform = info.transform.GetComponent<MovingPlatform>();
-        }
     }
 
-    void OnCollisionExit (Collision info)
+    public void SetExtra(Vector3 value)
     {
-        if (info.transform.tag == "Platform")
-        {
-            platform = null;
-        }
+        extraVel = value;
     }
 
     void RotatePlayer (Vector3 lookVector)

@@ -43,12 +43,7 @@ public class MovingPlatform : MonoBehaviour, IAction {
             }
         }
     }
-
-    public Vector3 GetVelocity ()
-    {
-        return direction * speed;
-    }
-
+    
     void Update()
     {
         if (isActive)
@@ -107,6 +102,22 @@ public class MovingPlatform : MonoBehaviour, IAction {
         {
             direction = path[0].position - ownTransform.position;
             direction.Normalize();
+        }
+    }
+
+    void OnTriggerStay(Collider col)
+    {
+        if (col.gameObject.tag == "Player")
+        {
+            col.gameObject.GetComponent<PlayerController>().SetExtra(direction * speed);
+        }
+    }
+
+    void OnTriggerExit(Collider col)
+    {
+        if (col.gameObject.tag == "Player")
+        {
+            col.gameObject.GetComponent<PlayerController>().SetExtra(Vector3.zero);
         }
     }
 }
