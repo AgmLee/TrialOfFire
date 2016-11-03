@@ -44,6 +44,11 @@ public class MovingPlatform : MonoBehaviour, IAction {
         }
     }
 
+    public Vector3 GetVelocity ()
+    {
+        return direction * speed;
+    }
+
     void Update()
     {
         if (isActive)

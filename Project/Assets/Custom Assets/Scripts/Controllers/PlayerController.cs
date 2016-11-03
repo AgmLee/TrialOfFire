@@ -21,6 +21,9 @@ public class PlayerController : MonoBehaviour
     private Vector3 targetVel;
     private Collider collider;
 
+    private MovingPlatform platform;
+
+
     private bool pHorizontalInput;
     private bool pVerticalInput;
     private bool nHorizontalInput;
@@ -65,9 +68,14 @@ public class PlayerController : MonoBehaviour
             {
                 isJumping = false;
             }
+
+            collidingInAir = false;
         }
-        groundedRayDistance = collider.bounds.extents.y * groundedRayOffsetDist;
-        groundedRayDistance *= groundedRayDistance;
+
+        //if (platform != null)
+        //{
+        //    transform.position += platform.GetVelocity() * Time.deltaTime;
+        //}
     }
 
     void FixedUpdate ()
@@ -83,6 +91,7 @@ public class PlayerController : MonoBehaviour
         velocityDiff.y = 0;
 
         float walkAngle = Vector3.Angle(velocityDiff, raycastHit.normal) - 90;
+
         if (walkAngle < maxClimbAngle && !collidingInAir)
         {
             Vector3 relativeRight = Vector3.Cross(velocityDiff, Vector3.up);
@@ -92,14 +101,18 @@ public class PlayerController : MonoBehaviour
 
         rb.AddForce(-Vector3.up * gravity, ForceMode.Impulse);      
 
-        collidingInAir = false;
     }
 
     bool IsGrounded ()
     {
         if (Physics.Raycast(transform.position, -Vector3.up, out raycastHit))
         {
-            if ((raycastHit.point - transform.position).sqrMagnitude < groundedRayDistance)
+            //Debug.DrawLine(transform.position, raycastHit.point, Color.green);
+            //if ((raycastHit.point - transform.position).sqrMagnitude < groundedRayDistance)
+            //{
+            //    return true;
+            //}
+            if (Vector3.Distance(transform.position, raycastHit.point) < 0.5f)
             {
                 return true;
             }
@@ -122,17 +135,21 @@ public class PlayerController : MonoBehaviour
         return false;
     }
 
-    void OnCollisionStay (Collision info)
+    void OnCollisionEnter(Collision info)
     {
         if (!IsGrounded())
             collidingInAir = true;
         if (info.transform.tag == "Platform")
         {
-            this.transform.parent = info.transform;
+            platform = info.transform.GetComponent<MovingPlatform>();
         }
-        else
+    }
+
+    void OnCollisionExit (Collision info)
+    {
+        if (info.transform.tag == "Platform")
         {
-            this.transform.parent = null;
+            platform = null;
         }
     }
 
