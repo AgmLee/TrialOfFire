@@ -17,8 +17,6 @@ public class MainMenuController : MonoBehaviour {
     private int currentIndex = -1;
     private int previousIndex = -1;
     private AudioSource aus;
-    private Text txt;
-    public Image img;
 
     private bool show = false;
     void FixedUpdate()
@@ -26,8 +24,6 @@ public class MainMenuController : MonoBehaviour {
         if (aus)
         {
             aus.volume -= Time.deltaTime;
-            img.color = new Color(img.color.r, img.color.g, img.color.b, img.color.a + Time.deltaTime);
-            txt.color = new Color(txt.color.r, txt.color.g, txt.color.b, txt.color.a + Time.deltaTime);
         }
         if (previousIndex == -1)
         {
@@ -88,8 +84,6 @@ public class MainMenuController : MonoBehaviour {
     public void Fade()
     {
         aus = GetComponent<AudioSource>();
-        img.gameObject.SetActive(true);
-        txt = img.GetComponentInChildren<Text>();
     }
 
     private bool exit = false;

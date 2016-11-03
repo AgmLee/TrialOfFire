@@ -2,6 +2,8 @@
 using UnityEngine.UI;
 using System.Collections.Generic;
 using System;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 
 public class ProfileMenuController : MonoBehaviour {
     public UIProfile[] ui;
@@ -27,7 +29,23 @@ public class ProfileMenuController : MonoBehaviour {
         };
         
         //Load Profiles 
-            //Code to Load...
+        for (int i = 0; i < 3; i++)
+        {
+            string current = "/ProfileData/profile" + (i + 1) + ".dat";
+            if (File.Exists(Application.persistentDataPath + current))
+            {
+                BinaryFormatter bf = new BinaryFormatter();
+                FileStream file = File.Open(Application.persistentDataPath + current, FileMode.Open);
+
+                DATA d = (DATA)bf.Deserialize(file);
+
+                file.Close();
+
+                profiles[i].currentID = d.currentID;
+                profiles[i].collectedAmount = d.collectedAmount;
+                profiles[i].name = d.name;
+            }
+        }
         
         //Load UI Elemets
         for(int i = 0; i < profiles.Length; i++)
@@ -120,8 +138,7 @@ public class ProfileMenuController : MonoBehaviour {
     }
     public void StartGame()
     {
-        //Load Data into Manager
-        //Load Scene
+        GameManager.inst.LoadGame(profiles[id], id + 1);
         #if DEBUG
         Debug.Log("Loaded Scene");
         #endif
@@ -151,7 +168,7 @@ public class UIProfile
 public class Profile
 {
     public string name;
-    public List<bool> completedLevels;  
+    public int collectedAmount;
     public int currentID;     
 
     public Profile(string _name) { name = _name; currentID = -1; }
