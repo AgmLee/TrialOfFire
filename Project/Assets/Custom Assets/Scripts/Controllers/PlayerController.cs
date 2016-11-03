@@ -15,13 +15,12 @@ public class PlayerController : MonoBehaviour
     public float jumpHeight = 20;
     public float gravity = 1;
     public float maxClimbAngle = 70;
+    private int platformNo = -1;
 
     private Rigidbody rb;
     private RaycastHit raycastHit;
     private Vector3 targetVel;
-    private MovingPlatform platform;
-
-    private Vector3 extraVel;
+    private MovingPlatform[] platforms = null;
 
     private bool pHorizontalInput;
     private bool pVerticalInput;
@@ -42,12 +41,13 @@ public class PlayerController : MonoBehaviour
         //groundedRayDistance = collider.bounds.extents.y * groundedRayOffsetDist; 
         //groundedRayDistance *= groundedRayDistance;
 
-        if (cameraPivotTransform == null)
-        {
-            Debug.Log("No camera transform has been assigned to character script!");
-        }
+        GameObject[] plats = GameObject.FindGameObjectsWithTag("Platform");
+        platforms = new MovingPlatform[plats.GetLength(0)];
 
-        platform = GameObject.FindGameObjectWithTag("Platform").GetComponent<MovingPlatform>();
+        for (int i = 0; i < platforms.GetLength(0); i++)
+        {
+            platforms[i] = plats[i].GetComponent<MovingPlatform>();
+        }
     }
 
     void Update ()
@@ -79,18 +79,16 @@ public class PlayerController : MonoBehaviour
         //}
 
         //transform.position += extraVel * Time.deltaTime;
-
-
-        Debug.Log (OnPlatform ());
     }
 
     void FixedUpdate ()
     {
-
-        if (OnPlatform())
+        platformNo = OnPlatform();
+        if (platformNo > -1)
         {
-            transform.position += (platform.GetVelocity() * Time.fixedDeltaTime);
+            transform.position += (platforms[platformNo].GetVelocity() * Time.fixedDeltaTime);
         }
+
         targetVel = GetHeading();
         RotatePlayer(targetVel);
 
@@ -117,7 +115,6 @@ public class PlayerController : MonoBehaviour
     {
         if (Physics.Raycast(transform.position, -Vector3.up, out raycastHit))
         {
-            Debug.DrawLine(transform.position, raycastHit.point, Color.green);
             if ((raycastHit.point - transform.position).sqrMagnitude < 0.25f)
             {
                 return true;
@@ -145,28 +142,31 @@ public class PlayerController : MonoBehaviour
         return false;
     }
 
-    bool OnPlatform ()
+    int OnPlatform ()
     {
-        float platformMaxX = platform.transform.position.x + (platform.transform.localScale.x/2);
-        float platformMinX = platform.transform.position.x - (platform.transform.localScale.x/2);
-
-        float platformMaxZ = platform.transform.position.z + (platform.transform.localScale.z/2);
-        float platformMinZ = platform.transform.position.z - (platform.transform.localScale.z/2);
-
-        float platformMaxY = platform.transform.position.y + (transform.localScale.y);
-        float platformMinY = platform.transform.position.y + (platform.transform.localScale.y/2);
-
-        if (IsGrounded())
+        for (int i = 0; i < platforms.GetLength(0); i++)
         {
-            if (transform.position.x >= platformMinX && transform.position.x <= platformMaxX &&
+            float platformMaxX = platforms[i].transform.position.x + (platforms[i].transform.localScale.x / 2);
+            float platformMinX = platforms[i].transform.position.x - (platforms[i].transform.localScale.x / 2);
+
+            float platformMaxZ = platforms[i].transform.position.z + (platforms[i].transform.localScale.z / 2);
+            float platformMinZ = platforms[i].transform.position.z - (platforms[i].transform.localScale.z / 2);
+
+            float platformMaxY = platforms[i].transform.position.y + (transform.localScale.y);
+            float platformMinY = platforms[i].transform.position.y + (platforms[i].transform.localScale.y / 2);
+
+            if (IsGrounded())
+            {
+                if (transform.position.x >= platformMinX && transform.position.x <= platformMaxX &&
                 transform.position.z >= platformMinZ && transform.position.z <= platformMaxZ &&
                 transform.position.y >= platformMinY && transform.position.y <= platformMaxY)
-            {
-                return true;
+                {
+                    return i;
+                }
             }
         }
 
-        return false;
+        return -1;
     }
 
     void OnCollisionEnter(Collision info)
