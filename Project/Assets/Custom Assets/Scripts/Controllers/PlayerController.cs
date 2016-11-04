@@ -19,9 +19,8 @@ public class PlayerController : MonoBehaviour
     public bool useRigidbodyRotation = false;
 
     public Transform cameraPivotTransform = null;
-
-    //private float groundedRayDistance = 0;
-    //public float groundedRayOffsetDist = -1.49f;
+    [Range(0,1)]
+    public float groundCheckLength = 0.75f;
     public float movementSpeed = 10;
     public float jumpHeight = 20;
     public float gravity = 1;
@@ -31,6 +30,8 @@ public class PlayerController : MonoBehaviour
     private float lastFps = 0;
     private float fps = 0;
     private float avgFps = 0;
+    private float horizontalInput = 0;
+    private float verticalInput = 0;
 
     private Rigidbody rb;
     private RaycastHit raycastHit;
@@ -38,10 +39,6 @@ public class PlayerController : MonoBehaviour
     private MovingPlatform[] platforms = null;
     private Vector3 collisionPoint = Vector3.zero;
 
-    private bool pHorizontalInput;
-    private bool pVerticalInput;
-    private bool nHorizontalInput;
-    private bool nVerticalInput;
     private bool jumpInput;
     private bool isJumping = false;
     private bool collidingInAir = false;
@@ -76,11 +73,10 @@ public class PlayerController : MonoBehaviour
         avgFps = (fps + lastFps) / 2;
         lastFps = fps;
 
-        pVerticalInput = Input.GetKey (PlayerInput.positiveVerticalInput);
-        nVerticalInput = Input.GetKey (PlayerInput.negativeVerticalInput);
-        pHorizontalInput = Input.GetKey (PlayerInput.positiveHorizontalInput);
-        nHorizontalInput = Input.GetKey (PlayerInput.negativeHorizontalInput);
-        jumpInput = Input.GetKey(PlayerInput.jumpInput);
+        jumpInput = Input.GetButton ("Jump");
+        horizontalInput = Input.GetAxis("Horizontal");
+        verticalInput = Input.GetAxis("Vertical");
+
         grounded = IsGrounded();
 
         if (grounded && checkForPlatform)
@@ -111,26 +107,16 @@ public class PlayerController : MonoBehaviour
             checkForPlatform = true;
         }
 
-
-//        if (checkForPlatform)
-//        {
-//            stillOnPlatform = StillOnPlatform();
-//            if (!stillOnPlatform)
-//            {
-//                
-//            }
-//            checkForPlatform = false;
-//        }
+        if (transform.position.y < -1000)
+        {
+            LevelManager.instance.SpawnPlayer();
+        }
     }
 
     void FixedUpdate ()
     {
-        //if (platformNo < 0 || (platformNo > -1 && !stillOnPlatform))
-        //{
-        //
-        //}
 
-        if (platformNo > -1 && grounded/*stillOnPlatform*/)
+        if (platformNo > -1 && grounded)
         {
             transform.position += (platforms[platformNo].GetVelocity() * Time.fixedDeltaTime);
         }
@@ -170,21 +156,21 @@ public class PlayerController : MonoBehaviour
     {
         if (Physics.Raycast(transform.position, -Vector3.up, out raycastHit))
         {
-            if ((raycastHit.point - transform.position).sqrMagnitude < 0.5f)
+            if ((raycastHit.point - transform.position).sqrMagnitude < groundCheckLength)
             {
                 return true;
             }
         }
-       else if (Physics.Raycast(transform.position + (transform.forward * 0.5f), -Vector3.up, out raycastHit))
+        else if (Physics.Raycast(transform.position + (transform.forward * groundCheckLength), -Vector3.up, out raycastHit))
        {
-           if ((raycastHit.point - transform.position).sqrMagnitude < 0.5f)
+            if ((raycastHit.point - transform.position).sqrMagnitude < groundCheckLength)
            {
                return true;
            }
        }
-       else if (Physics.Raycast(transform.position - (transform.forward * 0.5f), -Vector3.up, out raycastHit))
+        else if (Physics.Raycast(transform.position - (transform.forward * groundCheckLength), -Vector3.up, out raycastHit))
        {
-           if ((raycastHit.point - transform.position).sqrMagnitude < 0.5f)
+            if ((raycastHit.point - transform.position).sqrMagnitude < groundCheckLength)
            {
                return true;
            }
@@ -221,30 +207,6 @@ public class PlayerController : MonoBehaviour
         return -1;
     }
 
-//    bool StillOnPlatform ()
-//    {
-//        float platformMaxX = platforms[platformNo].transform.position.x + (platforms[platformNo].transform.localScale.x / 2);
-//        float platformMinX = platforms[platformNo].transform.position.x - (platforms[platformNo].transform.localScale.x / 2);
-//        
-//        float platformMaxZ = platforms[platformNo].transform.position.z + (platforms[platformNo].transform.localScale.z / 2);
-//        float platformMinZ = platforms[platformNo].transform.position.z - (platforms[platformNo].transform.localScale.z / 2);
-//        
-//        float platformMaxY = platforms[platformNo].transform.position.y + (transform.localScale.y);
-//        float platformMinY = platforms[platformNo].transform.position.y + (platforms[platformNo].transform.localScale.y / 2);
-//        
-//        if (IsGrounded())
-//        {
-//            if (transform.position.x >= platformMinX && transform.position.x <= platformMaxX &&
-//                transform.position.z >= platformMinZ && transform.position.z <= platformMaxZ &&
-//                transform.position.y >= platformMinY && transform.position.y <= platformMaxY)
-//            {
-//                return true;
-//            }
-//        }
-//
-//        return false;
-//    }
-
     void OnCollisionStay(Collision info)
     {
         if (!grounded)
@@ -266,23 +228,8 @@ public class PlayerController : MonoBehaviour
     {
         Vector3 dir = Vector3.zero;
 
-        if (pVerticalInput)
-        {
-            dir += cameraPivotTransform.forward;
-        }
-        else if (nVerticalInput)
-        {
-            dir -= cameraPivotTransform.forward;
-        }
-
-        if (pHorizontalInput)
-        {
-            dir += cameraPivotTransform.right;
-        }
-        else if (nHorizontalInput)
-        {
-            dir -= cameraPivotTransform.right;
-        }
+        dir += cameraPivotTransform.forward * verticalInput;
+        dir += cameraPivotTransform.right * horizontalInput;
 
         dir.Normalize();
         transform.TransformDirection (dir);
