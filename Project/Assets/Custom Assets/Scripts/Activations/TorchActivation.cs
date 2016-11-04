@@ -68,7 +68,7 @@ public class TorchActivation : MonoBehaviour, IAction
         }
     }
 
-    public void Activation()
+    public void Activation(bool value)
     {
         isActive = !isActive;
         Activate();
@@ -91,7 +91,7 @@ public class TorchActivation : MonoBehaviour, IAction
         }
         foreach (GameObject obj in objects)
         {
-            obj.SendMessage("Activation");
+            obj.SendMessage("Activation", isActive);
         }
     }
 

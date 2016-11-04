@@ -6,9 +6,9 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: feather
+  m_Name: loin cloth uv painted_finished
   m_Shader: {fileID: 4800000, guid: 054a31a99d11e49d110086ba44295342, type: 3}
-  m_ShaderKeywords: _EMISSION
+  m_ShaderKeywords: _ALPHAPREMULTIPLY_ON _EMISSION
   m_LightmapFlags: 1
   m_CustomRenderQueue: -1
   stringTagMap: {}
@@ -48,7 +48,7 @@ Material:
     - first:
         name: _MainTex
       second:
-        m_Texture: {fileID: 2800000, guid: 2440c0374d058ff47b7b8e704ac120f4, type: 3}
+        m_Texture: {fileID: 2800000, guid: 7b636f685e7a1ce4390531ae91bdc76f, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - first:
@@ -87,7 +87,7 @@ Material:
       second: 1
     - first:
         name: _DstBlend
-      second: 0
+      second: 10
     - first:
         name: _GlossMapScale
       second: 1
@@ -102,13 +102,13 @@ Material:
       second: 0
     - first:
         name: _Mode
-      second: 0
+      second: 3
     - first:
         name: _OcclusionStrength
       second: 1
     - first:
         name: _Outline
-      second: 0.0062
+      second: 0.005
     - first:
         name: _Parallax
       second: 0.02
@@ -126,7 +126,7 @@ Material:
       second: 0
     - first:
         name: _ZWrite
-      second: 1
+      second: 0
     m_Colors:
     - first:
         name: _Color

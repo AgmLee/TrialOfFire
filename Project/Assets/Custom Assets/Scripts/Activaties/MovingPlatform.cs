@@ -15,6 +15,7 @@ public class MovingPlatform : MonoBehaviour, IAction {
     }
     private bool flip = false;
     private Vector3 direction;
+    public int reqAmnt = 1;
 
     void Start()
     {
@@ -56,7 +57,6 @@ public class MovingPlatform : MonoBehaviour, IAction {
     {
         if (isActive)
         {
-            //ownTransform.position += direction * speed * Time.deltaTime;
             if (Vector3.Distance(ownTransform.position, path[current].position) < 0.5f)
             {
                 if (pingPong)
@@ -103,13 +103,25 @@ public class MovingPlatform : MonoBehaviour, IAction {
         }
     }
 
-    public void Activation()
+    private int tally = 0;
+    public void Activation(bool value)
     {
-        isActive = !isActive;
-        if (!isActive)
+        if (value)
         {
-            direction = path[0].position - ownTransform.position;
-            direction.Normalize();
+            tally++;
+        }
+        else
+        {
+            tally--;
+        }
+        if (tally >= reqAmnt)
+        {
+            isActive = !isActive;
+            if (!isActive)
+            {
+                direction = path[0].position - ownTransform.position;
+                direction.Normalize();
+            }
         }
     }
 
@@ -117,20 +129,4 @@ public class MovingPlatform : MonoBehaviour, IAction {
     {
         return direction * speed;
     }
-
-    //void OnTriggerStay(Collider col)
-    //{
-    //    if (col.gameObject.tag == "Player")
-    //    {
-    //        col.gameObject.GetComponent<PlayerController>().SetExtra(direction * speed);
-    //    }
-    //}
-    //
-    //void OnTriggerExit(Collider col)
-    //{
-    //    if (col.gameObject.tag == "Player")
-    //    {
-    //        col.gameObject.GetComponent<PlayerController>().SetExtra(Vector3.zero);
-    //    }
-    //}
 }

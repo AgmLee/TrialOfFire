@@ -24,8 +24,7 @@ public class GameManager : MonoBehaviour {
 
     //Game Data
     private int profileNo = 0;
-    private string name;
-    private List<bool> completedLevels;
+    private string proName;
     private int collectedAmount;
 
     //Activates at the start of the application
@@ -117,7 +116,7 @@ public class GameManager : MonoBehaviour {
         FileStream file = File.Create(Application.persistentDataPath + "/ProfileData/profile" + profileNo + ".dat");
 
         DATA d = new DATA();
-        d.name = name;
+        d.name = proName;
         d.currentID = currentHub;
         d.collectedAmount = collectedAmount;
 
@@ -158,7 +157,7 @@ public class GameManager : MonoBehaviour {
     public void LoadGame(Profile prof, int profNo)
     {
         currentHub = prof.currentID;
-        name = prof.name;
+        proName = prof.name;
         collectedAmount = prof.collectedAmount;
         profileNo = profNo;
     }

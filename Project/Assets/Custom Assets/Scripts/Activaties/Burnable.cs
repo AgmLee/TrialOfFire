@@ -41,7 +41,7 @@ public class Burnable : MonoBehaviour, IAction
     }
 
     //Action
-    public void Activation()
+    public void Activation(bool value)
     {
         //Spawn emitter if it exists
         if (fireEmitter != null)

@@ -9,6 +9,7 @@ public class MovingPlatformEditor : Editor {
     SerializedProperty speedProp;
     SerializedProperty pingPongProp;
     SerializedProperty activationProp;
+    SerializedProperty requirementProp;
     ReorderableList list;
 
     void OnEnable()
@@ -17,6 +18,7 @@ public class MovingPlatformEditor : Editor {
         speedProp = serializedObject.FindProperty("speed");
         pingPongProp = serializedObject.FindProperty("pingPong");
         activationProp = serializedObject.FindProperty("requiresActivation");
+        requirementProp = serializedObject.FindProperty("reqAmnt");
         list = new ReorderableList(serializedObject, serializedObject.FindProperty("path"), true, true, true, true);
 
         list.drawHeaderCallback = (Rect rect) => 
@@ -45,6 +47,10 @@ public class MovingPlatformEditor : Editor {
         EditorGUILayout.PropertyField(speedProp, new GUIContent("Speed", "How fast the platform moves."));
         EditorGUILayout.PropertyField(pingPongProp, new GUIContent("Ping-Pong", "Causes the platform to reverse order\nonce it reaches the end of the path."));
         EditorGUILayout.PropertyField(activationProp, new GUIContent("Requires Activation", "Sets if the platform needs to be activated first."));
+        if (activationProp.boolValue)
+        {
+            EditorGUILayout.PropertyField(requirementProp, new GUIContent("Activation Requirement", "How many things are required to activate it."));
+        }
 
         EditorGUILayout.Space();
         list.DoLayoutList();

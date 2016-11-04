@@ -71,7 +71,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 4000011645266696}
   - 136: {fileID: 136000011680254824}
-  m_Layer: 2
+  m_Layer: 0
   m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -124,6 +124,22 @@ GameObject:
   - 23: {fileID: 23000010899267588}
   m_Layer: 0
   m_Name: Sticks
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &1000014017704094
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 4000011509500968}
+  - 136: {fileID: 136000012268580996}
+  m_Layer: 2
+  m_Name: Invisible Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -186,6 +202,19 @@ Transform:
   m_LocalEulerAnglesHint: {x: -15, y: 45, z: 0}
   m_Children: []
   m_Father: {fileID: 4000012533192016}
+  m_RootOrder: 2
+--- !u!4 &4000011509500968
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000014017704094}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 4000013102338646}
   m_RootOrder: 2
 --- !u!4 &4000011645266696
 Transform:
@@ -258,6 +287,7 @@ Transform:
   m_Children:
   - {fileID: 4000014039821454}
   - {fileID: 4000011645266696}
+  - {fileID: 4000011509500968}
   m_Father: {fileID: 0}
   m_RootOrder: 0
 --- !u!4 &4000013576912488
@@ -545,6 +575,19 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.55
-  m_Height: 3
+  m_Height: 2
   m_Direction: 1
-  m_Center: {x: 0, y: 1, z: 0}
+  m_Center: {x: 0, y: 0.125, z: 0}
+--- !u!136 &136000012268580996
+CapsuleCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000014017704094}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.4
+  m_Height: 2.5
+  m_Direction: 1
+  m_Center: {x: 0, y: 2, z: 0}

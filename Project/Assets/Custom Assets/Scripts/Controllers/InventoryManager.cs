@@ -38,6 +38,7 @@ public class InventoryManager : MonoBehaviour {
     public bool activateUI = false;
     private float onTime = 0;
     private AudioSource aus;
+    private float offset = 0;
 
     void Start()
     {
@@ -49,6 +50,7 @@ public class InventoryManager : MonoBehaviour {
         rotationTransform.localEulerAngles = new Vector3(xAngle, 0.0f, zAngle);
         index = spriteCount;
         sprites = new GameObject[spritePoints.Length];
+        offset = rotationTransform.localPosition.y;
         if (UITransform)
         {
             startSize = UITransform.localScale.x;
@@ -69,8 +71,8 @@ public class InventoryManager : MonoBehaviour {
     void Update()
     {   
         //Rotate the rotation transform
-        rotationTransform.position = transform.position + Vector3.up * 0.5f;
-        rotationTransform.Rotate(Vector3.up, rotationSpeed);
+        rotationTransform.position = new Vector3(transform.position.x, transform.position.y + offset, transform.position.z);
+        rotationTransform.Rotate(Vector3.up, rotationSpeed * 10 * Time.deltaTime);
 
         if (input || takeBack || activateUI)
         {
@@ -164,7 +166,7 @@ public class InventoryManager : MonoBehaviour {
                 GameObject o = Instantiate(movingSprite, takeBck.transform.position, Quaternion.LookRotation(takeBck.transform.position - transform.position)) as GameObject;
                 o.GetComponent<SpriteMovement>().refe = gameObject;
             }
-            takeBck.SendMessage("Activation");
+            takeBck.SendMessage("Activation", false);
         }
         
         //Spawn/Delete sprties

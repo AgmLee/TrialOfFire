@@ -19,7 +19,7 @@ public class SpriteMovement : MonoBehaviour {
         ownTrans.position += ownTrans.forward * speed * Time.deltaTime;
         if (Vector3.Distance(refe.transform.position, ownTrans.position) < 0.5f)
         {
-            refe.SendMessage("Activation");
+            refe.SendMessage("Activation", false);
             Destroy(gameObject);
         }
     }

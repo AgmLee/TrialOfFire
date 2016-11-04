@@ -6,7 +6,7 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: necklace
+  m_Name: tiki mask uv_painted_4
   m_Shader: {fileID: 4800000, guid: 054a31a99d11e49d110086ba44295342, type: 3}
   m_ShaderKeywords: _EMISSION
   m_LightmapFlags: 1
@@ -48,7 +48,7 @@ Material:
     - first:
         name: _MainTex
       second:
-        m_Texture: {fileID: 2800000, guid: df3e585731ca39c4fbbb7a1d781321d0, type: 3}
+        m_Texture: {fileID: 2800000, guid: a32fcc6d94c254147af0e1482a8e3c14, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - first:

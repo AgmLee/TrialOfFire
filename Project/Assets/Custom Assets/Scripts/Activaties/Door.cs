@@ -12,6 +12,8 @@ public class Door : MonoBehaviour, IAction
         get { return isActive; }
     }
     private AudioSource aus;
+    public int requirementAmout = 1;
+
     void Start()
     {
         aus = GetComponent<AudioSource>();
@@ -24,17 +26,28 @@ public class Door : MonoBehaviour, IAction
         door.speed = openSpeed;
     }
 
-    public void Activation()
+    private int tally = 0;
+    public void Activation(bool value)
     {
-        isActive = !isActive;
-        if (isActive)
+        if (value)
         {
-            aus.Play();
+            tally++;
         }
         else
         {
-            aus.PlayOneShot(close);
+            tally--;
         }
-        door.SetBool("IsActive", isActive);
+        if (tally >= requirementAmout)
+        {
+            isActive = true;
+            aus.Play();
+            door.SetBool("IsActive", isActive);
+        }
+        else if (isActive)
+        {
+            isActive = false;
+            aus.PlayOneShot(close);
+            door.SetBool("IsActive", isActive);
+        }
     }
 }

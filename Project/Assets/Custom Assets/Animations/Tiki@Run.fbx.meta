@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: bf53b67542c39354db7f576a73e18c13
-timeCreated: 1478221988
+guid: 263c5aeb141845d40b17b408a551dcf0
+timeCreated: 1478222943
 licenseType: Pro
 ModelImporter:
   serializedVersion: 19
@@ -81,7 +81,7 @@ ModelImporter:
     4300002: polySurface117
     4300004: polySurface155
     4300006: polySurface254
-    7400000: Run (1)
+    7400000: Run
     9500000: //RootNode
     13700000: polySurface117
     13700002: polySurface155
@@ -109,7 +109,7 @@ ModelImporter:
     extraExposedTransformPaths: []
     clipAnimations:
     - serializedVersion: 16
-      name: Run (1)
+      name: Run
       takeName: Take 001
       firstFrame: 1
       lastFrame: 37
