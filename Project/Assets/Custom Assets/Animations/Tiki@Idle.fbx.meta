@@ -1,0 +1,217 @@
+fileFormatVersion: 2
+guid: 97d13e2d9f7e9ed4bb56c2454f18962f
+timeCreated: 1478233969
+licenseType: Pro
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: Base
+    100002: Collarbone
+    100004: Feathers1
+    100006: Feathers2
+    100008: Feathers3
+    100010: Head
+    100012: joint1
+    100014: joint2
+    100016: joint3
+    100018: joint4
+    100020: L_Ankle
+    100022: L_Collar
+    100024: L_Elbow
+    100026: L_Foot
+    100028: L_Hand
+    100030: L_Hip
+    100032: L_Knee
+    100034: L_Shoulder
+    100036: Neck
+    100038: R_Ankle
+    100040: R_Collar
+    100042: R_Elbow
+    100044: R_Foot
+    100046: R_Hand
+    100048: R_Hip
+    100050: R_Knee
+    100052: R_Shoulder
+    100054: Ribs
+    100056: //RootNode
+    400000: Base
+    400002: Collarbone
+    400004: Feathers1
+    400006: Feathers2
+    400008: Feathers3
+    400010: Head
+    400012: joint1
+    400014: joint2
+    400016: joint3
+    400018: joint4
+    400020: L_Ankle
+    400022: L_Collar
+    400024: L_Elbow
+    400026: L_Foot
+    400028: L_Hand
+    400030: L_Hip
+    400032: L_Knee
+    400034: L_Shoulder
+    400036: Neck
+    400038: R_Ankle
+    400040: R_Collar
+    400042: R_Elbow
+    400044: R_Foot
+    400046: R_Hand
+    400048: R_Hip
+    400050: R_Knee
+    400052: R_Shoulder
+    400054: Ribs
+    400056: //RootNode
+    7400000: Idle
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Idle
+      takeName: Take 001
+      firstFrame: 0
+      lastFrame: 50
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Base
+        weight: 1
+      - path: Base/joint1
+        weight: 1
+      - path: Base/joint1/joint2
+        weight: 1
+      - path: Base/joint3
+        weight: 1
+      - path: Base/joint3/joint4
+        weight: 1
+      - path: Base/L_Hip
+        weight: 1
+      - path: Base/L_Hip/L_Knee
+        weight: 1
+      - path: Base/L_Hip/L_Knee/L_Ankle
+        weight: 1
+      - path: Base/L_Hip/L_Knee/L_Ankle/L_Foot
+        weight: 1
+      - path: Base/R_Hip
+        weight: 1
+      - path: Base/R_Hip/R_Knee
+        weight: 1
+      - path: Base/R_Hip/R_Knee/R_Ankle
+        weight: 1
+      - path: Base/R_Hip/R_Knee/R_Ankle/R_Foot
+        weight: 1
+      - path: Base/Ribs
+        weight: 1
+      - path: Base/Ribs/Collarbone
+        weight: 1
+      - path: Base/Ribs/Collarbone/L_Collar
+        weight: 1
+      - path: Base/Ribs/Collarbone/L_Collar/L_Shoulder
+        weight: 1
+      - path: Base/Ribs/Collarbone/L_Collar/L_Shoulder/L_Elbow
+        weight: 1
+      - path: Base/Ribs/Collarbone/L_Collar/L_Shoulder/L_Elbow/L_Hand
+        weight: 1
+      - path: Base/Ribs/Collarbone/Neck
+        weight: 1
+      - path: Base/Ribs/Collarbone/Neck/Head
+        weight: 1
+      - path: Base/Ribs/Collarbone/Neck/Head/Feathers1
+        weight: 1
+      - path: Base/Ribs/Collarbone/Neck/Head/Feathers1/Feathers2
+        weight: 1
+      - path: Base/Ribs/Collarbone/Neck/Head/Feathers1/Feathers2/Feathers3
+        weight: 1
+      - path: Base/Ribs/Collarbone/R_Collar
+        weight: 1
+      - path: Base/Ribs/Collarbone/R_Collar/R_Shoulder
+        weight: 1
+      - path: Base/Ribs/Collarbone/R_Collar/R_Shoulder/R_Elbow
+        weight: 1
+      - path: Base/Ribs/Collarbone/R_Collar/R_Shoulder/R_Elbow/R_Hand
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
