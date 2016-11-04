@@ -138,16 +138,16 @@ public class PlayerController : MonoBehaviour
             velocityDiff = Quaternion.AngleAxis(walkAngle, relativeRight) * velocityDiff;
             rb.AddForce(velocityDiff, ForceMode.VelocityChange);
         }
-        else if (walkAngle < maxClimbAngle && collidingInAir)
-        {
-            Vector3 relativeRight = Vector3.Cross(velocityDiff, Vector3.up);
-            velocityDiff = Quaternion.AngleAxis(walkAngle, relativeRight) * velocityDiff;
-            float dot = Vector3.Dot((new Vector3(collisionPoint.x, transform.position.y, collisionPoint.z) - transform.position).normalized, velocityDiff.normalized);
-            if (dot < -0.0f)
-            {
-                rb.AddForce(velocityDiff, ForceMode.VelocityChange);
-            }
-        }
+        //else if (walkAngle < maxClimbAngle && collidingInAir)
+        //{
+        //    Vector3 relativeRight = Vector3.Cross(velocityDiff, Vector3.up);
+        //    velocityDiff = Quaternion.AngleAxis(walkAngle, relativeRight) * velocityDiff;
+        //    float dot = Vector3.Dot((new Vector3(collisionPoint.x, transform.position.y, collisionPoint.z) - transform.position).normalized, velocityDiff.normalized);
+        //    if (dot < 0.0f)
+        //    {
+        //        rb.AddForce(velocityDiff, ForceMode.VelocityChange);
+        //    }
+        //}
    
         rb.AddForce(-Vector3.up * gravity, ForceMode.Impulse);      
     }
@@ -207,7 +207,7 @@ public class PlayerController : MonoBehaviour
         return -1;
     }
 
-    void OnCollisionStay(Collision info)
+    void OnCollisionEnter(Collision info)
     {
         if (!grounded)
         {
