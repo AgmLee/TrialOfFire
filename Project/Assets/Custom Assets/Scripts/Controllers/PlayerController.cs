@@ -36,6 +36,7 @@ public class PlayerController : MonoBehaviour
     private RaycastHit raycastHit;
     private Vector3 targetVel;
     private MovingPlatform[] platforms = null;
+    private Vector3 collisionPoint = Vector3.zero;
 
     private bool pHorizontalInput;
     private bool pVerticalInput;
@@ -44,6 +45,9 @@ public class PlayerController : MonoBehaviour
     private bool jumpInput;
     private bool isJumping = false;
     private bool collidingInAir = false;
+    private bool stillOnPlatform = false;
+    private bool checkForPlatform = false;
+    private bool grounded = false;
 
     void Start ()
     {
@@ -77,13 +81,22 @@ public class PlayerController : MonoBehaviour
         pHorizontalInput = Input.GetKey (PlayerInput.positiveHorizontalInput);
         nHorizontalInput = Input.GetKey (PlayerInput.negativeHorizontalInput);
         jumpInput = Input.GetKey(PlayerInput.jumpInput);
+        grounded = IsGrounded();
 
-        if (IsGrounded ())
+        if (grounded && checkForPlatform)
+        {
+            platformNo = GetPlatform();
+            checkForPlatform = false;
+        }
+
+        if (grounded)
         {
             if (jumpInput && !isJumping)
             {
                 isJumping = true;
                 rb.velocity = new Vector3(rb.velocity.x, jumpHeight, rb.velocity.z);
+                platformNo = -1;
+                stillOnPlatform = false;
             }
             else if (isJumping && !jumpInput)
             {
@@ -93,12 +106,31 @@ public class PlayerController : MonoBehaviour
             collidingInAir = false;
             collisionPoint = Vector3.zero;
         }
+        else
+        {
+            checkForPlatform = true;
+        }
+
+
+//        if (checkForPlatform)
+//        {
+//            stillOnPlatform = StillOnPlatform();
+//            if (!stillOnPlatform)
+//            {
+//                
+//            }
+//            checkForPlatform = false;
+//        }
     }
 
     void FixedUpdate ()
     {
-        platformNo = OnPlatform();
-        if (platformNo > -1)
+        //if (platformNo < 0 || (platformNo > -1 && !stillOnPlatform))
+        //{
+        //
+        //}
+
+        if (platformNo > -1 && grounded/*stillOnPlatform*/)
         {
             transform.position += (platforms[platformNo].GetVelocity() * Time.fixedDeltaTime);
         }
@@ -114,7 +146,6 @@ public class PlayerController : MonoBehaviour
         velocityDiff.y = 0;
 
         float walkAngle = Vector3.Angle(velocityDiff, raycastHit.normal) - 90;
-
         if (walkAngle < maxClimbAngle && !collidingInAir)
         {
             Vector3 relativeRight = Vector3.Cross(velocityDiff, Vector3.up);
@@ -126,12 +157,12 @@ public class PlayerController : MonoBehaviour
             Vector3 relativeRight = Vector3.Cross(velocityDiff, Vector3.up);
             velocityDiff = Quaternion.AngleAxis(walkAngle, relativeRight) * velocityDiff;
             float dot = Vector3.Dot((new Vector3(collisionPoint.x, transform.position.y, collisionPoint.z) - transform.position).normalized, velocityDiff.normalized);
-            if (dot < 0.0f)
+            if (dot < -0.0f)
             {
                 rb.AddForce(velocityDiff, ForceMode.VelocityChange);
             }
         }
-            
+   
         rb.AddForce(-Vector3.up * gravity, ForceMode.Impulse);      
     }
 
@@ -139,21 +170,21 @@ public class PlayerController : MonoBehaviour
     {
         if (Physics.Raycast(transform.position, -Vector3.up, out raycastHit))
         {
-            if ((raycastHit.point - transform.position).sqrMagnitude < 0.25f)
+            if ((raycastHit.point - transform.position).sqrMagnitude < 0.5f)
             {
                 return true;
             }
         }
        else if (Physics.Raycast(transform.position + (transform.forward * 0.5f), -Vector3.up, out raycastHit))
        {
-           if ((raycastHit.point - transform.position).sqrMagnitude < 0.25f)
+           if ((raycastHit.point - transform.position).sqrMagnitude < 0.5f)
            {
                return true;
            }
        }
        else if (Physics.Raycast(transform.position - (transform.forward * 0.5f), -Vector3.up, out raycastHit))
        {
-           if ((raycastHit.point - transform.position).sqrMagnitude < 0.25f)
+           if ((raycastHit.point - transform.position).sqrMagnitude < 0.5f)
            {
                return true;
            }
@@ -162,8 +193,9 @@ public class PlayerController : MonoBehaviour
         return false;
     }
 
-    int OnPlatform ()
+    int GetPlatform ()
     {
+        //Debug.Log("Looking for platform");
         for (int i = 0; i < platforms.GetLength(0); i++)
         {
             float platformMaxX = platforms[i].transform.position.x + (platforms[i].transform.localScale.x / 2);
@@ -189,10 +221,33 @@ public class PlayerController : MonoBehaviour
         return -1;
     }
 
-    Vector3 collisionPoint = Vector3.zero;
-    void OnCollisionEnter(Collision info)
+//    bool StillOnPlatform ()
+//    {
+//        float platformMaxX = platforms[platformNo].transform.position.x + (platforms[platformNo].transform.localScale.x / 2);
+//        float platformMinX = platforms[platformNo].transform.position.x - (platforms[platformNo].transform.localScale.x / 2);
+//        
+//        float platformMaxZ = platforms[platformNo].transform.position.z + (platforms[platformNo].transform.localScale.z / 2);
+//        float platformMinZ = platforms[platformNo].transform.position.z - (platforms[platformNo].transform.localScale.z / 2);
+//        
+//        float platformMaxY = platforms[platformNo].transform.position.y + (transform.localScale.y);
+//        float platformMinY = platforms[platformNo].transform.position.y + (platforms[platformNo].transform.localScale.y / 2);
+//        
+//        if (IsGrounded())
+//        {
+//            if (transform.position.x >= platformMinX && transform.position.x <= platformMaxX &&
+//                transform.position.z >= platformMinZ && transform.position.z <= platformMaxZ &&
+//                transform.position.y >= platformMinY && transform.position.y <= platformMaxY)
+//            {
+//                return true;
+//            }
+//        }
+//
+//        return false;
+//    }
+
+    void OnCollisionStay(Collision info)
     {
-        if (!IsGrounded())
+        if (!grounded)
         {
             collidingInAir = true;
             collisionPoint = info.contacts[0].point;
