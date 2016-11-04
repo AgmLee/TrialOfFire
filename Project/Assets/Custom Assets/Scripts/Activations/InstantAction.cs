@@ -21,7 +21,7 @@ public class InstantAction : MonoBehaviour {
         {
             foreach(InstantActionObject iao in objs)
             {
-                iao.obj.SendMessage("Activate", iao.value);
+                iao.obj.SendMessage("Activation", iao.value);
             }
         }
     }
