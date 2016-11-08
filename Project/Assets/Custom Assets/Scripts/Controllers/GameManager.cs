@@ -1,20 +1,26 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
-using System.Collections.Generic;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.IO;
 using System;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 
 public class GameManager : MonoBehaviour {
     //Instence of the Game Manager accessable via GameManager.inst
     public static GameManager inst;
 
-    //Current HubIndex
+    //Scene Tracker
+    //Last Visited HUB
     private int currentHub = 0;
     public int CurrentHubWorldIndex
     {
         get { return currentHub; }
     }    
+    //Current scene
+    private int currentID = 0;
+    public int CurrentSceneIndex
+    {
+        get { return currentID; }
+    }
     //Pause State             
     private bool pause = false;
     public bool IsPaused
@@ -24,13 +30,15 @@ public class GameManager : MonoBehaviour {
 
     //Game Data
     private int profileNo = 0;
-    private string proName;
-    private int collectedAmount;
+    private string proName = "";
+    public int collectedAmount = 0;
+    private int savedAmount = 0;
+    private int savedID = 0;
 
     //Activates at the start of the application
     void Awake()
     {
-        //Sets the instance of the game manager and destroys itself if a different one exists
+        //Creates a singleton, setting the first reference and destroying all others.
         if (inst == null)
         {                                    
             inst = this;
@@ -41,11 +49,18 @@ public class GameManager : MonoBehaviour {
             Destroy(gameObject);
         }
     }
-
     //Activate at the start of the application (After Awake)
     void Start()
     {
         loadScreen = GetComponentInChildren<Animator>();
+    }
+    
+    //Clears data    
+    private void ClearData()
+    {
+        profileNo = 0;
+        proName = "";
+        collectedAmount = 0;
     }
 
     //Sends a message to the Debug log and will stop the application if needed
@@ -55,7 +70,7 @@ public class GameManager : MonoBehaviour {
         string debugMessage = message;
         if (obj != null)
         {
-            debugMessage += ": " + obj;
+            debugMessage += ": " + obj.ToString();
         }
 
         //Log Error
@@ -87,22 +102,38 @@ public class GameManager : MonoBehaviour {
     {
         //Show loading Screen;
         LoadingState(true);
-        //If it is a hub, set the current hub to it
-        if (ISHUB)
-        {
-            currentHub = SceneManager.GetSceneByName(scene).buildIndex;
-        }
-
-        //Loads the scene
-        SceneManager.LoadScene(scene);
-    }
-    //Loads a scene via an index, the ISHUB bool sets the current hub to it
-    public void LoadScene(int index, bool ISHUB = false) 
-    {
+        int index = SceneManager.GetSceneByName(scene).buildIndex;
+        //set currentID
+        currentID = index;
         //If it is a hub, set the current hub to it
         if (ISHUB)
         {
             currentHub = index;
+        }
+
+        //Loads the scene
+        SceneManager.LoadScene(index);
+    }
+    //Loads a scene via an index, the ISHUB bool sets the current hub to it
+    public void LoadScene(int index, bool ISHUB = false)
+    {
+        //Show loading Screen;
+        LoadingState(true);
+
+        //If loading menu, clear data otherwise continue
+        if (index == 0)
+        {
+            ClearData();   
+        }
+        else
+        {   
+            //Set currentID
+            currentID = index;
+            //If it is a hub, set the current hub to it
+            if (ISHUB)
+            {
+                currentHub = index;
+            }
         }
 
         //Loads the scene
@@ -118,23 +149,44 @@ public class GameManager : MonoBehaviour {
         DATA d = new DATA();
         d.name = proName;
         d.currentID = currentHub;
+        savedID = currentHub;
         d.collectedAmount = collectedAmount;
+        savedAmount = collectedAmount;
 
         bf.Serialize(file, d);
         file.Close();
     }
-    
+    //Returns weather true if there is unsaved data
+    public bool UnsavedData()
+    {
+        if (collectedAmount != savedAmount || savedID != currentHub)
+        {
+            return true;
+        }
+        return false;
+    }
+
     //Pauses the game
     public void PauseGame()
     {
+        //Switches pause state
         pause = !pause;
+        
         if (pause)
         {
+            //Set timeScale, stopping most of Time (e.g. deltaTime)
             Time.timeScale = 0;
+            //Make the cursor visible and release it to the user
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
         }
         else
         {
+            //Set timeScale, reactivating most of Time (e.g. deltaTime)
             Time.timeScale = 1;
+            //Make the cursor hidden and lock it
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
         }
     }
 

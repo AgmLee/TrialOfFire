@@ -103,7 +103,7 @@ public class MovingPlatform : MonoBehaviour, IAction {
         }
     }
 
-    private int tally = 1;
+    private int tally = 0;
     public void Activation(bool value)
     {
         if (value)
@@ -117,11 +117,16 @@ public class MovingPlatform : MonoBehaviour, IAction {
         if (tally >= reqAmnt)
         {
             isActive = true;
+
+            direction = path[current].position - ownTransform.position;
+            direction.Normalize();
         }
         else
         {
             isActive = false;
-            
+
+            current = 1;
+            flip = false;
             direction = path[0].position - ownTransform.position;
             direction.Normalize();
         }

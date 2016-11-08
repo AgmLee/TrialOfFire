@@ -1,7 +1,7 @@
 ﻿using UnityEngine;     
 using UnityEngine.Audio;
 
-public class OptionsController : MonoBehaviour {
+public class AudioController : MonoBehaviour {
     public AudioMixer mixer;
 
     public void SetSFXVol(float value)
