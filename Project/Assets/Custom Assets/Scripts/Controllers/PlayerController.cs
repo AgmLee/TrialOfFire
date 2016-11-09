@@ -181,23 +181,23 @@ public class PlayerController : MonoBehaviour
 
     int GetPlatform ()
     {
-        //Debug.Log("Looking for platform");
         for (int i = 0; i < platforms.GetLength(0); i++)
         {
-            float platformMaxX = platforms[i].transform.position.x + (platforms[i].transform.localScale.x / 2);
-            float platformMinX = platforms[i].transform.position.x - (platforms[i].transform.localScale.x / 2);
+            Bounds bounds = platforms[i].GetComponent<Collider>().bounds;
+            float platformMaxX = bounds.max.x;
+            float platformMinX = bounds.min.x;
 
-            float platformMaxZ = platforms[i].transform.position.z + (platforms[i].transform.localScale.z / 2);
-            float platformMinZ = platforms[i].transform.position.z - (platforms[i].transform.localScale.z / 2);
+            float platformMaxZ = bounds.max.z;
+            float platformMinZ = bounds.min.z;
 
-            float platformMaxY = platforms[i].transform.position.y + (transform.localScale.y);
-            float platformMinY = platforms[i].transform.position.y + (platforms[i].transform.localScale.y / 2);
+            float platformMaxY = bounds.max.y;
+            float platformMinY = bounds.min.y;
 
             if (IsGrounded())
             {
                 if (transform.position.x >= platformMinX && transform.position.x <= platformMaxX &&
                 transform.position.z >= platformMinZ && transform.position.z <= platformMaxZ &&
-                transform.position.y >= platformMinY && transform.position.y <= platformMaxY)
+                    transform.position.y >= platformMaxY && transform.position.y <= platformMaxY + GetComponent<Collider>().bounds.max.y)
                 {
                     return i;
                 }
