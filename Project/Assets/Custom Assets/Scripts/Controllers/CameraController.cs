@@ -79,7 +79,7 @@ public class CameraController : MonoBehaviour {
         }  
         if (message != "")
         {
-            GameManager.inst.ErrorSystem(message, this, true, 0);
+            GameManager.Instance.ErrorSystem(message, this, true, 0);
         }
 
         //Set Variables
@@ -117,7 +117,7 @@ public class CameraController : MonoBehaviour {
     RaycastHit hit;
     void Update()
     {
-        //if (!GameManager.inst.IsPaused)
+        if (!GameManager.Instance.IsPaused)
         {
             //Input
             float hori = 0.0f;

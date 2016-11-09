@@ -3,15 +3,17 @@
 public class PauseMenuController : MonoBehaviour { 
     /*      KEY
      * -1 = Hide All
-     *  0 = Main Show
-     *  1 = Audio
-     *  2 = Save Complete 
-     *  3 = Exit
+     *  0 = Audio
+     *  1 = Save Complete 
+     *  2 = Exit Message
+     *  3 = Unsaved Message
+     *  4 = Restart Message
      */
     public Animator[] animators;  
     //Buttons
     public GameObject exitLvl;
     public GameObject exitGme;
+    public GameObject restart;
     //Canvas
     public GameObject canvas;
 
@@ -20,93 +22,157 @@ public class PauseMenuController : MonoBehaviour {
 
     void Start()
     {
-        exitGme.SetActive(false);
         exitLvl.SetActive(false);
+        exitGme.SetActive(false);
+        restart.SetActive(false);
+        canvas.SetActive(false);
     }                           
-    private bool runOnce = true;
-    void Update()
-    {                     
-        //Activates objects based on 
-        if (GameManager.inst.IsPaused)
-        {      
-            if (GameManager.inst.CurrentSceneIndex != GameManager.inst.CurrentHubWorldIndex)
-            {
-                exitGme.SetActive(false);
-                exitLvl.SetActive(true);
-            }
-            else
-            {
-                exitLvl.SetActive(false);
-                exitGme.SetActive(true);
-            }
-            canvas.SetActive(true);
-            if (runOnce)
-            {
-                SwitchMenu(0);
-                runOnce = false;
-            }
-        }   
-        else
-        {
-            exitLvl.SetActive(false);
-            exitGme.SetActive(false);   
-        }
-
-        if (Input.GetButtonDown("Cancel"))
-        {
-            if (!GameManager.inst.IsPaused)
-            {
-                GameManager.inst.PauseGame();
-                canvas.SetActive(true);
-                SwitchMenu(0);
-            }
-            else
-            {
-                SwitchMenu(-1);
-            }
-        }           
-    }
     void OnApplicationFocus(bool focus)
     {
-        if (!focus)
+        if (!focus && GameManager.Instance.IsPaused)
         {
-            GameManager.inst.PauseGame();
+            GameManager.Instance.PauseGame();
             canvas.SetActive(true);
             SwitchMenu(0);
         }
     }
-    private bool hide = false;
-    private bool show = false;
-    void FixedUpdate()
-    {
-        if (hide)
-        {
-            if (!animators[0].GetCurrentAnimatorStateInfo(0).IsName("Hide"))
+    private float timer = 0;
+    private bool show = false;   
+    void Update()
+    {    
+        //Activates objects based on 
+        if (GameManager.Instance.IsPaused)
+        {      
+            if (GameManager.Instance.CurrentSceneIndex != GameManager.Instance.CurrentHubWorldIndex)
             {
-                hide = false;
-                canvas.SetActive(false);
-                GameManager.inst.PauseGame();
-                runOnce = true;
+                exitGme.SetActive(false);
+                exitLvl.SetActive(true);
+                restart.SetActive(true);
             }
-        }
-        else if (previousIndex == -1 && currentIndex > 0)
-        {
-            if (previousIndex != currentIndex)
+            else
             {
-                previousIndex = currentIndex;
+                exitLvl.SetActive(false);
+                restart.SetActive(false);
+                exitGme.SetActive(true);
             }
-        }
+            canvas.SetActive(true);
+        }   
         else
         {
-            if (!animators[previousIndex].GetCurrentAnimatorStateInfo(0).IsName("Hide") && show)
+            exitLvl.SetActive(false);
+            exitGme.SetActive(false);
+            restart.SetActive(false);
+        }
+
+        if (Input.GetButtonDown("Cancel"))
+        {
+            if (!GameManager.Instance.IsPaused)
             {
-                animators[currentIndex].Play("Show");
-                previousIndex = currentIndex;
-                show = false;
+                GameManager.Instance.PauseGame();
+                canvas.SetActive(true);
+            }
+            else
+            {
+                if (previousIndex != -1)
+                {
+                    SwitchMenu(-1);
+                }
+                else
+                {
+                    exitLvl.SetActive(false);
+                    exitGme.SetActive(false);
+                    restart.SetActive(false);
+                    canvas.SetActive(false);
+                    GameManager.Instance.PauseGame();
+                }
+            }
+        }               
+
+        timer += Time.unscaledDeltaTime;
+
+        if (timer > 0.1f)
+        {
+            timer = 0;
+            switch (state)
+            {
+                //Normal
+                case 0:
+                    if (previousIndex == -1)
+                    {
+                        if (previousIndex != currentIndex)
+                        {
+                            previousIndex = currentIndex;
+                        }
+                    }
+                    else if (currentIndex == -1)
+                    {
+                        if (!animators[previousIndex].GetCurrentAnimatorStateInfo(0).IsName("Hide"))
+                        {
+                            exitLvl.SetActive(false);
+                            exitGme.SetActive(false);
+                            restart.SetActive(false);
+                            canvas.SetActive(false);
+                            previousIndex = -1;
+                            GameManager.Instance.PauseGame();
+                        }
+                    }
+                    else
+                    {
+                        if (!animators[previousIndex].GetCurrentAnimatorStateInfo(0).IsName("Hide") && show)
+                        {
+                            animators[currentIndex].Play("Show");
+                            previousIndex = currentIndex;
+                            show = false;
+                        }
+                    }
+                 break;
+                //Exit to Menu
+                case 1:
+                    if (!animators[previousIndex].GetCurrentAnimatorStateInfo(0).IsName("Hide"))
+                    {
+                        exitLvl.SetActive(false);
+                        exitGme.SetActive(false);
+                        restart.SetActive(false);
+                        canvas.SetActive(false);
+                        previousIndex = -1;
+                        state = 0;
+                        GameManager.Instance.PauseGame();
+                        GameManager.Instance.LoadScene(0);
+                    }
+                break;
+                //Exit to Hub
+                case 2:
+                    if (!animators[previousIndex].GetCurrentAnimatorStateInfo(0).IsName("Hide"))
+                    {
+                        exitLvl.SetActive(false);
+                        exitGme.SetActive(false);
+                        restart.SetActive(false);
+                        canvas.SetActive(false);
+                        previousIndex = -1;
+                        state = 0;
+                        GameManager.Instance.PauseGame();
+                        GameManager.Instance.LoadScene(GameManager.Instance.CurrentHubWorldIndex);
+                    }
+                break;
+                //Restart Level
+                case 3:if (!animators[previousIndex].GetCurrentAnimatorStateInfo(0).IsName("Hide"))
+                    {
+                        exitLvl.SetActive(false);
+                        exitGme.SetActive(false);
+                        restart.SetActive(false);
+                        canvas.SetActive(false);
+                        previousIndex = -1;
+                        state = 0;
+                        GameManager.Instance.PauseGame();
+                        GameManager.Instance.LoadScene(GameManager.Instance.CurrentSceneIndex);
+                    }
+                break;
             }
         }
-    }           
-        
+    }
+
+
+    private int state = 0;
     public void SwitchMenu(int newIndex)
     {
         if (newIndex == -1)
@@ -115,62 +181,71 @@ public class PauseMenuController : MonoBehaviour {
             {
                 animators[previousIndex].Play("Hide");
             }
-            if (previousIndex != 0)
-            {
-                animators[0].Play("Hide");
-            }
-            previousIndex = -1;
             currentIndex = -1;
-            show = false;    
-            hide = true;
+            show = false;
         }
-        else if (newIndex != previousIndex)
-        {   
-            if (!canvas.activeSelf)
-            {
-                canvas.SetActive(true);
-            }
+        else if (newIndex != currentIndex)
+        {
             currentIndex = newIndex;
             if (previousIndex != currentIndex && previousIndex != -1)
             {
                 animators[previousIndex].Play("Hide");
-            }                 
+            }
             show = true;
         }
-    } 
+    }
+    //Save Game
     public void Save()
     {
-        #if DEBUG
-            Debug.Log("Saved");
-        #else
-            GameManager.inst.SaveGame();
-        #endif
-        animators[1].Play("Show");
+        GameManager.Instance.SaveGame();
+        SwitchMenu(1);
     }    
+    //Exit to Menu
+    public void ShowExit()
+    {
+        if (GameManager.Instance.UnsavedData())
+        {
+            SwitchMenu(3);
+        }
+        else
+        {
+            SwitchMenu(2);
+        }
+    }
+    //Restart Level
+    public void Restart()
+    {
+        SwitchMenu(-1);
+        state = 3;
+    }
+    //Exit to Hub / Exit to Menu
     public void Exit()
     {
         if (exitLvl.activeSelf)
         {
-            #if DEBUG
-                Debug.Log("Return to Hub");
-            #else   
-                GameManager.inst.LoadScene(GameManager.inst.CurrentHubWorldIndex);
-            #endif
+            SwitchMenu(-1);
+            state = 2;
         }
         else
         {
-            #if DEBUG
-                Debug.Log("Return to Menu");
-            #else                            
-                if (GameManager.inst.UnsavedData())
-                {
-                    //Show Unsaved Data Message
-                }
-                else
-                {
-                    GameManager.inst.LoadScene(0);
-                }
-            #endif
+            SwitchMenu(-1);
+            state = 1;
+        }
+    }
+    //Resume
+    public void Resume()
+    {
+        if (previousIndex != -1)
+        {
+            SwitchMenu(-1);
+        }
+        else
+        {
+            exitLvl.SetActive(false);
+            exitGme.SetActive(false);
+            restart.SetActive(false);
+            canvas.SetActive(false);
+            GameManager.Instance.PauseGame();
         }
     }
 }

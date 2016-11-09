@@ -19,11 +19,10 @@ public class Door : MonoBehaviour, IAction
         aus = GetComponent<AudioSource>();
         if (invert)
         {
-            isActive = !isActive;
+            isActive = true;
         }
-        door.SetBool("invert", invert);
-        door.SetBool("IsActive", isActive);
         door.speed = openSpeed;
+        door.SetBool("IsActive", isActive);
     }
 
     private int tally = 0;

@@ -9,7 +9,7 @@ public class InstantAction : MonoBehaviour {
     {
         if (objs.Length == 0)
         {
-            GameManager.inst.ErrorSystem("actObj length zero", this);
+            GameManager.Instance.ErrorSystem("actObj length zero", this);
             gameObject.SetActive(false);
         }
         GetComponent<BoxCollider>().isTrigger = true;

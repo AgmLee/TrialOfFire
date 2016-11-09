@@ -36,14 +36,10 @@ public class MainMenuController : MonoBehaviour {
         {
             if (!animators[previousIndex].GetCurrentAnimatorStateInfo(0).IsName("Hide"))
             {
-                #if DEBUG
-                    Debug.Log("Has Quit");
-                    exit = false;
-                    previousIndex = -1;
-                    currentIndex = -1;
-                #else
-                    Application.Quit();
-                #endif
+                exit = false;
+                previousIndex = -1;
+                currentIndex = -1;
+                Application.Quit();
             }
         }
         else

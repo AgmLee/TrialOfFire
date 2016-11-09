@@ -21,7 +21,7 @@ public class Burnable : MonoBehaviour, IAction
     {
         if (fireEmitter == null)
         {
-            GameManager.inst.ErrorSystem("Missing fireEmitter", this);
+            GameManager.Instance.ErrorSystem("Missing fireEmitter", this);
         }
     }
 

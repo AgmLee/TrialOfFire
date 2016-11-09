@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using System.Collections.Generic;
 using System;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -27,15 +26,25 @@ public class ProfileMenuController : MonoBehaviour {
             new Profile("New Profile"),
             new Profile("New Profile")
         };
-        
+
+        string path = Application.persistentDataPath + "/SaveData";
+        if (!Directory.Exists(path))
+        {
+            Directory.CreateDirectory(path);
+        }
+        path += "/ProfileData";
+        if (!Directory.Exists(path))
+        {
+            Directory.CreateDirectory(path);
+        }
         //Load Profiles 
         for (int i = 0; i < 3; i++)
         {
-            string current = "/ProfileData/profile" + (i + 1) + ".dat";
-            if (File.Exists(Application.persistentDataPath + current))
+            string current = path + "/profile" + (i + 1) + ".dat";
+            if (File.Exists(current))
             {
                 BinaryFormatter bf = new BinaryFormatter();
-                FileStream file = File.Open(Application.persistentDataPath + current, FileMode.Open);
+                FileStream file = File.Open(current, FileMode.Open);
 
                 DATA d = (DATA)bf.Deserialize(file);
 
@@ -134,19 +143,19 @@ public class ProfileMenuController : MonoBehaviour {
         profiles[id] = new Profile("New Game");
         ui[id].thumbnail.sprite = textures[0];
         ui[id].name.text = profiles[id].name;
+        GameManager.Instance.LoadGame(profiles[id], id + 1);
+        GameManager.Instance.SaveGame();
         delete.interactable = false;
     }
     public void StartGame()
     {
-        GameManager.inst.LoadGame(profiles[id], id + 1);
-        #if DEBUG
-        Debug.Log("Loaded Scene");
-        #endif
+        GameManager.Instance.LoadGame(profiles[id], id + 1);
+        GameManager.Instance.LoadScene(GameManager.Instance.CurrentHubWorldIndex);
     }
     public void CreateProfile()
     {
         profiles[id].name = input.text;
-        profiles[id].currentID = 0;
+        profiles[id].currentID = 1;
 
         ui[id].name.text = profiles[id].name;
         ui[id].thumbnail.sprite = textures[1];

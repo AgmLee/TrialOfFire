@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: 97d13e2d9f7e9ed4bb56c2454f18962f
-timeCreated: 1478233969
+guid: 4f73dffcef25b834f98a10a93a242d61
+timeCreated: 1478667413
 licenseType: Pro
 ModelImporter:
   serializedVersion: 19
@@ -24,16 +24,25 @@ ModelImporter:
     100032: L_Knee
     100034: L_Shoulder
     100036: Neck
-    100038: R_Ankle
-    100040: R_Collar
-    100042: R_Elbow
-    100044: R_Foot
-    100046: R_Hand
-    100048: R_Hip
-    100050: R_Knee
-    100052: R_Shoulder
-    100054: Ribs
-    100056: //RootNode
+    100038: polySurface117
+    100040: polySurface151
+    100042: polySurface153
+    100044: polySurface155
+    100046: polySurface186
+    100048: polySurface225
+    100050: polySurface254
+    100052: polySurface76
+    100054: polySurface98
+    100056: R_Ankle
+    100058: R_Collar
+    100060: R_Elbow
+    100062: R_Foot
+    100064: R_Hand
+    100066: R_Hip
+    100068: R_Knee
+    100070: R_Shoulder
+    100072: Ribs
+    100074: //RootNode
     400000: Base
     400002: Collarbone
     400004: Feathers1
@@ -53,18 +62,39 @@ ModelImporter:
     400032: L_Knee
     400034: L_Shoulder
     400036: Neck
-    400038: R_Ankle
-    400040: R_Collar
-    400042: R_Elbow
-    400044: R_Foot
-    400046: R_Hand
-    400048: R_Hip
-    400050: R_Knee
-    400052: R_Shoulder
-    400054: Ribs
-    400056: //RootNode
-    7400000: Idle
+    400038: polySurface117
+    400040: polySurface151
+    400042: polySurface153
+    400044: polySurface155
+    400046: polySurface186
+    400048: polySurface225
+    400050: polySurface254
+    400052: polySurface76
+    400054: polySurface98
+    400056: R_Ankle
+    400058: R_Collar
+    400060: R_Elbow
+    400062: R_Foot
+    400064: R_Hand
+    400066: R_Hip
+    400068: R_Knee
+    400070: R_Shoulder
+    400072: Ribs
+    400074: //RootNode
+    4300000: polySurface98
+    4300002: polySurface117
+    4300004: polySurface155
+    4300006: polySurface186
+    4300008: polySurface254
+    4300010: polySurface225
+    7400000: Take 001
     9500000: //RootNode
+    13700000: polySurface117
+    13700002: polySurface155
+    13700004: polySurface186
+    13700006: polySurface225
+    13700008: polySurface254
+    13700010: polySurface98
   materials:
     importMaterials: 1
     materialName: 0
@@ -85,93 +115,7 @@ ModelImporter:
     animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
-    clipAnimations:
-    - serializedVersion: 16
-      name: Idle
-      takeName: Take 001
-      firstFrame: 0
-      lastFrame: 50
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 1
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask:
-      - path: 
-        weight: 1
-      - path: Base
-        weight: 1
-      - path: Base/joint1
-        weight: 1
-      - path: Base/joint1/joint2
-        weight: 1
-      - path: Base/joint3
-        weight: 1
-      - path: Base/joint3/joint4
-        weight: 1
-      - path: Base/L_Hip
-        weight: 1
-      - path: Base/L_Hip/L_Knee
-        weight: 1
-      - path: Base/L_Hip/L_Knee/L_Ankle
-        weight: 1
-      - path: Base/L_Hip/L_Knee/L_Ankle/L_Foot
-        weight: 1
-      - path: Base/R_Hip
-        weight: 1
-      - path: Base/R_Hip/R_Knee
-        weight: 1
-      - path: Base/R_Hip/R_Knee/R_Ankle
-        weight: 1
-      - path: Base/R_Hip/R_Knee/R_Ankle/R_Foot
-        weight: 1
-      - path: Base/Ribs
-        weight: 1
-      - path: Base/Ribs/Collarbone
-        weight: 1
-      - path: Base/Ribs/Collarbone/L_Collar
-        weight: 1
-      - path: Base/Ribs/Collarbone/L_Collar/L_Shoulder
-        weight: 1
-      - path: Base/Ribs/Collarbone/L_Collar/L_Shoulder/L_Elbow
-        weight: 1
-      - path: Base/Ribs/Collarbone/L_Collar/L_Shoulder/L_Elbow/L_Hand
-        weight: 1
-      - path: Base/Ribs/Collarbone/Neck
-        weight: 1
-      - path: Base/Ribs/Collarbone/Neck/Head
-        weight: 1
-      - path: Base/Ribs/Collarbone/Neck/Head/Feathers1
-        weight: 1
-      - path: Base/Ribs/Collarbone/Neck/Head/Feathers1/Feathers2
-        weight: 1
-      - path: Base/Ribs/Collarbone/Neck/Head/Feathers1/Feathers2/Feathers3
-        weight: 1
-      - path: Base/Ribs/Collarbone/R_Collar
-        weight: 1
-      - path: Base/Ribs/Collarbone/R_Collar/R_Shoulder
-        weight: 1
-      - path: Base/Ribs/Collarbone/R_Collar/R_Shoulder/R_Elbow
-        weight: 1
-      - path: Base/Ribs/Collarbone/R_Collar/R_Shoulder/R_Elbow/R_Hand
-        weight: 1
-      maskType: 0
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
+    clipAnimations: []
     isReadable: 1
   meshes:
     lODScreenPercentages: []

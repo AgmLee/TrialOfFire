@@ -6,7 +6,11 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 public class GameManager : MonoBehaviour {
     //Instence of the Game Manager accessable via GameManager.inst
-    public static GameManager inst;
+    private static GameManager inst;
+    public static GameManager Instance
+    {
+        get { return inst; }
+    }
 
     //Scene Tracker
     //Last Visited HUB
@@ -105,10 +109,24 @@ public class GameManager : MonoBehaviour {
         int index = SceneManager.GetSceneByName(scene).buildIndex;
         //set currentID
         currentID = index;
-        //If it is a hub, set the current hub to it
-        if (ISHUB)
+
+        //If loading menu, clear data otherwise continue
+        if (index == 0)
         {
-            currentHub = index;
+            ClearData();
+            //Unlock Cursor if loading menu
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
+        else
+        {
+            //Set currentID
+            currentID = index;
+            //If it is a hub, set the current hub to it
+            if (ISHUB)
+            {
+                currentHub = index;
+            }
         }
 
         //Loads the scene
@@ -123,7 +141,10 @@ public class GameManager : MonoBehaviour {
         //If loading menu, clear data otherwise continue
         if (index == 0)
         {
-            ClearData();   
+            ClearData();
+            //Unlock Cursor if loading menu
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
         }
         else
         {   
@@ -141,29 +162,58 @@ public class GameManager : MonoBehaviour {
     }
 
     //Saves data from the game
-    public void SaveGame()
+    public bool SaveGame()
     {
-        BinaryFormatter bf = new BinaryFormatter();
-        FileStream file = File.Create(Application.persistentDataPath + "/ProfileData/profile" + profileNo + ".dat");
+        try
+        {
+            string path = Application.persistentDataPath + "/SaveData";
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+            path += "/ProfileData";
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+            BinaryFormatter bf = new BinaryFormatter();
+            FileStream file = File.Create(path + "/profile" + profileNo + ".dat");
+        
+            DATA d = new DATA();
+            d.name = proName;
+            d.currentID = currentHub;
+            savedID = currentHub;
+            d.collectedAmount = collectedAmount;
+            savedAmount = collectedAmount;
 
-        DATA d = new DATA();
-        d.name = proName;
-        d.currentID = currentHub;
-        savedID = currentHub;
-        d.collectedAmount = collectedAmount;
-        savedAmount = collectedAmount;
-
-        bf.Serialize(file, d);
-        file.Close();
+            bf.Serialize(file, d);
+            file.Close();
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Debug.Log(ex.ToString());
+            return false;
+        }
     }
     //Returns weather true if there is unsaved data
     public bool UnsavedData()
     {
-        if (collectedAmount != savedAmount || savedID != currentHub)
+        string path = Application.persistentDataPath + "/SaveData/ProfileData/profiles" + profileNo + ".dat";
+        if (File.Exists(path))
         {
+            BinaryFormatter bf = new BinaryFormatter();
+            FileStream file = File.Open(path, FileMode.Open);
+
+            DATA d = (DATA)bf.Deserialize(file);
+
+            file.Close();
             return true;
         }
-        return false;
+        else
+        {
+            return false;
+        }
     }
 
     //Pauses the game
@@ -192,8 +242,14 @@ public class GameManager : MonoBehaviour {
 
     //Displays Loading screen (True = show, false = hide)
     private Animator loadScreen;
+    private bool loadState = false;
+    public bool IsLoadActive
+    {
+        get { return loadState; }
+    }
     public void LoadingState(bool state)
-    {   
+    {
+        loadState = state;
         if (state)
         {
             loadScreen.Play("Start", 0);

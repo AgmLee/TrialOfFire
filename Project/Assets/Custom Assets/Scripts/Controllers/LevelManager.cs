@@ -21,8 +21,15 @@ public class LevelManager : MonoBehaviour {
 
     void Start ()
     {
+        if (GameManager.Instance.IsLoadActive)
+        {
+            GameManager.Instance.LoadingState(false);
+        }
         player = GameObject.FindGameObjectWithTag("Player") as GameObject;
-        defaultPos = player.transform.position;
+        if (player)
+        {
+            defaultPos = player.transform.position;
+        }
     }
 
     public void SpawnPlayer ()
