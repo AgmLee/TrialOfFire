@@ -117,7 +117,7 @@ public class CameraController : MonoBehaviour {
     RaycastHit hit;
     void Update()
     {
-        if (!GameManager.inst.IsPaused)
+        //if (!GameManager.inst.IsPaused)
         {
             //Input
             float hori = 0.0f;

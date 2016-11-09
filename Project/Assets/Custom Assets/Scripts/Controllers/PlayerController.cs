@@ -1,17 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-
-public static class PlayerInput 
-{
-    public static KeyCode positiveVerticalInput = KeyCode.W;
-    public static KeyCode negativeVerticalInput = KeyCode.S;
-    public static KeyCode positiveHorizontalInput = KeyCode.D;
-    public static KeyCode negativeHorizontalInput = KeyCode.A;
-    public static KeyCode jumpInput = KeyCode.Space;
-}
-
-
 [RequireComponent (typeof(Rigidbody))]
 public class PlayerController : MonoBehaviour 
 {
@@ -19,6 +8,7 @@ public class PlayerController : MonoBehaviour
     public bool useRigidbodyRotation = false;
 
     public Transform cameraPivotTransform = null;
+    public Animator animController;
     [Range(0,1)]
     public float groundCheckLength = 0.75f;
     public float movementSpeed = 10;
@@ -60,6 +50,16 @@ public class PlayerController : MonoBehaviour
         {
             platforms[i] = plats[i].GetComponent<MovingPlatform>();
         }
+
+        if (animController == null)
+        {
+            animController = GetComponent<Animator>();
+
+            if (animController == null)
+            {
+                Debug.Log("The player has no Animator Controller assigned to the Player script.");
+            }
+        }
     }
 
     void OnApplicationQuit ()
@@ -76,6 +76,8 @@ public class PlayerController : MonoBehaviour
         jumpInput = Input.GetButton ("Jump");
         horizontalInput = Input.GetAxis("Horizontal");
         verticalInput = Input.GetAxis("Vertical");
+
+        SetAnimatorParameters();
 
         grounded = IsGrounded();
 
@@ -110,6 +112,27 @@ public class PlayerController : MonoBehaviour
         if (transform.position.y < -1000)
         {
             LevelManager.instance.SpawnPlayer();
+        }
+    }
+
+    void SetAnimatorParameters ()
+    {
+        if (horizontalInput != 0 || verticalInput != 0)
+        {
+            animController.SetBool("IsMoving", true);
+        }
+        else
+        {
+            animController.SetBool("IsMoving", false);
+        }
+
+        if (jumpInput)
+        {
+            animController.SetBool("IsJumping", true);
+        }
+        else
+        {
+            animController.SetBool("IsJumping", false);
         }
     }
 
