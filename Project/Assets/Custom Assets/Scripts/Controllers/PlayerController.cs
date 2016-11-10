@@ -32,7 +32,7 @@ public class PlayerController : MonoBehaviour
     private bool jumpInput;
     private bool isJumping = false;
     private bool collidingInAir = false;
-    private bool stillOnPlatform = false;
+    private bool onPlatform = false;
     private bool checkForPlatform = false;
     private bool grounded = false;
 
@@ -77,9 +77,9 @@ public class PlayerController : MonoBehaviour
         horizontalInput = Input.GetAxis("Horizontal");
         verticalInput = Input.GetAxis("Vertical");
 
-        SetAnimatorParameters();
-
         grounded = IsGrounded();
+
+        SetAnimatorParameters();
 
         if (grounded && checkForPlatform)
         {
@@ -94,7 +94,7 @@ public class PlayerController : MonoBehaviour
                 isJumping = true;
                 rb.velocity = new Vector3(rb.velocity.x, jumpHeight, rb.velocity.z);
                 platformNo = -1;
-                stillOnPlatform = false;
+
             }
             else if (isJumping && !jumpInput)
             {
@@ -107,6 +107,7 @@ public class PlayerController : MonoBehaviour
         else
         {
             checkForPlatform = true;
+            onPlatform = false;
         }
 
         if (transform.position.y < -1000)
@@ -126,13 +127,24 @@ public class PlayerController : MonoBehaviour
             animController.SetBool("IsMoving", false);
         }
 
-        if (jumpInput)
+        if (!grounded/*(rb.velocity.y > 0 && !onPlatform)*/)
         {
             animController.SetBool("IsJumping", true);
+            animController.SetBool("Grounded", false);
         }
         else
         {
             animController.SetBool("IsJumping", false);
+            animController.SetBool("Grounded", true);
+        }
+
+        if ((raycastHit.point - new Vector3 (raycastHit.point.x, transform.position.y, raycastHit.point.z)).magnitude < 7f/*grounded*/)
+        {
+            animController.SetBool("InLandingDistance", true);
+        }
+        else
+        {
+            animController.SetBool("InLandingDistance", false);
         }
     }
 
@@ -171,8 +183,9 @@ public class PlayerController : MonoBehaviour
         //        rb.AddForce(velocityDiff, ForceMode.VelocityChange);
         //    }
         //}
-   
-        rb.AddForce(-Vector3.up * gravity, ForceMode.Impulse);      
+
+        if (!grounded)
+            rb.AddForce(-Vector3.up * gravity, ForceMode.Impulse);      
     }
 
     bool IsGrounded ()
@@ -185,19 +198,19 @@ public class PlayerController : MonoBehaviour
             }
         }
         else if (Physics.Raycast(transform.position + (transform.forward * groundCheckLength), -Vector3.up, out raycastHit))
-       {
+        {
             if ((raycastHit.point - transform.position).sqrMagnitude < groundCheckLength)
            {
                return true;
            }
-       }
+        }
         else if (Physics.Raycast(transform.position - (transform.forward * groundCheckLength), -Vector3.up, out raycastHit))
-       {
+        {
             if ((raycastHit.point - transform.position).sqrMagnitude < groundCheckLength)
            {
                return true;
            }
-       }
+        }
 
         return false;
     }
@@ -222,6 +235,7 @@ public class PlayerController : MonoBehaviour
                 transform.position.z >= platformMinZ && transform.position.z <= platformMaxZ &&
                     transform.position.y >= platformMaxY && transform.position.y <= platformMaxY + GetComponent<Collider>().bounds.max.y)
                 {
+                    onPlatform = true;
                     return i;
                 }
             }
