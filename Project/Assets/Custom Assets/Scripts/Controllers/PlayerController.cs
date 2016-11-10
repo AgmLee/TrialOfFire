@@ -138,7 +138,7 @@ public class PlayerController : MonoBehaviour
             animController.SetBool("Grounded", true);
         }
 
-        if ((raycastHit.point - new Vector3 (raycastHit.point.x, transform.position.y, raycastHit.point.z)).magnitude < 7f/*grounded*/)
+        if ((raycastHit.point - new Vector3 (raycastHit.point.x, transform.position.y, raycastHit.point.z)).magnitude < 5f/*grounded*/)
         {
             animController.SetBool("InLandingDistance", true);
         }

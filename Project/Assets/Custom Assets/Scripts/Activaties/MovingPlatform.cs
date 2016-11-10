@@ -134,6 +134,10 @@ public class MovingPlatform : MonoBehaviour, IAction {
 
     public Vector3 GetVelocity ()
     {
-        return direction * speed;
+        if (Vector3.Distance(ownTransform.position, path[0].position) > 0.05f)
+        {
+            return direction * speed;
+        }
+        return Vector3.zero;
     }
 }
