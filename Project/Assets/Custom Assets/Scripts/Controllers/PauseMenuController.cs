@@ -33,7 +33,6 @@ public class PauseMenuController : MonoBehaviour {
         {
             GameManager.Instance.PauseGame();
             canvas.SetActive(true);
-            SwitchMenu(0);
         }
     }
     private float timer = 0;

@@ -40,6 +40,12 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - first:
+        name: _Diffuse
+      second:
+        m_Texture: {fileID: 2800000, guid: 7978df032d502b745b3e6a8723127ed6, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
         name: _EmissionMap
       second:
         m_Texture: {fileID: 0}
@@ -53,6 +59,12 @@ Material:
         m_Offset: {x: 0, y: 0}
     - first:
         name: _MetallicGlossMap
+      second:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
+        name: _Normals
       second:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -75,7 +87,16 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - first:
+        name: _Texture
+      second:
+        m_Texture: {fileID: 2800000, guid: 7978df032d502b745b3e6a8723127ed6, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Floats:
+    - first:
+        name: _Bands
+      second: 8
     - first:
         name: _BumpScale
       second: 1
@@ -88,6 +109,9 @@ Material:
     - first:
         name: _DstBlend
       second: 10
+    - first:
+        name: _Gloss
+      second: 1
     - first:
         name: _GlossMapScale
       second: 1
@@ -109,6 +133,9 @@ Material:
     - first:
         name: _Outline
       second: 0.005
+    - first:
+        name: _OutlineWidth
+      second: 0.01
     - first:
         name: _Parallax
       second: 0.02
@@ -137,3 +164,12 @@ Material:
     - first:
         name: _OutlineColor
       second: {r: 0, g: 0, b: 0, a: 1}
+    - first:
+        name: _OutlineColour
+      second: {r: 0, g: 0, b: 0, a: 1}
+    - first:
+        name: _Tint
+      second: {r: 0, g: 0, b: 0, a: 1}
+    - first:
+        name: _TintColour
+      second: {r: 1, g: 0, b: 0, a: 1}

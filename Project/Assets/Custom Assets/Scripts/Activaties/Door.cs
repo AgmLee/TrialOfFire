@@ -38,13 +38,13 @@ public class Door : MonoBehaviour, IAction
         }
         if (tally >= requirementAmout)
         {
-            isActive = true;
+            isActive = !invert;
             aus.Play();
             door.SetBool("IsActive", isActive);
         }
-        else if (isActive)
+        else if ((isActive && !invert) || (!isActive && invert))
         {
-            isActive = false;
+            isActive = invert;
             aus.PlayOneShot(close);
             door.SetBool("IsActive", isActive);
         }

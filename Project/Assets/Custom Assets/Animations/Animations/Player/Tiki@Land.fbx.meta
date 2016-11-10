@@ -1,0 +1,199 @@
+fileFormatVersion: 2
+guid: c6501b036b623df4fb09615b06d0f637
+timeCreated: 1478737430
+licenseType: Pro
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: Base
+    100002: Base_Con
+    100004: Collarbone
+    100006: Feather1_Con
+    100008: Feathers1
+    100010: Feathers2
+    100012: Feathers2_Con
+    100014: Feathers3
+    100016: Head
+    100018: joint1
+    100020: joint2
+    100022: joint3
+    100024: joint4
+    100026: L_Ankle
+    100028: L_Clav__Con
+    100030: L_Collar
+    100032: L_Elbow
+    100034: L_Elbow_Con
+    100036: L_Foot
+    100038: L_Foot_Con
+    100040: L_Hand
+    100042: L_Hip
+    100044: L_Knee
+    100046: L_KNee_Con
+    100048: L_Leg_Con
+    100050: L_Shoulder
+    100052: L_Shoulder_Con
+    100054: Neck
+    100056: Neck_Con
+    100058: polySurface117
+    100060: polySurface151
+    100062: polySurface153
+    100064: polySurface155
+    100066: polySurface186
+    100068: polySurface225
+    100070: polySurface254
+    100072: polySurface76
+    100074: polySurface98
+    100076: R_Ankle
+    100078: R_Clav_Con
+    100080: R_Collar
+    100082: R_Elbow
+    100084: R_Elbow_Con
+    100086: R_Foot
+    100088: R_Foot_Con
+    100090: R_Hand
+    100092: R_Hip
+    100094: R_Knee
+    100096: R_Knee_Con
+    100098: R_Leg_Con
+    100100: R_Shoulder
+    100102: R_Shoulder_Con
+    100104: Rib_Con
+    100106: Ribs
+    100108: Skirt_Back_Con
+    100110: Skirt_Front_Con
+    100112: //RootNode
+    400000: Base
+    400002: Base_Con
+    400004: Collarbone
+    400006: Feather1_Con
+    400008: Feathers1
+    400010: Feathers2
+    400012: Feathers2_Con
+    400014: Feathers3
+    400016: Head
+    400018: joint1
+    400020: joint2
+    400022: joint3
+    400024: joint4
+    400026: L_Ankle
+    400028: L_Clav__Con
+    400030: L_Collar
+    400032: L_Elbow
+    400034: L_Elbow_Con
+    400036: L_Foot
+    400038: L_Foot_Con
+    400040: L_Hand
+    400042: L_Hip
+    400044: L_Knee
+    400046: L_KNee_Con
+    400048: L_Leg_Con
+    400050: L_Shoulder
+    400052: L_Shoulder_Con
+    400054: Neck
+    400056: Neck_Con
+    400058: polySurface117
+    400060: polySurface151
+    400062: polySurface153
+    400064: polySurface155
+    400066: polySurface186
+    400068: polySurface225
+    400070: polySurface254
+    400072: polySurface76
+    400074: polySurface98
+    400076: R_Ankle
+    400078: R_Clav_Con
+    400080: R_Collar
+    400082: R_Elbow
+    400084: R_Elbow_Con
+    400086: R_Foot
+    400088: R_Foot_Con
+    400090: R_Hand
+    400092: R_Hip
+    400094: R_Knee
+    400096: R_Knee_Con
+    400098: R_Leg_Con
+    400100: R_Shoulder
+    400102: R_Shoulder_Con
+    400104: Rib_Con
+    400106: Ribs
+    400108: Skirt_Back_Con
+    400110: Skirt_Front_Con
+    400112: //RootNode
+    4300000: polySurface98
+    4300002: polySurface117
+    4300004: polySurface155
+    4300006: polySurface186
+    4300008: polySurface254
+    4300010: polySurface225
+    7400000: Take 001
+    9500000: //RootNode
+    13700000: polySurface117
+    13700002: polySurface155
+    13700004: polySurface186
+    13700006: polySurface225
+    13700008: polySurface254
+    13700010: polySurface98
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

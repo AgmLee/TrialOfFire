@@ -1,93 +1,131 @@
 fileFormatVersion: 2
-guid: 4f73dffcef25b834f98a10a93a242d61
-timeCreated: 1478667413
+guid: 3ea23a4c695592140ac0ce23ae09a91b
+timeCreated: 1478738713
 licenseType: Pro
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
     100000: Base
-    100002: Collarbone
-    100004: Feathers1
-    100006: Feathers2
-    100008: Feathers3
-    100010: Head
-    100012: joint1
-    100014: joint2
-    100016: joint3
-    100018: joint4
-    100020: L_Ankle
-    100022: L_Collar
-    100024: L_Elbow
-    100026: L_Foot
-    100028: L_Hand
-    100030: L_Hip
-    100032: L_Knee
-    100034: L_Shoulder
-    100036: Neck
-    100038: polySurface117
-    100040: polySurface151
-    100042: polySurface153
-    100044: polySurface155
-    100046: polySurface186
-    100048: polySurface225
-    100050: polySurface254
-    100052: polySurface76
-    100054: polySurface98
-    100056: R_Ankle
-    100058: R_Collar
-    100060: R_Elbow
-    100062: R_Foot
-    100064: R_Hand
-    100066: R_Hip
-    100068: R_Knee
-    100070: R_Shoulder
-    100072: Ribs
-    100074: //RootNode
+    100002: Base_Con
+    100004: Collarbone
+    100006: Feather1_Con
+    100008: Feathers1
+    100010: Feathers2
+    100012: Feathers2_Con
+    100014: Feathers3
+    100016: Head
+    100018: joint1
+    100020: joint2
+    100022: joint3
+    100024: joint4
+    100026: L_Ankle
+    100028: L_Clav__Con
+    100030: L_Collar
+    100032: L_Elbow
+    100034: L_Elbow_Con
+    100036: L_Foot
+    100038: L_Foot_Con
+    100040: L_Hand
+    100042: L_Hip
+    100044: L_Knee
+    100046: L_KNee_Con
+    100048: L_Leg_Con
+    100050: L_Shoulder
+    100052: L_Shoulder_Con
+    100054: Neck
+    100056: Neck_Con
+    100058: polySurface117
+    100060: polySurface151
+    100062: polySurface153
+    100064: polySurface155
+    100066: polySurface186
+    100068: polySurface225
+    100070: polySurface254
+    100072: polySurface76
+    100074: polySurface98
+    100076: R_Ankle
+    100078: R_Clav_Con
+    100080: R_Collar
+    100082: R_Elbow
+    100084: R_Elbow_Con
+    100086: R_Foot
+    100088: R_Foot_Con
+    100090: R_Hand
+    100092: R_Hip
+    100094: R_Knee
+    100096: R_Knee_Con
+    100098: R_Leg_Con
+    100100: R_Shoulder
+    100102: R_Shoulder_Con
+    100104: Rib_Con
+    100106: Ribs
+    100108: Skirt_Back_Con
+    100110: Skirt_Front_Con
+    100112: //RootNode
     400000: Base
-    400002: Collarbone
-    400004: Feathers1
-    400006: Feathers2
-    400008: Feathers3
-    400010: Head
-    400012: joint1
-    400014: joint2
-    400016: joint3
-    400018: joint4
-    400020: L_Ankle
-    400022: L_Collar
-    400024: L_Elbow
-    400026: L_Foot
-    400028: L_Hand
-    400030: L_Hip
-    400032: L_Knee
-    400034: L_Shoulder
-    400036: Neck
-    400038: polySurface117
-    400040: polySurface151
-    400042: polySurface153
-    400044: polySurface155
-    400046: polySurface186
-    400048: polySurface225
-    400050: polySurface254
-    400052: polySurface76
-    400054: polySurface98
-    400056: R_Ankle
-    400058: R_Collar
-    400060: R_Elbow
-    400062: R_Foot
-    400064: R_Hand
-    400066: R_Hip
-    400068: R_Knee
-    400070: R_Shoulder
-    400072: Ribs
-    400074: //RootNode
+    400002: Base_Con
+    400004: Collarbone
+    400006: Feather1_Con
+    400008: Feathers1
+    400010: Feathers2
+    400012: Feathers2_Con
+    400014: Feathers3
+    400016: Head
+    400018: joint1
+    400020: joint2
+    400022: joint3
+    400024: joint4
+    400026: L_Ankle
+    400028: L_Clav__Con
+    400030: L_Collar
+    400032: L_Elbow
+    400034: L_Elbow_Con
+    400036: L_Foot
+    400038: L_Foot_Con
+    400040: L_Hand
+    400042: L_Hip
+    400044: L_Knee
+    400046: L_KNee_Con
+    400048: L_Leg_Con
+    400050: L_Shoulder
+    400052: L_Shoulder_Con
+    400054: Neck
+    400056: Neck_Con
+    400058: polySurface117
+    400060: polySurface151
+    400062: polySurface153
+    400064: polySurface155
+    400066: polySurface186
+    400068: polySurface225
+    400070: polySurface254
+    400072: polySurface76
+    400074: polySurface98
+    400076: R_Ankle
+    400078: R_Clav_Con
+    400080: R_Collar
+    400082: R_Elbow
+    400084: R_Elbow_Con
+    400086: R_Foot
+    400088: R_Foot_Con
+    400090: R_Hand
+    400092: R_Hip
+    400094: R_Knee
+    400096: R_Knee_Con
+    400098: R_Leg_Con
+    400100: R_Shoulder
+    400102: R_Shoulder_Con
+    400104: Rib_Con
+    400106: Ribs
+    400108: Skirt_Back_Con
+    400110: Skirt_Front_Con
+    400112: //RootNode
     4300000: polySurface98
     4300002: polySurface117
     4300004: polySurface155
     4300006: polySurface186
     4300008: polySurface254
     4300010: polySurface225
-    7400000: Take 001
+    7400000: Idle
     9500000: //RootNode
     13700000: polySurface117
     13700002: polySurface155
@@ -115,7 +153,149 @@ ModelImporter:
     animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
-    clipAnimations: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Idle
+      takeName: Take 001
+      firstFrame: 1
+      lastFrame: 40
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Base
+        weight: 1
+      - path: Base/joint1
+        weight: 1
+      - path: Base/joint1/joint2
+        weight: 1
+      - path: Base/joint3
+        weight: 1
+      - path: Base/joint3/joint4
+        weight: 1
+      - path: Base/L_Hip
+        weight: 1
+      - path: Base/L_Hip/L_Knee
+        weight: 1
+      - path: Base/L_Hip/L_Knee/L_Ankle
+        weight: 1
+      - path: Base/L_Hip/L_Knee/L_Ankle/L_Foot
+        weight: 1
+      - path: Base/R_Hip
+        weight: 1
+      - path: Base/R_Hip/R_Knee
+        weight: 1
+      - path: Base/R_Hip/R_Knee/R_Ankle
+        weight: 1
+      - path: Base/R_Hip/R_Knee/R_Ankle/R_Foot
+        weight: 1
+      - path: Base/Ribs
+        weight: 1
+      - path: Base/Ribs/Collarbone
+        weight: 1
+      - path: Base/Ribs/Collarbone/L_Collar
+        weight: 1
+      - path: Base/Ribs/Collarbone/L_Collar/L_Shoulder
+        weight: 1
+      - path: Base/Ribs/Collarbone/L_Collar/L_Shoulder/L_Elbow
+        weight: 1
+      - path: Base/Ribs/Collarbone/L_Collar/L_Shoulder/L_Elbow/L_Hand
+        weight: 1
+      - path: Base/Ribs/Collarbone/Neck
+        weight: 1
+      - path: Base/Ribs/Collarbone/Neck/Head
+        weight: 1
+      - path: Base/Ribs/Collarbone/Neck/Head/Feathers1
+        weight: 1
+      - path: Base/Ribs/Collarbone/Neck/Head/Feathers1/Feathers2
+        weight: 1
+      - path: Base/Ribs/Collarbone/Neck/Head/Feathers1/Feathers2/Feathers3
+        weight: 1
+      - path: Base/Ribs/Collarbone/R_Collar
+        weight: 1
+      - path: Base/Ribs/Collarbone/R_Collar/R_Shoulder
+        weight: 1
+      - path: Base/Ribs/Collarbone/R_Collar/R_Shoulder/R_Elbow
+        weight: 1
+      - path: Base/Ribs/Collarbone/R_Collar/R_Shoulder/R_Elbow/R_Hand
+        weight: 1
+      - path: Base_Con
+        weight: 1
+      - path: Base_Con/L_Leg_Con
+        weight: 1
+      - path: Base_Con/L_Leg_Con/L_KNee_Con
+        weight: 1
+      - path: Base_Con/L_Leg_Con/L_KNee_Con/L_Foot_Con
+        weight: 1
+      - path: Base_Con/R_Leg_Con
+        weight: 1
+      - path: Base_Con/R_Leg_Con/R_Knee_Con
+        weight: 1
+      - path: Base_Con/R_Leg_Con/R_Knee_Con/R_Foot_Con
+        weight: 1
+      - path: Base_Con/Rib_Con
+        weight: 1
+      - path: Base_Con/Rib_Con/L_Clav__Con
+        weight: 1
+      - path: Base_Con/Rib_Con/L_Clav__Con/L_Shoulder_Con
+        weight: 1
+      - path: Base_Con/Rib_Con/L_Clav__Con/L_Shoulder_Con/L_Elbow_Con
+        weight: 1
+      - path: Base_Con/Rib_Con/Neck_Con
+        weight: 1
+      - path: Base_Con/Rib_Con/Neck_Con/Feather1_Con
+        weight: 1
+      - path: Base_Con/Rib_Con/Neck_Con/Feather1_Con/Feathers2_Con
+        weight: 1
+      - path: Base_Con/Rib_Con/R_Clav_Con
+        weight: 1
+      - path: Base_Con/Rib_Con/R_Clav_Con/R_Shoulder_Con
+        weight: 1
+      - path: Base_Con/Rib_Con/R_Clav_Con/R_Shoulder_Con/R_Elbow_Con
+        weight: 1
+      - path: Base_Con/Skirt_Back_Con
+        weight: 1
+      - path: Base_Con/Skirt_Front_Con
+        weight: 1
+      - path: polySurface76
+        weight: 1
+      - path: polySurface76/polySurface98
+        weight: 1
+      - path: polySurface76/polySurface117
+        weight: 1
+      - path: polySurface151
+        weight: 1
+      - path: polySurface151/polySurface153
+        weight: 1
+      - path: polySurface151/polySurface153/polySurface155
+        weight: 1
+      - path: polySurface186
+        weight: 1
+      - path: polySurface225
+        weight: 1
+      - path: polySurface254
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 1
     isReadable: 1
   meshes:
     lODScreenPercentages: []

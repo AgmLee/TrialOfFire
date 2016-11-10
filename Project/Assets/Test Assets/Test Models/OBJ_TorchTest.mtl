@@ -1,0 +1,165 @@
+newmtl OBJ_TorchSwitchVines1:branch
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.40 0.40 0.40
+Tf 1.00 1.00 1.00
+map_Kd vine and leaves_2.png
+Ni 1.00
+newmtl OBJ_TorchSwitchVines1:leaf_adult
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.40 0.40 0.40
+Tf 1.00 1.00 1.00
+map_Kd vine and leaves_2.png
+Ni 1.00
+newmtl OBJ_TorchSwitchVines1:leaf_young
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.40 0.40 0.40
+Tf 1.00 1.00 1.00
+map_Kd vine and leaves_2.png
+Ni 1.00
+newmtl OBJ_TorchSwitchVines2:branch
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.40 0.40 0.40
+Tf 1.00 1.00 1.00
+map_Kd vine and leaves_2.png
+Ni 1.00
+newmtl OBJ_TorchSwitchVines2:leaf_adult
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.40 0.40 0.40
+Tf 1.00 1.00 1.00
+map_Kd vine and leaves_2.png
+Ni 1.00
+newmtl OBJ_TorchSwitchVines2:leaf_young
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.40 0.40 0.40
+Tf 1.00 1.00 1.00
+map_Kd vine and leaves_2.png
+Ni 1.00
+newmtl OBJ_TorchSwitchVines3:branch
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.40 0.40 0.40
+Tf 1.00 1.00 1.00
+map_Kd vine and leaves_2.png
+Ni 1.00
+newmtl OBJ_TorchSwitchVines3:leaf_adult
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.40 0.40 0.40
+Tf 1.00 1.00 1.00
+map_Kd vine and leaves_2.png
+Ni 1.00
+newmtl OBJ_TorchSwitchVines3:leaf_young
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.40 0.40 0.40
+Tf 1.00 1.00 1.00
+map_Kd vine and leaves_2.png
+Ni 1.00
+newmtl Tikiman_0004:lambert2SG
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl Tikiman_0004:lambert3SG
+illum 4
+Kd 1.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl Tikiman_0004:lambert4SG
+illum 4
+Kd 0.47 0.26 0.18
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl Tikiman_0004:lambert6SG
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl Tikiman_0004:lambert8SG
+illum 4
+Kd 0.14 0.54 0.13
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl Tikiman_0004:lambert9SG
+illum 4
+Kd 0.03 1.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl Tikiman_0004:lambert11SG
+illum 4
+Kd 1.00 0.77 0.69
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl Tikiman_Rig_texture_1:lambert2SG
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl Tikiman_Rig_texture_1:lambert5SG
+illum 4
+Kd 0.72 0.53 0.30
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl initialShadingGroup
+illum 4
+Kd 0.50 0.50 0.50
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl test:branch
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.40 0.40 0.40
+Tf 1.00 1.00 1.00
+map_Kd vine and leaves_2.png
+Ni 1.00
+newmtl test:leaf_adult
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.40 0.40 0.40
+Tf 1.00 1.00 1.00
+map_Kd vine and leaves_2.png
+Ni 1.00
+newmtl test:leaf_young
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.40 0.40 0.40
+Tf 1.00 1.00 1.00
+map_Kd vine and leaves_2.png
+Ni 1.00
+newmtl test2:branch
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.40 0.40 0.40
+Tf 1.00 1.00 1.00
+map_Kd vine and leaves_2.png
+Ni 1.00
+newmtl test2:leaf_adult
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.40 0.40 0.40
+Tf 1.00 1.00 1.00
+map_Kd vine and leaves_2.png
+Ni 1.00
+newmtl test2:leaf_young
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.40 0.40 0.40
+Tf 1.00 1.00 1.00
+map_Kd vine and leaves_2.png
+Ni 1.00
