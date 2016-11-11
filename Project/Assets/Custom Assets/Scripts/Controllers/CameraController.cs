@@ -115,7 +115,7 @@ public class CameraController : MonoBehaviour {
     }
 
     RaycastHit hit;
-    void Update()
+    void LateUpdate()
     {
         if (!GameManager.Instance.IsPaused)
         {

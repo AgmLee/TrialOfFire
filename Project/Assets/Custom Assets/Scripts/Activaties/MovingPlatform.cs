@@ -45,11 +45,11 @@ public class MovingPlatform : MonoBehaviour, IAction {
         }
     }
 
-    void FixedUpdate ()
+    void LateUpdate ()
     {
         if (isActive)
         {
-            ownTransform.position += direction * speed * Time.fixedDeltaTime;
+            ownTransform.position += direction * speed * Time.deltaTime;
         }
     }
     

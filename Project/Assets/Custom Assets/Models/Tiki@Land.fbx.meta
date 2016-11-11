@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: 4f73dffcef25b834f98a10a93a242d61
-timeCreated: 1478738713
+guid: c6501b036b623df4fb09615b06d0f637
+timeCreated: 1478737430
 licenseType: Pro
 ModelImporter:
   serializedVersion: 19
@@ -125,7 +125,7 @@ ModelImporter:
     4300006: polySurface186
     4300008: polySurface254
     4300010: polySurface225
-    7400000: Idle
+    7400000: Take 001
     9500000: //RootNode
     13700000: polySurface117
     13700002: polySurface155
@@ -153,149 +153,7 @@ ModelImporter:
     animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
-    clipAnimations:
-    - serializedVersion: 16
-      name: Idle
-      takeName: Take 001
-      firstFrame: 1
-      lastFrame: 40
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 1
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask:
-      - path: 
-        weight: 1
-      - path: Base
-        weight: 1
-      - path: Base/joint1
-        weight: 1
-      - path: Base/joint1/joint2
-        weight: 1
-      - path: Base/joint3
-        weight: 1
-      - path: Base/joint3/joint4
-        weight: 1
-      - path: Base/L_Hip
-        weight: 1
-      - path: Base/L_Hip/L_Knee
-        weight: 1
-      - path: Base/L_Hip/L_Knee/L_Ankle
-        weight: 1
-      - path: Base/L_Hip/L_Knee/L_Ankle/L_Foot
-        weight: 1
-      - path: Base/R_Hip
-        weight: 1
-      - path: Base/R_Hip/R_Knee
-        weight: 1
-      - path: Base/R_Hip/R_Knee/R_Ankle
-        weight: 1
-      - path: Base/R_Hip/R_Knee/R_Ankle/R_Foot
-        weight: 1
-      - path: Base/Ribs
-        weight: 1
-      - path: Base/Ribs/Collarbone
-        weight: 1
-      - path: Base/Ribs/Collarbone/L_Collar
-        weight: 1
-      - path: Base/Ribs/Collarbone/L_Collar/L_Shoulder
-        weight: 1
-      - path: Base/Ribs/Collarbone/L_Collar/L_Shoulder/L_Elbow
-        weight: 1
-      - path: Base/Ribs/Collarbone/L_Collar/L_Shoulder/L_Elbow/L_Hand
-        weight: 1
-      - path: Base/Ribs/Collarbone/Neck
-        weight: 1
-      - path: Base/Ribs/Collarbone/Neck/Head
-        weight: 1
-      - path: Base/Ribs/Collarbone/Neck/Head/Feathers1
-        weight: 1
-      - path: Base/Ribs/Collarbone/Neck/Head/Feathers1/Feathers2
-        weight: 1
-      - path: Base/Ribs/Collarbone/Neck/Head/Feathers1/Feathers2/Feathers3
-        weight: 1
-      - path: Base/Ribs/Collarbone/R_Collar
-        weight: 1
-      - path: Base/Ribs/Collarbone/R_Collar/R_Shoulder
-        weight: 1
-      - path: Base/Ribs/Collarbone/R_Collar/R_Shoulder/R_Elbow
-        weight: 1
-      - path: Base/Ribs/Collarbone/R_Collar/R_Shoulder/R_Elbow/R_Hand
-        weight: 1
-      - path: Base_Con
-        weight: 1
-      - path: Base_Con/L_Leg_Con
-        weight: 1
-      - path: Base_Con/L_Leg_Con/L_KNee_Con
-        weight: 1
-      - path: Base_Con/L_Leg_Con/L_KNee_Con/L_Foot_Con
-        weight: 1
-      - path: Base_Con/R_Leg_Con
-        weight: 1
-      - path: Base_Con/R_Leg_Con/R_Knee_Con
-        weight: 1
-      - path: Base_Con/R_Leg_Con/R_Knee_Con/R_Foot_Con
-        weight: 1
-      - path: Base_Con/Rib_Con
-        weight: 1
-      - path: Base_Con/Rib_Con/L_Clav__Con
-        weight: 1
-      - path: Base_Con/Rib_Con/L_Clav__Con/L_Shoulder_Con
-        weight: 1
-      - path: Base_Con/Rib_Con/L_Clav__Con/L_Shoulder_Con/L_Elbow_Con
-        weight: 1
-      - path: Base_Con/Rib_Con/Neck_Con
-        weight: 1
-      - path: Base_Con/Rib_Con/Neck_Con/Feather1_Con
-        weight: 1
-      - path: Base_Con/Rib_Con/Neck_Con/Feather1_Con/Feathers2_Con
-        weight: 1
-      - path: Base_Con/Rib_Con/R_Clav_Con
-        weight: 1
-      - path: Base_Con/Rib_Con/R_Clav_Con/R_Shoulder_Con
-        weight: 1
-      - path: Base_Con/Rib_Con/R_Clav_Con/R_Shoulder_Con/R_Elbow_Con
-        weight: 1
-      - path: Base_Con/Skirt_Back_Con
-        weight: 1
-      - path: Base_Con/Skirt_Front_Con
-        weight: 1
-      - path: polySurface76
-        weight: 1
-      - path: polySurface76/polySurface98
-        weight: 1
-      - path: polySurface76/polySurface117
-        weight: 1
-      - path: polySurface151
-        weight: 1
-      - path: polySurface151/polySurface153
-        weight: 1
-      - path: polySurface151/polySurface153/polySurface155
-        weight: 1
-      - path: polySurface186
-        weight: 1
-      - path: polySurface225
-        weight: 1
-      - path: polySurface254
-        weight: 1
-      maskType: 0
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 1
+    clipAnimations: []
     isReadable: 1
   meshes:
     lODScreenPercentages: []
