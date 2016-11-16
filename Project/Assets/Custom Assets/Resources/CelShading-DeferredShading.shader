@@ -1,4 +1,4 @@
-Shader "Hidden/Internal-DeferredShading" {
+Shader "Hidden/Internal-DeferredCelShading" {
 Properties {
 	_LightTexture0 ("", any) = "" {}
 	_LightTextureB0 ("", 2D) = "" {}
