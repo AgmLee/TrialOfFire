@@ -466,20 +466,10 @@ AudioSource:
     serializedVersion: 2
     m_Curve:
     - time: 0
-      value: 0
+      value: 0.5
       inSlope: 0
       outSlope: 0
       tangentMode: 0
-    - time: 0.99
-      value: 0
-      inSlope: 0
-      outSlope: 100.0001
-      tangentMode: 17
-    - time: 1
-      value: 1
-      inSlope: 100.0001
-      outSlope: 100.0001
-      tangentMode: 10
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
@@ -537,3 +527,4 @@ MonoBehaviour:
   close: {fileID: 8300000, guid: f0967728cbb96c04b9266c9dbb8dc261, type: 3}
   openSpeed: 3
   invert: 0
+  requirementAmout: 1

@@ -1,0 +1,158 @@
+fileFormatVersion: 2
+guid: 9473167f129842e4ab9f6cca390b48a6
+timeCreated: 1478825279
+licenseType: Pro
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: alligator_decimated:Group46593
+    100002: Body2
+    100004: Body2_Con
+    100006: Body_con
+    100008: //RootNode
+    100010: Croc
+    100012: Head
+    100014: Head_Con
+    100016: L_L_Clav
+    100018: L_L_Claw_Con
+    100020: L_L_Claw_Con 1
+    100022: L_L_Foot
+    100024: L_L_Knee
+    100026: L_L_Thigh
+    100028: L_L_Thigh_Con
+    100030: L_L_Thigh_Con1
+    100032: L_U_Clav
+    100034: L_U_Claw
+    100036: L_U_Claw_Con
+    100038: L_U_Elbow
+    100040: L_U_Shoulder_Con
+    100042: Neck
+    100044: Neck_Con
+    100046: Pelvis
+    100048: Pelvis_Con
+    100050: R_L_Clav
+    100052: R_L_Foot
+    100054: R_L_Knee
+    100056: R_L_Thigh
+    100058: R_U_Clav
+    100060: R_U_Claw
+    100062: R_U_Claw_Con
+    100064: R_U_Elbow
+    100066: R_U_Shoulder
+    100068: Snout
+    100070: Tail1
+    100072: Tail1_Con
+    100074: Tail2
+    100076: Tail2_Con
+    100078: Tail3
+    100080: Tail3_con
+    100082: Tail4
+    400000: alligator_decimated:Group46593
+    400002: Body2
+    400004: Body2_Con
+    400006: Body_con
+    400008: //RootNode
+    400010: Croc
+    400012: Head
+    400014: Head_Con
+    400016: L_L_Clav
+    400018: L_L_Claw_Con
+    400020: L_L_Claw_Con 1
+    400022: L_L_Foot
+    400024: L_L_Knee
+    400026: L_L_Thigh
+    400028: L_L_Thigh_Con
+    400030: L_L_Thigh_Con1
+    400032: L_U_Clav
+    400034: L_U_Claw
+    400036: L_U_Claw_Con
+    400038: L_U_Elbow
+    400040: L_U_Shoulder_Con
+    400042: Neck
+    400044: Neck_Con
+    400046: Pelvis
+    400048: Pelvis_Con
+    400050: R_L_Clav
+    400052: R_L_Foot
+    400054: R_L_Knee
+    400056: R_L_Thigh
+    400058: R_U_Clav
+    400060: R_U_Claw
+    400062: R_U_Claw_Con
+    400064: R_U_Elbow
+    400066: R_U_Shoulder
+    400068: Snout
+    400070: Tail1
+    400072: Tail1_Con
+    400074: Tail2
+    400076: Tail2_Con
+    400078: Tail3
+    400080: Tail3_con
+    400082: Tail4
+    4300000: alligator_decimated:Group46593
+    9500000: //RootNode
+    13700000: alligator_decimated:Group46593
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 30
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -57,7 +57,6 @@ half4 CalculateLight (unity_v2f_deferred i)
 	half oneMinusReflectivity = 1 - SpecularStrength(specColor.rgb);
 	light.ndotl = LambertTerm (normalWorld, light.dir);
     if (light.ndotl <= 0.0) light.ndotl = 0;
-    else if(light.ndotl <= 0.5 && light.ndotl > 0) light.ndotl = 0.5;
     else light.ndotl = 1;
 
 	UnityIndirect ind;
