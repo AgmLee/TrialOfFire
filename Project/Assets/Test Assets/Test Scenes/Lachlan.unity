@@ -37,7 +37,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44692558, g: 0.49678743, b: 0.57508624, a: 1}
+  m_IndirectSpecularColor: {r: 0.44692534, g: 0.49678725, b: 0.5750856, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -2320,6 +2320,7 @@ Prefab:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 114000012925225748, guid: ab60ceb0be227944787c7f1763a93fba, type: 2}
+    - {fileID: 114000013756791208, guid: ab60ceb0be227944787c7f1763a93fba, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: ab60ceb0be227944787c7f1763a93fba, type: 2}
   m_IsPrefabParent: 0
 --- !u!1001 &1118954989
@@ -2651,15 +2652,32 @@ MonoBehaviour:
   forwardRayDis: 1
   headRayDist: 2.5
   cam: {fileID: 1163056826}
-  groundMovementSpeed: 15
+  groundMovementSpeed: 20
   inAirMovementSpeed: 12
   gravity: -25
   forwardRayCount: 5
-  jumpSpeed: 30
+  jumpCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0.00438914
+      value: 1.0007275
+      inSlope: -2.8275359
+      outSlope: -2.8275359
+      tangentMode: 0
+    - time: 1.0008051
+      value: 0.0064478884
+      inSlope: -0.29734093
+      outSlope: -0.29734093
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  jumpForce: 30
   jumpDuration: 0.2
   onGround: 0
   onPlatform: 0
   rayPos: {fileID: 225788818}
+  animController: {fileID: 0}
 --- !u!1 &1793130659
 GameObject:
   m_ObjectHideFlags: 0

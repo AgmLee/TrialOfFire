@@ -3,23 +3,22 @@ using System.Collections;
 
 public class Controller : MonoBehaviour {
 
-    public float floatingGroundHeight = 1.25f;
-    public float bottomRayDist = 3;
-    public float forwardRayDis = 0.5f;
-    public float headRayDist = 2;
+    public float floatingGroundHeight = 0.1f;
+    public float bottomRayDist = 2.13f;
+    public float forwardRayDis = 1f;
+    public float headRayDist = 2.5f;
 
     public Transform cam;
-    public float groundMovementSpeed = 10;
-    public float inAirMovementSpeed = 6;
-    public float gravity = -20;
-    //float jumpHeight = 10;
-    //float jumpSpeed = 2;
+    public float groundMovementSpeed = 20;
+    public float inAirMovementSpeed = 12;
+    public float gravity = -25;
     public int forwardRayCount = 5;
-    //float rayOffset = 0.01f;
 
-    public float jumpSpeed = 10;
-    public float jumpDuration = 0.4f;
+    public AnimationCurve jumpCurve;
+    public float jumpForce = 30;
+    public float jumpDuration = 0.2f;
     private float curJumpTime = 0;
+    private bool jumpButtonReleased = true;
 
     PlayerInput input = new PlayerInput();
     Bounds bounds;
@@ -33,10 +32,14 @@ public class Controller : MonoBehaviour {
     private Vector3 groundpoint;
     private RaycastHit groundHit;
 
+    public Animator animController;
+
     void Start ()
     {
         bounds = GetComponent<Collider> ().bounds;
         cam = Camera.main.transform;
+        if (!animController)
+            animController = GetComponent<Animator> ();
     }
 
     void Update ()
@@ -46,14 +49,16 @@ public class Controller : MonoBehaviour {
         Movement();
         Rotation ();
         Jumping ();
+        SetAnimationParameters ();
     }
 
     void LateUpdate ()
     {
         if (curJumpTime < 0 && onGround)
         {
-            transform.position = Vector3.MoveTowards(transform.position, groundHit.point + (Vector3.up * floatingGroundHeight), 0.1f);
+            transform.position = Vector3.MoveTowards(transform.position, groundHit.point + (Vector3.up * floatingGroundHeight), 0.2f);
         }
+
         if (onPlatform)
         {
             Vector3 platformDir = groundHit.transform.GetComponent<MovingPlatform>().GetVelocity();
@@ -123,19 +128,72 @@ public class Controller : MonoBehaviour {
         if (lookDir.sqrMagnitude > 0)
             transform.rotation = Quaternion.LookRotation(lookDir);
     }
-        
+
     void Jumping ()
     {
         curJumpTime -= Time.deltaTime;
 
-        if ((curJumpTime < 0 && input.jump > 0) && onGround)
+        if (input.jump <= 0)
+        {
+            jumpButtonReleased = true;
+        }
+
+        if ((curJumpTime < 0 && input.jump > 0) && onGround && jumpButtonReleased)
         {
             curJumpTime = jumpDuration;
+            jumpButtonReleased = false;
         }
+
+        //if (curJumpTime >= 0 && !HeadCollision ())
+        //{
+        //    transform.position += (Vector3.up * jumpSpeed) * Time.deltaTime;
+        //}
 
         if (curJumpTime >= 0 && !HeadCollision ())
         {
-            transform.position += (Vector3.up * jumpSpeed) * Time.deltaTime;
+            float desiredJumpForce = jumpCurve.Evaluate (jumpDuration - curJumpTime) * jumpForce;
+            transform.position += (Vector3.up * desiredJumpForce) * Time.deltaTime;
+        }
+
+        if (HeadCollision ())
+        {
+            curJumpTime = -1;
+        }
+
+    }
+
+    void SetAnimationParameters ()
+    {
+        if (onGround && input.vertical == 0 && input.horizontal == 0)
+        {
+            animController.SetBool ("IDLE", true);
+            animController.SetBool ("MOVEMENT", false);
+            animController.SetBool ("JUMP", false);
+            animController.SetBool ("LAND", false);
+        }
+
+        if (onGround && (input.vertical != 0 || input.horizontal != 0))
+        {
+            animController.SetBool ("MOVEMENT", true);
+            animController.SetBool ("IDLE", false);
+            animController.SetBool ("JUMP", false);
+            animController.SetBool ("LAND", false);
+        }
+
+        if ((input.jump > 0) && onGround)
+        {
+            animController.SetBool ("JUMP", true);
+            animController.SetBool ("IDLE", false);
+            animController.SetBool ("MOVEMENT", false);
+            animController.SetBool ("LAND", false);
+        }
+
+        if (!onGround && curJumpTime < 0)
+        {
+            animController.SetBool ("LAND", true);
+            animController.SetBool ("JUMP", false);
+            animController.SetBool ("IDLE", false);
+            animController.SetBool ("MOVEMENT", false);
         }
     }
 
