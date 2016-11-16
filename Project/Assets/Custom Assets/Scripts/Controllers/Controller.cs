@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Controller : MonoBehaviour {
 
@@ -7,6 +8,7 @@ public class Controller : MonoBehaviour {
     public float bottomRayDist = 2.13f;
     public float forwardRayDis = 1f;
     public float headRayDist = 2.5f;
+    private List<RaycastHit> forwardRayHitPoints;
 
     public Transform cam;
     public float groundMovementSpeed = 20;
@@ -40,6 +42,9 @@ public class Controller : MonoBehaviour {
     private float curBouncebackTime = 0;
     private Quaternion bounceBackRot = Quaternion.identity;
     private bool touchedEnemy = false;
+
+    public float maxWalkAngle = 65f;
+    private int forwardRayColIndex = -1;
 
     void Start ()
     {
@@ -96,18 +101,18 @@ public class Controller : MonoBehaviour {
             Vector3 platformDir = groundHit.transform.GetComponent<MovingPlatform>().GetVelocity();
             transform.position += platformDir * Time.deltaTime;
         }
+            
     }
-
+    void OnCollisionEnter ()
+    {
+        Debug.Log ("Collision");
+    }
     void Movement ()
     {
         bool forwardCol = ForwardCollision();
         Vector3 platformVel = Vector3.zero;
         velocity = cam.rotation * new Vector3 (input.horizontal, 0, input.vertical);
         velocity.Normalize ();
-        //if (curJumpTime < 0)
-        //{
-        //    velocity = walkAngle * velocity;
-        //}
 
         if (onGround)
         {
@@ -257,45 +262,109 @@ public class Controller : MonoBehaviour {
         onPlatform = false;
         return false;
     }
-
+        
     bool ForwardCollision ()
     {
-        bool collisionDetected = false;
         float separation = 0;
         RaycastHit hit;
         Vector3 rayPoint = Vector3.zero;
         Ray ray;
-
+        forwardRayHitPoints = new List<RaycastHit> ();
+    
         for (int i = 0; i < forwardRayCount; i++)
         {
             separation = ((transform.localScale.y * 2.5f) / (forwardRayCount-1));
             rayPoint = new Vector3 (transform.position.x, (transform.position.y + (transform.localScale.y * 2.5f)) - (separation * i), transform.position.z);
             ray = new Ray (rayPoint, transform.forward);
 
-            if (Physics.Raycast (ray, out hit))
+            if (Physics.Raycast(ray, out hit))
             {
-                if (hit.transform.tag == "Ground")
-                {
-                    break;
-                }
-                float diff = (hit.point - rayPoint).sqrMagnitude;
-                if (diff <= (forwardRayDis * forwardRayDis))
-                {
-                    collisionDetected = true;
-
-                    if (hit.transform.GetComponent<Enemy>())
-                        touchedEnemy = true;
-                }
+                forwardRayHitPoints.Add (hit);
             }
-            if (collisionDetected)
-            {
-                break;
-            }
+    
             Debug.DrawLine(rayPoint, rayPoint + transform.forward, Color.red);
         }
 
-        return collisionDetected;
+        for (int i = 0; i < forwardRayHitPoints.Count; i++)
+        {
+            float diff = (forwardRayHitPoints[i].point - new Vector3 (transform.position.x, forwardRayHitPoints[i].point.y, transform.position.z)).sqrMagnitude;
+            if (diff <= (forwardRayDis * forwardRayDis))
+            {
+                if (forwardRayHitPoints[i].transform.GetComponent<Enemy>())
+                {
+                    touchedEnemy = true;
+                    break;
+                }
+
+                float angle = Vector3.Angle (Vector3.up, forwardRayHitPoints[i].normal);
+                if (angle > maxWalkAngle)
+                {
+                    forwardRayColIndex = i;
+                    return true;
+                }
+
+            }
+        }
+
+        forwardRayColIndex = -1;
+        return false;
     }
+    //bool ForwardCollision ()
+    //{
+    //    bool collisionDetected = false;
+    //    float separation = 0;
+    //    RaycastHit hit;
+    //    Vector3 rayPoint = Vector3.zero;
+    //    Ray ray;
+    //
+    //    for (int i = 0; i < forwardRayCount; i++)
+    //    {
+    //        separation = ((transform.localScale.y * 2.5f) / (forwardRayCount-1));
+    //        rayPoint = new Vector3 (transform.position.x, (transform.position.y + (transform.localScale.y * 2.5f)) - (separation * i), transform.position.z);
+    //        ray = new Ray (rayPoint, transform.forward);
+    //
+    //        if (Physics.Raycast (ray, out hit))
+    //        {
+    //            if (hit.transform.tag == "Ground")
+    //            {
+    //                break;
+    //            }
+    //
+    //            float diff = (hit.point - rayPoint).sqrMagnitude;
+    //            if (diff <= (forwardRayDis * forwardRayDis))
+    //            {
+    //                if (hit.transform.GetComponent<Enemy>())
+    //                {
+    //                    touchedEnemy = true;
+    //                    collisionDetected = true;
+    //                    break;
+    //                }
+    //
+    //                float walkAngle = Vector3.Angle (transform.forward, hit.normal) - 90;
+    //                if (walkAngle <= maxWalkAngle && i != 0)
+    //                {
+    //                    collisionDetected = false;
+    //                    Debug.Log (walkAngle);
+    //                    break;
+    //                }
+    //                else
+    //                {
+    //                    collisionDetected = true;
+    //                }
+    //
+    //            }
+    //        }
+    //
+    //        if (collisionDetected)
+    //        {
+    //            break;
+    //        }
+    //
+    //        Debug.DrawLine(rayPoint, rayPoint + transform.forward, Color.red);
+    //    }
+    //
+    //    return collisionDetected;
+    //}
 
     bool HeadCollision ()
     {
