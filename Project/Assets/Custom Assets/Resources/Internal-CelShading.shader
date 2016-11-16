@@ -1,4 +1,4 @@
-Shader "Hidden/Internal-DeferredCelShading" {
+Shader "Hidden/Internal-CelShading" {
 Properties {
 	_LightTexture0 ("", any) = "" {}
 	_LightTextureB0 ("", 2D) = "" {}
@@ -56,8 +56,11 @@ half4 CalculateLight (unity_v2f_deferred i)
 	float3 eyeVec = normalize(wpos-_WorldSpaceCameraPos);
 	half oneMinusReflectivity = 1 - SpecularStrength(specColor.rgb);
 	light.ndotl = LambertTerm (normalWorld, light.dir);
-    if (light.ndotl <= 0.0) light.ndotl = 0;
-    else light.ndotl = 1;
+	if (light.ndotl <= 0.0) light.ndotl = 0;
+	else if (light.ndotl <= 0.25) light.ndotl = 0.25;
+	else if (light.ndotl <= 0.5) light.ndotl = 0.5;
+	else if (light.ndotl <= 0.75) light.ndotl = 0.75;
+	else light.ndotl = 1;
 
 	UnityIndirect ind;
 	UNITY_INITIALIZE_OUTPUT(UnityIndirect, ind);
