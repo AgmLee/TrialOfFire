@@ -21,12 +21,10 @@ public class Controller : MonoBehaviour {
     private bool jumpButtonReleased = true;
 
     PlayerInput input = new PlayerInput();
-    Bounds bounds;
 
     public bool onGround = false;
     public bool onPlatform = false;
     private Vector3 velocity = Vector3.zero;
-    private Quaternion walkAngle = Quaternion.identity;
 
     public Transform rayPos;
     private Vector3 groundpoint;
@@ -34,9 +32,17 @@ public class Controller : MonoBehaviour {
 
     public Animator animController;
 
+    public AnimationCurve bouncebackZForceCurve;
+    public bool bouncingback = false;
+    public float bouncebackYForce = 30;
+    public float bouncebackZForce = -25;
+    private float bouncebackDuration = 0.2f;
+    private float curBouncebackTime = 0;
+    private Quaternion bounceBackRot = Quaternion.identity;
+    private bool touchedEnemy = false;
+
     void Start ()
     {
-        bounds = GetComponent<Collider> ().bounds;
         cam = Camera.main.transform;
         if (!animController)
             animController = GetComponent<Animator> ();
@@ -46,10 +52,36 @@ public class Controller : MonoBehaviour {
     {
         onGround = GroundCollision ();
         input.SetInputValues ();
-        Movement();
+        if (!bouncingback)
+            Movement();
         Rotation ();
         Jumping ();
         SetAnimationParameters ();
+        Bounceback ();
+    }
+        
+    void Bounceback ()
+    {
+        curBouncebackTime -= Time.deltaTime;
+
+        if (touchedEnemy)
+        {
+            bouncingback = true;
+            curBouncebackTime = bouncebackDuration;
+            bounceBackRot = transform.rotation;
+            touchedEnemy = false;
+        }
+
+        if (curBouncebackTime >= 0)
+        {
+            float desiredYForce = jumpCurve.Evaluate (bouncebackDuration - curBouncebackTime);
+            float desiredZForce = bouncebackZForceCurve.Evaluate (bouncebackDuration - curBouncebackTime);
+            transform.position += bounceBackRot * new Vector3 (0, bouncebackYForce * desiredYForce, bouncebackZForce * desiredZForce) * Time.deltaTime;
+        }
+        else
+        {
+            bouncingback = false;
+        }
     }
 
     void LateUpdate ()
@@ -213,6 +245,11 @@ public class Controller : MonoBehaviour {
                     onPlatform = false;
                 }
 
+                if (groundHit.transform.GetComponent<Enemy>())
+                {
+                    touchedEnemy = true;
+                }
+
                 return true;
             }
         }
@@ -245,6 +282,9 @@ public class Controller : MonoBehaviour {
                 if (diff <= (forwardRayDis * forwardRayDis))
                 {
                     collisionDetected = true;
+
+                    if (hit.transform.GetComponent<Enemy>())
+                        touchedEnemy = true;
                 }
             }
             if (collisionDetected)
