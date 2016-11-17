@@ -10,6 +10,8 @@ public class TorchActivation : MonoBehaviour, IAction
     public InventoryManager inventory;
     private GameObject fire = null;
     public AudioSource aus;
+    public GameObject sprite;
+    private GameObject sprRef = null;
     //Activations
     public GameObject[] objects;
     //Active State
@@ -88,6 +90,17 @@ public class TorchActivation : MonoBehaviour, IAction
         else if (fire != null)
         {
             Destroy(fire);
+        }
+        if (sprite)
+        {
+            if (!sprRef)
+            {
+                sprRef = Instantiate(sprite, transform, false) as GameObject;
+            }
+            else if (sprRef)
+            {
+                Destroy(sprRef);
+            }
         }
         foreach (GameObject obj in objects)
         {
