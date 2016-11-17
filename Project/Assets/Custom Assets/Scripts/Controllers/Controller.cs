@@ -5,10 +5,12 @@ using System.Collections.Generic;
 public class Controller : MonoBehaviour {
 
     public float floatingGroundHeight = 0.1f;
-    public float bottomRayDist = 2.13f;
+    public float bottomRayDist = 2.66f;
     public float forwardRayDis = 1f;
     public float headRayDist = 2.5f;
+    public float maxWalkAngle = 65f;
     private List<RaycastHit> forwardRayHitPoints;
+    private int forwardRayColIndex = -1;
 
     public Transform cam;
     public float groundMovementSpeed = 20;
@@ -30,6 +32,8 @@ public class Controller : MonoBehaviour {
 
     public Transform rayPos;
     private RaycastHit groundHit;
+    int groundRayCount = 4;
+    float highestPoint = float.MinValue;
 
     public Animator animController;
 
@@ -41,10 +45,6 @@ public class Controller : MonoBehaviour {
     private float curBouncebackTime = 0;
     private Quaternion bounceBackRot = Quaternion.identity;
     private bool touchedEnemy = false;
-
-    public float maxWalkAngle = 65f;
-    private int forwardRayColIndex = -1;
-
 
     void Start ()
     {
@@ -236,8 +236,7 @@ public class Controller : MonoBehaviour {
         }
     }
 
-    int groundRayCount = 4;
-    float highestPoint = -10000;
+
     bool GroundCollision ()
     {
         float separation = 360 / groundRayCount;
@@ -252,7 +251,17 @@ public class Controller : MonoBehaviour {
             {
                 if ((groundHit.point - rayPoint).sqrMagnitude < (bottomRayDist * bottomRayDist))
                 {
+                    if (groundHit.transform.tag == "Platform")
+                    {
+                        onPlatform = true;
+                    }
+                    else
+                    {
+                        onPlatform = false;
+                    }
+
                     collision = true;
+
                     if (groundHit.point.y > highestPoint)
                     {
                         highestPoint = groundHit.point.y;
