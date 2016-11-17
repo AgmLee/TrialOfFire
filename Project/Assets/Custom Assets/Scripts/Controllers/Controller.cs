@@ -74,6 +74,7 @@ public class Controller : MonoBehaviour {
             bouncingback = true;
             curBouncebackTime = bouncebackDuration;
             bounceBackRot = transform.rotation;
+            GetComponent<InventoryManager> ().Hurt ();
             touchedEnemy = false;
         }
 
@@ -217,7 +218,7 @@ public class Controller : MonoBehaviour {
             animController.SetBool ("LAND", false);
         }
 
-        if ((input.jump > 0) && onGround)
+        if ((input.jump > 0) && onGround && curJumpTime >= jumpDuration)
         {
             animController.SetBool ("JUMP", true);
             animController.SetBool ("IDLE", false);
@@ -284,7 +285,7 @@ public class Controller : MonoBehaviour {
     
             Debug.DrawLine(rayPoint, rayPoint + transform.forward, Color.red);
         }
-
+        // Check our rays - if any of them is perpecdicular to Vector.up then its a wall
         for (int i = 0; i < forwardRayHitPoints.Count; i++)
         {
             float diff = (forwardRayHitPoints[i].point - new Vector3 (transform.position.x, forwardRayHitPoints[i].point.y, transform.position.z)).sqrMagnitude;
