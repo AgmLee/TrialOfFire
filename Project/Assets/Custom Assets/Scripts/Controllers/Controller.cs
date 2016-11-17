@@ -29,7 +29,6 @@ public class Controller : MonoBehaviour {
     private Vector3 velocity = Vector3.zero;
 
     public Transform rayPos;
-    private Vector3 groundpoint;
     private RaycastHit groundHit;
 
     public Animator animController;
@@ -45,6 +44,7 @@ public class Controller : MonoBehaviour {
 
     public float maxWalkAngle = 65f;
     private int forwardRayColIndex = -1;
+
 
     void Start ()
     {
@@ -94,7 +94,9 @@ public class Controller : MonoBehaviour {
     {
         if (curJumpTime < 0 && onGround)
         {
-            transform.position = Vector3.MoveTowards(transform.position, groundHit.point + (Vector3.up * floatingGroundHeight), 0.2f);
+            //transform.position = Vector3.MoveTowards(transform.position, groundHit.point + (Vector3.up * floatingGroundHeight), 0.2f);
+            transform.position = Vector3.MoveTowards(transform.position, new Vector3 (transform.position.x, groundHit.point.y + floatingGroundHeight, transform.position.z), 0.2f);
+            //transform.position = Vector3.Slerp (transform.position, new Vector3 (transform.position.x, groundHit.point.y + floatingGroundHeight, transform.position.z), 1 * Time.deltaTime);
         }
 
         if (onPlatform)
@@ -104,15 +106,13 @@ public class Controller : MonoBehaviour {
         }
             
     }
-    void OnCollisionEnter ()
-    {
-        Debug.Log ("Collision");
-    }
+
     void Movement ()
     {
         bool forwardCol = ForwardCollision();
         Vector3 platformVel = Vector3.zero;
         velocity = cam.rotation * new Vector3 (input.horizontal, 0, input.vertical);
+        velocity.y = 0;
         velocity.Normalize ();
 
         if (onGround)
@@ -139,6 +139,7 @@ public class Controller : MonoBehaviour {
             float angle = Vector3.Angle(velocity, groundHit.normal) - 90;
             Vector3 relativeRight = Vector3.Cross(velocity, Vector3.up);
             Vector3 rotatedVel = Quaternion.AngleAxis(angle, relativeRight) * velocity;
+
             if (groundHit.transform.tag == "Platform")
             {
                 platformVel = groundHit.transform.GetComponent<MovingPlatform>().GetVelocity();    
@@ -235,34 +236,63 @@ public class Controller : MonoBehaviour {
         }
     }
 
+    int groundRayCount = 4;
+    float highestPoint = -10000;
     bool GroundCollision ()
     {
-        if (Physics.Raycast (rayPos.position, -Vector3.up, out groundHit))
+        float separation = 360 / groundRayCount;
+        bool collision = false;
+    
+        for (int i = 0; i < groundRayCount; i++)
         {
-            if ((groundHit.point - (rayPos.position)).sqrMagnitude < (bottomRayDist * bottomRayDist))
+            Vector3 rayPoint = Quaternion.Euler(0, separation * i + transform.localEulerAngles.y, 0) * (new Vector3 (0, rayPos.position.y, -0.5f));
+            rayPoint += new Vector3 (transform.position.x, 0, transform.position.z);
+    
+            if (Physics.Raycast (rayPoint, -Vector3.up, out groundHit))
             {
-                groundpoint = groundHit.point;
-                if (groundHit.transform.tag == "Platform")
+                if ((groundHit.point - rayPoint).sqrMagnitude < (bottomRayDist * bottomRayDist))
                 {
-                    onPlatform = true;
+                    collision = true;
+                    if (groundHit.point.y > highestPoint)
+                    {
+                        highestPoint = groundHit.point.y;
+                    }
                 }
-                else
-                {
-                    onPlatform = false;
-                }
-
-                if (groundHit.transform.GetComponent<Enemy>())
-                {
-                    touchedEnemy = true;
-                }
-
-                return true;
             }
+    
+            Debug.DrawLine (rayPoint, rayPoint + -Vector3.up, Color.red);
         }
-
-        onPlatform = false;
-        return false;
+    
+        return collision;
     }
+
+    //bool GroundCollision ()
+    //{
+    //    if (Physics.Raycast (rayPos.position, -Vector3.up, out groundHit))
+    //    {
+    //        if ((groundHit.point - (rayPos.position)).sqrMagnitude < (bottomRayDist * bottomRayDist))
+    //        {
+    //            if (groundHit.transform.tag == "Platform")
+    //            {
+    //                onPlatform = true;
+    //            }
+    //            else
+    //            {
+    //                onPlatform = false;
+    //            }
+    //
+    //            if (groundHit.transform.GetComponent<Enemy>())
+    //            {
+    //                touchedEnemy = true;
+    //            }
+    //
+    //            return true;
+    //        }
+    //    }
+    //
+    //    onPlatform = false;
+    //    return false;
+    //}
         
     bool ForwardCollision ()
     {
