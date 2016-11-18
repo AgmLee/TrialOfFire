@@ -7,6 +7,7 @@ public class Enemy : MonoBehaviour {
     public Type type;
     //Multiple Types
     public float speed = 2;
+    public Animator animator;
     private Vector3 direction;
     private Transform ownTransform;
     private bool element = false;
@@ -47,6 +48,7 @@ public class Enemy : MonoBehaviour {
             {
                 direction = path[current].position - ownTransform.position;
                 direction.Normalize();
+                animator.SetBool(0, true);
             }
         }
         else if (type == Type.AngryTurtle)

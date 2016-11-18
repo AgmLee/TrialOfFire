@@ -1336,7 +1336,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 0
   speed: 2
-  controller: {fileID: 95000010779331152}
+  animator: {fileID: 95000010779331152}
   path: []
   pingPong: 0
   dropTime: 3
