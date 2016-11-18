@@ -196,7 +196,7 @@ public class InventoryManager : MonoBehaviour {
         int pass = 1;
         foreach(Transform t in spritePoints)
         {
-            t.rotation = Quaternion.LookRotation(-transform.forward);
+            t.rotation = Quaternion.LookRotation(transform.forward);
             pass++;
         }
         UIText.text = "x" + spriteCount;

@@ -29,8 +29,7 @@ public class StandingSprite : MonoBehaviour
         {
             if (refer != null)
             {
-                ownTrans.LookAt(refer);
-                ownTrans.rotation = Quaternion.LookRotation(-ownTrans.forward);
+                ownTrans.LookAt(new Vector3(refer.position.x, refer.position.y + 1.5f, refer.transform.position.z));
             }
             else if (timer >= resetTime)
             {
