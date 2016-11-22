@@ -45,7 +45,7 @@ ModelImporter:
     9500000: //RootNode
     13700000: snake_decimated:Group25831
   materials:
-    importMaterials: 1
+    importMaterials: 0
     materialName: 0
     materialSearch: 1
   animations:

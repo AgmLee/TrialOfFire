@@ -18,7 +18,7 @@ ModelImporter:
     4300000: OBJ_TorchSwitch_fixed:Group61183
     4300002: OBJ_TorchSwitchVines3:Mesh1
   materials:
-    importMaterials: 1
+    importMaterials: 0
     materialName: 0
     materialSearch: 1
   animations:

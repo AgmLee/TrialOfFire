@@ -13,7 +13,7 @@ ModelImporter:
     3300000: fire_sprite_4:Group21241
     4300000: fire_sprite_4:Group21241
   materials:
-    importMaterials: 1
+    importMaterials: 0
     materialName: 0
     materialSearch: 1
   animations:
