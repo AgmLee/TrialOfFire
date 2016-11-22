@@ -13,20 +13,22 @@ public class Controller : MonoBehaviour {
     private int forwardRayColIndex = -1;
 
     public Transform cam;
-    public float groundMovementSpeed = 20;
-    public float inAirMovementSpeed = 12;
-    public float gravity = -25;
+    public float groundMovementSpeed = 10;
+    public float inAirMovementSpeed = 16;
+    public float gravity = -100;
     public int forwardRayCount = 5;
 
     public AnimationCurve jumpCurve;
-    public float jumpForce = 30;
-    public float jumpDuration = 0.2f;
+    public float jumpForce = 60;
+    public float jumpDuration = 0.5f;
     private float curJumpTime = 0;
-    private bool jumpButtonReleased = true;
+    private bool jumpButtonDown = true;
 
     PlayerInput input = new PlayerInput();
 
     public bool onGround = false;
+    bool wasGrounded = false;
+    private float jumpTimeWhenGrounded = 0;
     public bool onPlatform = false;
     private Vector3 velocity = Vector3.zero;
 
@@ -52,19 +54,29 @@ public class Controller : MonoBehaviour {
         if (!animController)
             animController = GetComponent<Animator> ();
     }
-
+        
     void Update ()
     {
+        curJumpTime -= Time.deltaTime;
         onGround = GroundCollision ();
+        if (!wasGrounded && onGround)
+        {
+            jumpTimeWhenGrounded = curJumpTime;
+            wasGrounded = true;
+        }
+        if (wasGrounded && !onGround)
+        {
+            jumpTimeWhenGrounded = jumpDuration * 10;
+            wasGrounded = false;
+        }
         input.SetInputValues ();
         if (!bouncingback)
             Movement();
         Rotation ();
-        Jumping ();
         SetAnimationParameters ();
         Bounceback ();
     }
-        
+
     void Bounceback ()
     {
         curBouncebackTime -= Time.deltaTime;
@@ -81,7 +93,7 @@ public class Controller : MonoBehaviour {
         if (curBouncebackTime >= 0)
         {
             float desiredYForce = jumpCurve.Evaluate (bouncebackDuration - curBouncebackTime);
-            float desiredZForce = bouncebackZForceCurve.Evaluate (bouncebackDuration - curBouncebackTime);
+            float desiredZForce = bouncebackZForceCurve.Evaluate ((bouncebackDuration - curBouncebackTime) / bouncebackDuration);
             transform.position += bounceBackRot * new Vector3 (0, bouncebackYForce * desiredYForce, bouncebackZForce * desiredZForce) * Time.deltaTime;
         }
         else
@@ -101,16 +113,18 @@ public class Controller : MonoBehaviour {
 
         if (onPlatform)
         {
-            Vector3 platformDir = groundHit.transform.GetComponent<MovingPlatform>().GetVelocity();
-            transform.position += platformDir * Time.deltaTime;
+            if (groundHit.transform.GetComponent<MovingPlatform>())
+            {
+                Vector3 platformDir = groundHit.transform.GetComponent<MovingPlatform>().GetVelocity();
+                transform.position += platformDir * Time.deltaTime;
+            }
         }
-            
+
     }
 
     void Movement ()
     {
         bool forwardCol = ForwardCollision();
-        Vector3 platformVel = Vector3.zero;
         velocity = cam.rotation * new Vector3 (input.horizontal, 0, input.vertical);
         velocity.y = 0;
         velocity.Normalize ();
@@ -124,41 +138,100 @@ public class Controller : MonoBehaviour {
             velocity *= inAirMovementSpeed;
         }
 
-        if (ApplyGravity())
+        //if (ApplyGravity())
+        //{
+        //    curGravity += gravity * Time.deltaTime;
+        //    velocity.y += curGravity;
+        //}
+        //else
+        //{
+        //    velocity.y = 0;
+        //    curGravity = gravity;
+        //}
+
+        float angle = Vector3.Angle(velocity, groundHit.normal) - 90;
+        Vector3 relativeRight = Vector3.Cross(velocity, Vector3.up);
+        Vector3 rotatedVel = Quaternion.AngleAxis(angle, relativeRight) * velocity;
+
+        if (!onGround)
         {
-            velocity.y += gravity;
+            rotatedVel = Quaternion.AngleAxis(0, relativeRight) * velocity;
         }
 
-        if (onPlatform && false)
-        {
-            Vector3 platformDir = groundHit.transform.GetComponent<MovingPlatform>().GetVelocity();
-            transform.position += (platformDir) * Time.deltaTime;
-        }
-        else if (!forwardCol && onGround)
-        {
-            float angle = Vector3.Angle(velocity, groundHit.normal) - 90;
-            Vector3 relativeRight = Vector3.Cross(velocity, Vector3.up);
-            Vector3 rotatedVel = Quaternion.AngleAxis(angle, relativeRight) * velocity;
+        //if (groundHit.transform.tag == "Platform")
+        //{
+        //    platformVel = groundHit.transform.GetComponent<MovingPlatform>().GetVelocity();    
+        //}
 
-            if (groundHit.transform.tag == "Platform")
-            {
-                platformVel = groundHit.transform.GetComponent<MovingPlatform>().GetVelocity();    
-            }
+        //transform.position += (rotatedVel * Time.deltaTime);
+        velocity = rotatedVel;
 
-            transform.position += (rotatedVel * Time.deltaTime);
-        }
-        else if (!forwardCol)
+        if (forwardCol)
         {
-            transform.position += (velocity * Time.deltaTime);
+            //transform.position += (velocity * Time.deltaTime);
+            velocity.x = 0;
+            velocity.z = 0;
         }
 
-        if (forwardCol && ApplyGravity())
+        //if (forwardCol && ApplyGravity())
+        //{
+        //    //transform.position += (Vector3.up * gravity) * Time.deltaTime;
+        //}
+        //if (!onGround && curJumpTime <= 0)
+        //{
+        //
+        //}
+        float yForceToApply = CalculateYForce();
+        if (yForceToApply == 0)
         {
-            transform.position += (Vector3.up * gravity) * Time.deltaTime;
+            yForceToApply = velocity.y;
         }
-
+        velocity.y = yForceToApply;
+        transform.position += velocity * Time.deltaTime;
+        Debug.DrawLine (transform.position, transform.position + velocity, Color.red);
     }
 
+    bool jumpButtonDownLast = false;
+    float curYForce = 0;
+    float CalculateYForce ()
+    {
+        float force = curYForce;
+
+        if (input.jump > 0)
+        {
+            jumpButtonDown = true;
+        }
+        else
+        {
+            jumpButtonDown = false;
+        }
+
+        if (onGround && (!jumpButtonDownLast && jumpButtonDown) && curJumpTime <= 0 && curJumpTime < (jumpTimeWhenGrounded - 0.1f))
+        {
+            force += jumpCurve.Evaluate ((jumpDuration - curJumpTime) / jumpDuration) * (jumpForce * Time.deltaTime);
+            curJumpTime = jumpDuration;
+        }
+        else if ((curJumpTime > (jumpDuration*0.5f))
+            || (jumpButtonDown && curJumpTime >= 0))
+        {
+            force += jumpCurve.Evaluate ((jumpDuration - curJumpTime) / jumpDuration) * (jumpForce * Time.deltaTime);
+        }
+        else if (!onGround)
+        {
+            force += gravity * Time.deltaTime;
+        }
+        else
+        {
+            force = 0;
+        }
+
+
+
+        curYForce = force;
+
+        jumpButtonDownLast = jumpButtonDown;
+        return force;
+    }
 
     void Rotation ()
     {
@@ -166,39 +239,6 @@ public class Controller : MonoBehaviour {
         lookDir.y = 0;
         if (lookDir.sqrMagnitude > 0)
             transform.rotation = Quaternion.LookRotation(lookDir);
-    }
-
-    void Jumping ()
-    {
-        curJumpTime -= Time.deltaTime;
-
-        if (input.jump <= 0)
-        {
-            jumpButtonReleased = true;
-        }
-
-        if ((curJumpTime < 0 && input.jump > 0) && onGround && jumpButtonReleased)
-        {
-            curJumpTime = jumpDuration;
-            jumpButtonReleased = false;
-        }
-
-        //if (curJumpTime >= 0 && !HeadCollision ())
-        //{
-        //    transform.position += (Vector3.up * jumpSpeed) * Time.deltaTime;
-        //}
-
-        if (curJumpTime >= 0 && !HeadCollision ())
-        {
-            float desiredJumpForce = jumpCurve.Evaluate (jumpDuration - curJumpTime) * jumpForce;
-            transform.position += (Vector3.up * desiredJumpForce) * Time.deltaTime;
-        }
-
-        if (HeadCollision ())
-        {
-            curJumpTime = -1;
-        }
-
     }
 
     void SetAnimationParameters ()
@@ -235,18 +275,17 @@ public class Controller : MonoBehaviour {
             animController.SetBool ("MOVEMENT", false);
         }
     }
-
-
+        
     bool GroundCollision ()
     {
         float separation = 360 / groundRayCount;
         bool collision = false;
-    
+
         for (int i = 0; i < groundRayCount; i++)
         {
             Vector3 rayPoint = Quaternion.Euler(0, separation * i + transform.localEulerAngles.y, 0) * (new Vector3 (0, rayPos.position.y, -0.5f));
             rayPoint += new Vector3 (transform.position.x, 0, transform.position.z);
-    
+
             if (Physics.Raycast (rayPoint, -Vector3.up, out groundHit))
             {
                 if ((groundHit.point - rayPoint).sqrMagnitude < (bottomRayDist * bottomRayDist))
@@ -268,10 +307,10 @@ public class Controller : MonoBehaviour {
                     }
                 }
             }
-    
+
             Debug.DrawLine (rayPoint, rayPoint + -Vector3.up, Color.red);
         }
-    
+
         return collision;
     }
 
@@ -302,7 +341,7 @@ public class Controller : MonoBehaviour {
     //    onPlatform = false;
     //    return false;
     //}
-        
+
     bool ForwardCollision ()
     {
         float separation = 0;
@@ -310,7 +349,7 @@ public class Controller : MonoBehaviour {
         Vector3 rayPoint = Vector3.zero;
         Ray ray;
         forwardRayHitPoints = new List<RaycastHit> ();
-    
+
         for (int i = 0; i < forwardRayCount; i++)
         {
             separation = ((transform.localScale.y * 2.5f) / (forwardRayCount-1));
@@ -321,7 +360,7 @@ public class Controller : MonoBehaviour {
             {
                 forwardRayHitPoints.Add (hit);
             }
-    
+
             Debug.DrawLine(rayPoint, rayPoint + transform.forward, Color.red);
         }
         // Check our rays - if any of them is perpecdicular to Vector.up then its a wall
@@ -419,25 +458,7 @@ public class Controller : MonoBehaviour {
         return false;
     }
 
-    bool ApplyGravity ()
-    {
-        if (onGround && curJumpTime < 0)
-        {
-            return false;
-        }
 
-        if (!onGround && curJumpTime >= 0)
-        {
-            return false;
-        }
-
-        if (!onGround && curJumpTime < 0)
-        {
-            return true;
-        }
-
-        return false;
-    }
 
     class PlayerInput
     {
