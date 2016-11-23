@@ -2,9 +2,10 @@
 
 public class Door : MonoBehaviour, IAction
 {
-    public Animator door;
+    public GameObject door;
+    public Transform openPoint;
     public AudioClip close;
-    public float openSpeed = 3.0f;
+    public float openSpeed = 10.0f;
     public bool invert = false;
     private bool isActive = false;
     public bool IsActivated
@@ -13,16 +14,35 @@ public class Door : MonoBehaviour, IAction
     }
     private AudioSource aus;
     public int requirementAmout = 1;
+    private Vector3 startPoint;
 
     void Start()
     {
         aus = GetComponent<AudioSource>();
+        startPoint = door.transform.localPosition;
         if (invert)
         {
             isActive = true;
+            door.transform.localPosition = openPoint.localPosition;
         }
-        door.speed = openSpeed;
-        door.SetBool("IsActive", isActive);
+    }
+
+    void Update()
+    {
+        if (isActive)
+        {
+            if (Vector3.Distance(door.transform.localPosition, openPoint.localPosition) > 0.05f)
+            {
+                door.transform.localPosition -= (door.transform.localPosition - openPoint.localPosition).normalized * openSpeed * Time.deltaTime;
+            }
+        }
+        else
+        {
+            if (Vector3.Distance(door.transform.localPosition, startPoint) > 0.05f)
+            {
+                door.transform.localPosition -= (door.transform.localPosition - startPoint).normalized * openSpeed * Time.deltaTime;
+            }
+        }
     }
 
     private int tally = 0;
@@ -40,13 +60,11 @@ public class Door : MonoBehaviour, IAction
         {
             isActive = !invert;
             aus.Play();
-            door.SetBool("IsActive", isActive);
         }
         else if ((isActive && !invert) || (!isActive && invert))
         {
             isActive = invert;
             aus.PlayOneShot(close);
-            door.SetBool("IsActive", isActive);
         }
     }
 }
