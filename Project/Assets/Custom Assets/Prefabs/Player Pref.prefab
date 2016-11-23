@@ -7067,7 +7067,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000011334594100}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 32, y: 44.9, z: 28.962}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -8186,54 +8186,49 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   floatingGroundHeight: 0.1
-  bottomRayDist: 2.13
+  bottomRayDist: 2.66
   forwardRayDis: 1
-  headRayDist: 2.5
+  headRayDist: 2.81
   maxWalkAngle: 65
-  cam: {fileID: 4000013775758926}
+  cam: {fileID: 4000013327959554}
   groundMovementSpeed: 20
-  inAirMovementSpeed: 17
-  gravity: -45
+  inAirMovementSpeed: 20
+  gravity: -80
   forwardRayCount: 5
-  jumpCurve:
+  jumpForceOverTime:
     serializedVersion: 2
     m_Curve:
-    - time: 0.00438914
-      value: 1.0007275
-      inSlope: -0.12369582
-      outSlope: -0.12369582
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
       tangentMode: 0
-    - time: 0.6882568
-      value: 0.91632026
-      inSlope: -0.6812811
-      outSlope: -0.6812811
-      tangentMode: 0
-    - time: 1.0008051
-      value: 0.0064478884
-      inSlope: -3.5624173
-      outSlope: -3.5624173
+    - time: 0.9980159
+      value: -0.0020490885
+      inSlope: -3.0670617
+      outSlope: -3.0670617
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
-  jumpForce: 50
-  jumpDuration: 0.35
-  onGround: 1
+  jumpForce: 200
+  jumpDuration: 0.3
+  onGround: 0
   onPlatform: 0
   rayPos: {fileID: 4000011521369736}
   animController: {fileID: 95000011879690036}
   bouncebackZForceCurve:
     serializedVersion: 2
     m_Curve:
-    - time: 0.0017421603
-      value: 0.99999994
-      inSlope: -0.074931465
-      outSlope: -0.074931465
+    - time: -0.005952381
+      value: 1.0040983
+      inSlope: -0.1588901
+      outSlope: -0.1588901
       tangentMode: 0
-    - time: 1.0243902
-      value: 0.154519
-      inSlope: -2.1197264
-      outSlope: -2.1197264
+    - time: 0.9960317
+      value: 0.000000040978193
+      inSlope: -2.1229506
+      outSlope: -2.1229506
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2

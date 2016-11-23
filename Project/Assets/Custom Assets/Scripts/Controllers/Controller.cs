@@ -14,7 +14,7 @@ public class Controller : MonoBehaviour {
 
     public Transform cam;
     public float groundMovementSpeed = 20;
-    public float inAirMovementSpeed = 15;
+    public float inAirMovementSpeed = 20;
     public float gravity = -80;
     public int forwardRayCount = 5;
 
